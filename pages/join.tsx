@@ -45,15 +45,14 @@ export default function Join() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-200">
-              <p className="text-sm text-gray-600">
-                Already have an account?{' '}
-                <button
-                  onClick={() => router.push('/login')}
-                  className="text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Log in
-                </button>
-              </p>
+              <Button 
+                onClick={() => router.push('/login')}
+                variant="outline"
+                size="lg"
+                className="w-full"
+              >
+                Already have an account? Login here
+              </Button>
             </div>
           </Card>
         </div>
