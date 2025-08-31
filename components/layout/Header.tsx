@@ -26,7 +26,7 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
   }
 
   const handleBecomeLocal = () => {
-    router.push(ROUTES.LOCAL_SIGNUP)
+    router.push(ROUTES.BECOME_A_LOCAL)
   }
 
   const handleMyLocalProfile = () => {

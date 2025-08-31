@@ -4,6 +4,7 @@ export const ROUTES = {
   LOGIN: '/login',
   TRAVELER_SIGNUP: '/traveler',
   LOCAL_SIGNUP: '/local',
+  BECOME_A_LOCAL: '/become-a-local',
   EXPLORE: '/explore',
   REQUESTS: '/requests',
   CONNECT_WITH_LOCALS: '/connect-with-locals',
