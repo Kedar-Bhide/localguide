@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Header from '../components/layout/Header'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
+import SearchBox from '../components/search/SearchBox'
 import { ROUTES } from '../utils/constants'
 
 export default function Home() {
@@ -80,26 +81,8 @@ export default function Home() {
               </div>
             </Card>
 
-            {/* Right Card: Search Placeholder */}
-            <Card className="h-full flex flex-col items-center justify-center">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Search Box Coming Soon</h3>
-                <p className="text-gray-600 mb-4">Find locals in your destination</p>
-                <div className="w-full max-w-md">
-                  <input 
-                    type="text" 
-                    placeholder="Where are you traveling?" 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-                    disabled
-                  />
-                </div>
-              </div>
-            </Card>
+            {/* Right Card: Search Box */}
+            <SearchBox className="h-full" />
           </div>
 
           {/* Bottom Section: CTA Cards */}
