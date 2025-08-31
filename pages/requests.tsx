@@ -1,18 +1,28 @@
 import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
+import EditLocalProfile from '../components/profile/EditLocalProfile'
+import Button from '../components/ui/Button'
 import { useProfile } from '../hooks/useProfile'
+import { useAuth } from '../hooks/useAuth'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Requests() {
   const { profile, loading } = useProfile()
+  const { user } = useAuth()
   const router = useRouter()
+  const [showEditModal, setShowEditModal] = useState(false)
 
   useEffect(() => {
     if (!loading && profile && !profile.is_local) {
       router.push('/explore')
     }
   }, [profile, loading, router])
+
+  const handleProfileSaved = () => {
+    // Profile has been updated successfully
+    console.log('Local profile updated successfully')
+  }
 
   if (loading) {
     return (
@@ -38,7 +48,16 @@ export default function Requests() {
             </p>
           </div>
 
-          <h1 className="text-3xl font-bold mb-8">Your Chat Requests</h1>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+            <h1 className="text-3xl font-bold mb-4 sm:mb-0">Your Chat Requests</h1>
+            <Button 
+              onClick={() => setShowEditModal(true)}
+              variant="outline"
+              className="bg-green-50 border-green-300 text-green-700 hover:bg-green-100"
+            >
+              Edit Local Profile
+            </Button>
+          </div>
           
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">
@@ -55,6 +74,16 @@ export default function Requests() {
             </div>
           </div>
         </div>
+
+        {/* Edit Local Profile Modal */}
+        {user && (
+          <EditLocalProfile
+            isOpen={showEditModal}
+            onClose={() => setShowEditModal(false)}
+            onSave={handleProfileSaved}
+            userId={user.id}
+          />
+        )}
       </Layout>
     </ProtectedRoute>
   )
