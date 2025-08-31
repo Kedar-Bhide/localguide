@@ -75,7 +75,7 @@ interface SearchFormData {
 }
 
 interface SearchBoxProps {
-  onSearch?: (searchData: SearchFormData) => void
+  onSearch?: (searchData: SearchFormData) => Promise<void> | void
   className?: string
 }
 
@@ -94,6 +94,7 @@ export default function SearchBox({ onSearch, className = '' }: SearchBoxProps) 
   const [showLocationDropdown, setShowLocationDropdown] = useState(false)
   const [showTagsDropdown, setShowTagsDropdown] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
   
   const locationInputRef = useRef<HTMLInputElement>(null)
   const tagsDropdownRef = useRef<HTMLDivElement>(null)
@@ -133,7 +134,7 @@ export default function SearchBox({ onSearch, className = '' }: SearchBoxProps) 
   }
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     // If user is not logged in, show login modal
@@ -144,7 +145,14 @@ export default function SearchBox({ onSearch, className = '' }: SearchBoxProps) 
 
     // Call onSearch callback if provided
     if (onSearch) {
-      onSearch(formData)
+      setIsSearching(true)
+      try {
+        await onSearch(formData)
+      } catch (error) {
+        console.error('Search error:', error)
+      } finally {
+        setIsSearching(false)
+      }
     }
   }
 
@@ -295,7 +303,7 @@ export default function SearchBox({ onSearch, className = '' }: SearchBoxProps) 
             )}
           </div>
 
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" loading={isSearching}>
             Search
           </Button>
         </form>

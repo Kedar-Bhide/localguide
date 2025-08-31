@@ -1,14 +1,37 @@
+import { useRouter } from 'next/router'
 import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import SearchBox from '../components/search/SearchBox'
 import { useProfile } from '../hooks/useProfile'
+import { useAuth } from '../hooks/useAuth'
+import { saveSearch, buildSearchParams } from '../utils/search'
 
 export default function Explore() {
   const { profile, loading } = useProfile()
+  const { user } = useAuth()
+  const router = useRouter()
 
-  const handleSearch = (searchData: any) => {
-    console.log('Search data:', searchData)
-    // TODO: Implement search functionality in future milestone
+  const handleSearch = async (searchData: any) => {
+    if (!user) {
+      console.error('User not authenticated')
+      return
+    }
+
+    try {
+      // Save search to database
+      const searchId = await saveSearch(searchData, user.id)
+      
+      // Build search parameters
+      const searchParams = buildSearchParams(searchData, searchId)
+      
+      // Navigate to connect-with-locals page with search data
+      router.push(`/connect-with-locals?${searchParams}`)
+    } catch (error) {
+      console.error('Failed to save search:', error)
+      // Still navigate even if saving fails
+      const searchParams = buildSearchParams(searchData)
+      router.push(`/connect-with-locals?${searchParams}`)
+    }
   }
 
   if (loading) {
