@@ -76,7 +76,9 @@ export interface SearchFilters {
 }
 
 export interface LocalSearchResult extends Local {
-  user: Pick<User, 'full_name' | 'avatar_url'>;
+  user: Pick<User, 'full_name' | 'avatar_url'> & {
+    last_active_at?: string;
+  };
 }
 
 export interface LocalCardData {

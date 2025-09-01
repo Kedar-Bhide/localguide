@@ -88,6 +88,51 @@ export const searchLocalsRanked = async (city: string, country: string, tags?: s
   return transformedData as LocalSearchResult[]
 }
 
+export const searchLocalsSorted = async (
+  city: string, 
+  country: string, 
+  tags?: string[], 
+  sortBy: 'best_match' | 'most_active' = 'best_match'
+): Promise<LocalSearchResult[]> => {
+  // Get the raw data from the RPC function
+  const { data, error } = await supabase.rpc('search_locals', {
+    query_city: city,
+    query_country: country,
+    selected_tags: tags || []
+  })
+
+  if (error) throw error
+  
+  // Transform the data
+  let transformedData = data.map((item: any) => ({
+    id: item.user_id,
+    user_id: item.user_id,
+    location: `${item.city}, ${item.state ? item.state + ', ' : ''}${item.country}`,
+    city: item.city,
+    country: item.country,
+    bio: item.bio,
+    tags: item.tags,
+    created_at: new Date().toISOString(),
+    user: {
+      full_name: item.full_name,
+      avatar_url: item.avatar_url,
+      last_active_at: item.last_active_at
+    }
+  }))
+
+  // Apply sorting
+  if (sortBy === 'most_active') {
+    transformedData = transformedData.sort((a, b) => {
+      const dateA = a.user.last_active_at ? new Date(a.user.last_active_at).getTime() : 0
+      const dateB = b.user.last_active_at ? new Date(b.user.last_active_at).getTime() : 0
+      return dateB - dateA // Most recent first
+    })
+  }
+  // 'best_match' uses the default sorting from the RPC function (tag overlap + last_active_at)
+
+  return transformedData as LocalSearchResult[]
+}
+
 export const findOrCreateChat = async (travelerId: string, localId: string, city: string) => {
   // First, check if a chat already exists between these two users for this city
   const { data: existingChat, error: searchError } = await supabase

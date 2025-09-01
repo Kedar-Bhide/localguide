@@ -5,9 +5,10 @@ import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import { searchLocalsRanked, findOrCreateChat, getNearbyLocals, type NearbyCity } from '../utils/api'
+import LocalCard from '../components/ui/LocalCard'
+import { searchLocalsSorted, findOrCreateChat, getNearbyLocals, type NearbyCity } from '../utils/api'
 import { getUser, supabase } from '../lib/supabase'
-import type { LocalSearchResult } from '../types'
+import type { LocalSearchResult, LocalCardData } from '../types'
 
 interface SearchParams {
   location?: string
@@ -19,6 +20,8 @@ interface SearchParams {
   searchId?: string
 }
 
+type SortOption = 'best_match' | 'most_active'
+
 export default function ConnectWithLocals() {
   const router = useRouter()
   const [searchParams, setSearchParams] = useState<SearchParams>({})
@@ -27,6 +30,7 @@ export default function ConnectWithLocals() {
   const [searchLoading, setSearchLoading] = useState(false)
   const [nearbyCities, setNearbyCities] = useState<NearbyCity[]>([])
   const [nearbyLoading, setNearbyLoading] = useState(false)
+  const [sortBy, setSortBy] = useState<SortOption>('best_match')
 
   useEffect(() => {
     if (router.isReady) {
@@ -61,11 +65,11 @@ export default function ConnectWithLocals() {
     })
   }
 
-  const performSearch = async (city: string, country: string, tags: string[]) => {
+  const performSearch = async (city: string, country: string, tags: string[], sortOption?: SortOption) => {
     setSearchLoading(true)
     setNearbyCities([]) // Reset nearby cities
     try {
-      const results = await searchLocalsRanked(city, country, tags)
+      const results = await searchLocalsSorted(city, country, tags, sortOption || sortBy)
       setLocals(results)
       
       // If no locals found, try to find nearby cities with locals
@@ -89,6 +93,29 @@ export default function ConnectWithLocals() {
 
   const handleNewSearch = () => {
     router.push('/explore')
+  }
+
+  const handleSortChange = (newSort: SortOption) => {
+    setSortBy(newSort)
+    if (searchParams.city) {
+      performSearch(searchParams.city, searchParams.country || 'USA', searchParams.tags || [], newSort)
+    }
+  }
+
+  const transformToLocalCardData = (local: LocalSearchResult): LocalCardData => {
+    return {
+      id: local.id,
+      user_id: local.user_id,
+      city: local.city,
+      country: local.country,
+      bio: local.bio,
+      tags: local.tags,
+      user: {
+        full_name: local.user.full_name,
+        avatar_url: local.user.avatar_url,
+        last_active_at: local.user.last_active_at
+      }
+    }
   }
 
   const handleNearbyCityClick = (nearbyCity: NearbyCity) => {
@@ -207,84 +234,59 @@ export default function ConnectWithLocals() {
 
           {/* Search Results */}
           {searchLoading ? (
-            <Card>
-              <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
-                <span className="text-gray-600">Searching for local experts...</span>
-              </div>
-            </Card>
-          ) : locals.length > 0 ? (
             <div>
               <div className="mb-6">
-                <h2 className="text-xl font-semibold">Local Experts ({locals.length})</h2>
-                <p className="text-gray-600">Ranked by relevance and activity</p>
+                <h2 className="text-xl font-semibold">Searching for Local Experts...</h2>
               </div>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* Loading Grid */}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {Array.from({ length: 8 }, (_, i) => (
+                  <LocalCard key={`skeleton-${i}`} loading={true} />
+                ))}
+              </div>
+            </div>
+          ) : locals.length > 0 ? (
+            <div>
+              {/* Results Header with Sorting */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold">Local Experts ({locals.length})</h2>
+                  <p className="text-gray-600">Find the perfect local guide for your trip</p>
+                </div>
+                
+                {/* Sorting Chips */}
+                <div className="flex gap-2 mt-4 sm:mt-0">
+                  <button
+                    onClick={() => handleSortChange('best_match')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      sortBy === 'best_match'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Best match
+                  </button>
+                  <button
+                    onClick={() => handleSortChange('most_active')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      sortBy === 'most_active'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Most active
+                  </button>
+                </div>
+              </div>
+              
+              {/* Responsive Grid */}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {locals.map((local) => (
-                  <Card key={local.id} className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0">
-                        {local.user.avatar_url ? (
-                          <img
-                            className="h-12 w-12 rounded-full object-cover"
-                            src={supabase.storage.from('avatars').getPublicUrl(local.user.avatar_url).data.publicUrl}
-                            alt={local.user.full_name}
-                          />
-                        ) : (
-                          <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                            <span className="text-blue-600 font-medium text-lg">
-                              {local.user.full_name.charAt(0)}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-900 truncate">
-                            {local.user.full_name}
-                          </h3>
-                        </div>
-                        <p className="text-sm text-gray-500 mb-2">
-                          {local.city}, {local.country}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <p className="text-gray-700 text-sm line-clamp-3">{local.bio}</p>
-                    </div>
-                    
-                    {local.tags && local.tags.length > 0 && (
-                      <div className="mt-4">
-                        <div className="flex flex-wrap gap-1">
-                          {local.tags.slice(0, 4).map((tag, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                          {local.tags.length > 4 && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600">
-                              +{local.tags.length - 4} more
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="mt-6">
-                      <Button
-                        onClick={() => handleConnect(local)}
-                        variant="primary"
-                        size="sm"
-                        className="w-full"
-                      >
-                        Connect
-                      </Button>
-                    </div>
-                  </Card>
+                  <LocalCard 
+                    key={local.id} 
+                    data={transformToLocalCardData(local)}
+                    onClick={() => handleConnect(local)}
+                  />
                 ))}
               </div>
             </div>
