@@ -88,49 +88,74 @@ export const searchLocalsRanked = async (city: string, country: string, tags?: s
   return transformedData as LocalSearchResult[]
 }
 
-export const createChat = async (travelerId: string, localId: string, city: string) => {
-  const { data: existingChat } = await supabase
+export const findOrCreateChat = async (travelerId: string, localId: string, city: string) => {
+  // First, check if a chat already exists between these two users for this city
+  const { data: existingChat, error: searchError } = await supabase
     .from('chats')
-    .select('id')
-    .eq('traveler_id', travelerId)
-    .eq('local_id', localId)
+    .select(`
+      id,
+      city,
+      created_at,
+      last_message_at,
+      chat_participants!inner (
+        user_id,
+        role
+      )
+    `)
     .eq('city', city)
-    .single()
+    .in('chat_participants.user_id', [travelerId, localId])
 
-  if (existingChat) {
-    return existingChat
+  if (searchError) throw searchError
+
+  // Check if we found a chat with both participants
+  const chatWithBothUsers = existingChat?.find(chat => {
+    const participants = chat.chat_participants
+    const hasTraverl = participants.some((p: any) => p.user_id === travelerId && p.role === 'traveler')
+    const hasLocal = participants.some((p: any) => p.user_id === localId && p.role === 'local')
+    return hasTraverl && hasLocal && participants.length === 2
+  })
+
+  if (chatWithBothUsers) {
+    return { id: chatWithBothUsers.id, created_at: chatWithBothUsers.created_at }
   }
 
-  const { data, error } = await supabase
+  // No existing chat found, create a new one
+  const { data: newChat, error: createError } = await supabase
     .from('chats')
     .insert([
       {
-        traveler_id: travelerId,
-        local_id: localId,
-        city
+        city,
+        last_message_at: null
       }
     ])
     .select()
     .single()
 
-  if (error) throw error
+  if (createError) throw createError
 
-  await supabase
+  // Insert chat participants
+  const { error: participantsError } = await supabase
     .from('chat_participants')
     .insert([
       {
-        chat_id: data.id,
+        chat_id: newChat.id,
         user_id: travelerId,
         role: 'traveler'
       },
       {
-        chat_id: data.id,
+        chat_id: newChat.id,
         user_id: localId,
         role: 'local'
       }
     ])
 
-  return data
+  if (participantsError) throw participantsError
+
+  return newChat
+}
+
+export const createChat = async (travelerId: string, localId: string, city: string) => {
+  return findOrCreateChat(travelerId, localId, city)
 }
 
 export const sendMessage = async (chatId: string, senderId: string, content: string) => {

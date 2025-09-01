@@ -5,7 +5,8 @@ import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import { searchLocalsRanked } from '../utils/api'
+import { searchLocalsRanked, findOrCreateChat } from '../utils/api'
+import { getUser } from '../lib/supabase'
 import type { LocalSearchResult } from '../types'
 
 interface SearchParams {
@@ -74,9 +75,28 @@ export default function ConnectWithLocals() {
     router.push('/explore')
   }
 
-  const handleConnect = (local: LocalSearchResult) => {
-    // TODO: Implement connect functionality
-    console.log('Connecting with:', local)
+  const handleConnect = async (local: LocalSearchResult) => {
+    try {
+      // Get current user
+      const user = await getUser()
+      if (!user) {
+        console.error('User not authenticated')
+        return
+      }
+
+      // Create or find existing chat
+      const chat = await findOrCreateChat(
+        user.id, // traveler ID
+        local.user_id, // local ID  
+        searchParams.city || local.city // city from search or local's city
+      )
+
+      // Navigate to the chat
+      router.push(`/messages/${chat.id}`)
+    } catch (error) {
+      console.error('Error creating/opening chat:', error)
+      // TODO: Show user-friendly error message
+    }
   }
 
   if (loading) {
