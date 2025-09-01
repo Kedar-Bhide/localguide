@@ -11,9 +11,9 @@ export default function Layout({
   showAuthButtons = true
 }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[color:var(--bg-soft)]">
       <Header showAuthButtons={showAuthButtons} />
-      <main className="py-8">
+      <main className="section-spacing">
         {children}
       </main>
     </div>

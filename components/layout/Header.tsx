@@ -9,6 +9,7 @@ import Dropdown, { DropdownItem } from '../ui/Dropdown'
 import Button from '../ui/Button'
 import ProfileModal from '../profile/ProfileModal'
 import AvatarUpload from '../profile/AvatarUpload'
+import { User, MessageSquare, LogOut, ChevronDown } from 'lucide-react'
 
 interface HeaderProps {
   showAuthButtons?: boolean
@@ -51,11 +52,12 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
   }, [profile?.avatar_url])
 
   return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-[color:var(--border)] z-40">
+      <div className="max-w-7xl mx-auto section-gutter">
         <div className="flex justify-between items-center h-16">
+          {/* Logo */}
           <div>
-            <Link href={ROUTES.HOME} className="text-2xl font-bold text-blue-600">
+            <Link href={ROUTES.HOME} className="text-2xl font-bold text-[color:var(--brand)] hover:text-[color:var(--brand-600)] transition-colors">
               LocalGuide
             </Link>
           </div>
@@ -63,10 +65,10 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
           <div className="flex items-center space-x-4">
             {showAuthButtons && !user && (
               <>
-                <Link href={ROUTES.JOIN} className="text-gray-600 hover:text-gray-900">
+                <Link href={ROUTES.JOIN} className="text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium">
                   Join
                 </Link>
-                <Link href={ROUTES.LOGIN} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                <Link href={ROUTES.LOGIN} className="btn-brand">
                   Login
                 </Link>
               </>
@@ -76,63 +78,62 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
               <div className="flex items-center space-x-4">
                 {/* Local/Traveler toggle button */}
                 {profile.is_local ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
                     onClick={() => router.push(ROUTES.EXPLORE)}
+                    className="btn-secondary text-sm"
                   >
                     My Traveler Profile
-                  </Button>
+                  </button>
                 ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
                     onClick={handleBecomeLocal}
+                    className="btn-secondary text-sm"
                   >
                     Become a Local
-                  </Button>
+                  </button>
                 )}
 
                 {/* Profile dropdown */}
                 <Dropdown
                   trigger={
-                    <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+                    <button className="flex items-center space-x-2 text-[color:var(--ink)] hover:text-[color:var(--brand)] transition-colors p-2 rounded-xl hover:bg-[color:var(--bg-soft)]">
                       {avatarUrl ? (
                         <img
                           src={avatarUrl}
                           alt={`${profile.full_name} avatar`}
-                          className="w-8 h-8 rounded-full object-cover"
+                          className="w-8 h-8 rounded-full object-cover ring-2 ring-[color:var(--border)]"
                         />
                       ) : (
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-blue-600">
+                        <div className="w-8 h-8 bg-[color:var(--brand)] text-white rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium">
                             {profile.full_name?.charAt(0).toUpperCase() || 'U'}
                           </span>
                         </div>
                       )}
-                      <span className="text-sm font-medium">{profile.full_name}</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <span className="text-sm font-medium hidden sm:block">{profile.full_name}</span>
+                      <ChevronDown className="w-4 h-4" />
                     </button>
                   }
                 >
                   <DropdownItem onClick={() => setProfileModalOpen(true)}>
+                    <User className="w-4 h-4" />
                     Profile Settings
                   </DropdownItem>
                   {profile.is_local && (
                     <DropdownItem onClick={handleMyLocalProfile}>
+                      <MessageSquare className="w-4 h-4" />
                       My Local Profile
                     </DropdownItem>
                   )}
                   <DropdownItem onClick={handleLogout}>
+                    <LogOut className="w-4 h-4" />
                     Logout
                   </DropdownItem>
                 </Dropdown>
               </div>
             )}
             
-            <Link href={ROUTES.FEEDBACK} className="text-gray-600 hover:text-gray-900">
+            <Link href={ROUTES.FEEDBACK} className="text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium">
               Feedback
             </Link>
           </div>
