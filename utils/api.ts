@@ -168,6 +168,50 @@ export const createChat = async (travelerId: string, localId: string, city: stri
   return findOrCreateChat(travelerId, localId, city)
 }
 
+export const getChatDetails = async (chatId: string) => {
+  const { data, error } = await supabase
+    .from('chats')
+    .select(`
+      id,
+      city,
+      created_at,
+      last_message_at,
+      chat_participants (
+        user_id,
+        role,
+        user:profiles!user_id (
+          full_name,
+          avatar_url
+        )
+      )
+    `)
+    .eq('id', chatId)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+export const getMessages = async (chatId: string) => {
+  const { data, error } = await supabase
+    .from('messages')
+    .select(`
+      id,
+      content,
+      created_at,
+      sender_id,
+      sender:profiles!sender_id (
+        full_name,
+        avatar_url
+      )
+    `)
+    .eq('chat_id', chatId)
+    .order('created_at', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
 export const sendMessage = async (chatId: string, senderId: string, content: string) => {
   const { data, error } = await supabase
     .from('messages')
