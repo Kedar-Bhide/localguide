@@ -5,7 +5,7 @@ import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import { searchLocalsRanked, findOrCreateChat } from '../utils/api'
+import { searchLocalsRanked, findOrCreateChat, getNearbyLocals, type NearbyCity } from '../utils/api'
 import { getUser, supabase } from '../lib/supabase'
 import type { LocalSearchResult } from '../types'
 
@@ -25,6 +25,8 @@ export default function ConnectWithLocals() {
   const [locals, setLocals] = useState<LocalSearchResult[]>([])
   const [loading, setLoading] = useState(true)
   const [searchLoading, setSearchLoading] = useState(false)
+  const [nearbyCities, setNearbyCities] = useState<NearbyCity[]>([])
+  const [nearbyLoading, setNearbyLoading] = useState(false)
 
   useEffect(() => {
     if (router.isReady) {
@@ -61,9 +63,23 @@ export default function ConnectWithLocals() {
 
   const performSearch = async (city: string, country: string, tags: string[]) => {
     setSearchLoading(true)
+    setNearbyCities([]) // Reset nearby cities
     try {
       const results = await searchLocalsRanked(city, country, tags)
       setLocals(results)
+      
+      // If no locals found, try to find nearby cities with locals
+      if (results.length === 0) {
+        setNearbyLoading(true)
+        try {
+          const nearbyResults = await getNearbyLocals(city, country)
+          setNearbyCities(nearbyResults)
+        } catch (nearbyError) {
+          console.error('Error fetching nearby cities:', nearbyError)
+        } finally {
+          setNearbyLoading(false)
+        }
+      }
     } catch (error) {
       console.error('Error searching locals:', error)
     } finally {
@@ -73,6 +89,28 @@ export default function ConnectWithLocals() {
 
   const handleNewSearch = () => {
     router.push('/explore')
+  }
+
+  const handleNearbyCityClick = (nearbyCity: NearbyCity) => {
+    // Build URL with nearby city parameters and preserve existing search parameters
+    const params = new URLSearchParams({
+      city: nearbyCity.city,
+      country: nearbyCity.country,
+      location: `${nearbyCity.city}, ${nearbyCity.country}`
+    })
+    
+    // Include existing search parameters (dates, tags) if they exist
+    if (searchParams.startDate) {
+      params.set('startDate', searchParams.startDate)
+    }
+    if (searchParams.endDate) {
+      params.set('endDate', searchParams.endDate)
+    }
+    if (searchParams.tags && searchParams.tags.length > 0) {
+      params.set('tags', searchParams.tags.join(','))
+    }
+    
+    router.push(`/connect-with-locals?${params.toString()}`)
   }
 
   const handleConnect = async (local: LocalSearchResult) => {
@@ -251,29 +289,92 @@ export default function ConnectWithLocals() {
               </div>
             </div>
           ) : (
-            <Card>
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+            <div className="space-y-6">
+              {/* No locals found message */}
+              <Card>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    We don't have locals in {searchParams.city || searchParams.location} yet.
+                  </h3>
+                  <p className="text-gray-600">
+                    But we're checking for local experts in nearby cities...
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No Local Experts Found</h3>
-                <p className="text-gray-600 mb-6">
-                  We couldn't find any local experts matching your search criteria.
-                  Try expanding your search or checking a different location.
-                </p>
-                
-                <div className="space-x-4">
-                  <Button onClick={handleNewSearch} variant="outline">
-                    Try Different Search
-                  </Button>
-                  <Button onClick={() => router.push('/home')} variant="primary">
-                    Back to Home
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              </Card>
+
+              {/* Nearby cities fallback */}
+              {nearbyLoading ? (
+                <Card>
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-3"></div>
+                    <span className="text-gray-600">Finding nearby cities with local experts...</span>
+                  </div>
+                </Card>
+              ) : nearbyCities.length > 0 ? (
+                <Card>
+                  <div className="p-6">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Nearby options:</h3>
+                      <p className="text-gray-600 text-sm">
+                        Local experts are available in these nearby cities
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {nearbyCities.map((nearbyCity, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleNearbyCityClick(nearbyCity)}
+                          className="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors group"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium text-gray-900 group-hover:text-blue-700">
+                                {nearbyCity.city}, {nearbyCity.country}
+                              </h4>
+                              <p className="text-sm text-gray-500">
+                                {nearbyCity.local_count} local expert{nearbyCity.local_count !== 1 ? 's' : ''} available
+                              </p>
+                            </div>
+                            <svg 
+                              className="w-5 h-5 text-gray-400 group-hover:text-blue-600" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              ) : (
+                <Card>
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-6">
+                      No local experts found in nearby cities either.
+                      Try expanding your search or checking a different location.
+                    </p>
+                    
+                    <div className="space-x-4">
+                      <Button onClick={handleNewSearch} variant="outline">
+                        Try Different Search
+                      </Button>
+                      <Button onClick={() => router.push('/home')} variant="primary">
+                        Back to Home
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+            </div>
           )}
         </div>
       </Layout>

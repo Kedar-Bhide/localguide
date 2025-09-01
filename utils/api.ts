@@ -307,3 +307,40 @@ export const submitFeedback = async (feedbackData: Omit<Feedback, 'id' | 'create
   if (error) throw error
   return data
 }
+
+export interface NearbyCity {
+  city: string
+  country: string
+  local_count: number
+}
+
+export interface NearbyLocalsResponse {
+  original_query: {
+    city: string
+    country: string
+  }
+  nearby_cities: NearbyCity[]
+  total_found: number
+}
+
+export const getNearbyLocals = async (city: string, country: string): Promise<NearbyCity[]> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('nearby-locals', {
+      body: {
+        city,
+        country
+      }
+    })
+
+    if (error) {
+      console.error('Error calling nearby-locals function:', error)
+      return []
+    }
+
+    const response: NearbyLocalsResponse = data
+    return response.nearby_cities || []
+  } catch (error) {
+    console.error('Error fetching nearby locals:', error)
+    return []
+  }
+}
