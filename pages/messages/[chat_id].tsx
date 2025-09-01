@@ -6,7 +6,7 @@ import ProtectedRoute from '../../components/auth/ProtectedRoute'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import { getChatDetails, getMessages, sendMessage } from '../../utils/api'
-import { getUser } from '../../lib/supabase'
+import { getUser, supabase } from '../../lib/supabase'
 import type { User as AuthUser } from '@supabase/supabase-js'
 
 interface MessageData {
@@ -47,11 +47,12 @@ export default function ChatMessages() {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Polling for new messages (since replication is not available)
+  // Realtime subscription for new messages
   useEffect(() => {
     if (!chat_id || typeof chat_id !== 'string') return
 
-    let interval: NodeJS.Timeout
+    let subscription: any = null
+    let fallbackInterval: NodeJS.Timeout | null = null
 
     const fetchMessages = async () => {
       try {
@@ -62,14 +63,85 @@ export default function ChatMessages() {
       }
     }
 
-    // Initial fetch
-    fetchMessages()
+    const setupRealtimeSubscription = async () => {
+      try {
+        // Initial fetch
+        await fetchMessages()
 
-    // Poll for new messages every 3 seconds
-    interval = setInterval(fetchMessages, 3000)
+        // Subscribe to new message inserts for this specific chat
+        subscription = supabase
+          .channel(`messages:${chat_id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'messages',
+              filter: `chat_id=eq.${chat_id}`
+            },
+            async (payload) => {
+              console.log('New message received:', payload)
+              
+              try {
+                // Fetch the complete message with sender info to ensure consistency
+                const messagesData = await getMessages(chat_id)
+                setMessages(messagesData as unknown as MessageData[])
+              } catch (error) {
+                console.error('Error fetching updated messages:', error)
+                
+                // Fallback: add the new message with minimal info
+                const newMessage = {
+                  id: payload.new.id,
+                  content: payload.new.content,
+                  created_at: payload.new.created_at,
+                  sender_id: payload.new.sender_id,
+                  sender: null 
+                } as MessageData
+
+                setMessages(prevMessages => [...prevMessages, newMessage])
+              }
+            }
+          )
+          .subscribe((status) => {
+            console.log('Realtime subscription status:', status)
+            
+            if (status === 'SUBSCRIBED') {
+              console.log('Successfully subscribed to realtime updates')
+            } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+              console.warn('Realtime subscription failed, falling back to polling')
+              setupFallbackPolling()
+            }
+          })
+      } catch (error) {
+        console.error('Failed to setup realtime subscription:', error)
+        setupFallbackPolling()
+      }
+    }
+
+    const setupFallbackPolling = () => {
+      console.log('Setting up fallback polling')
+      if (fallbackInterval) clearInterval(fallbackInterval)
+      
+      fallbackInterval = setInterval(async () => {
+        await fetchMessages()
+      }, 3000)
+    }
+
+    // Start with realtime, fallback to polling if needed
+    setupRealtimeSubscription()
 
     return () => {
-      if (interval) clearInterval(interval)
+      // Cleanup realtime subscription
+      if (subscription) {
+        supabase.removeChannel(subscription)
+        subscription = null
+      }
+      
+      // Cleanup polling fallback
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval)
+        fallbackInterval = null
+      }
     }
   }, [chat_id])
 
