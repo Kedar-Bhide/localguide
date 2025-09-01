@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
-import SearchBox from '../components/search/SearchBox'
+import SearchContainer from '../components/search/SearchContainer'
 import ActiveChats from '../components/chat/ActiveChats'
 import { useProfile } from '../hooks/useProfile'
 import { useAuth } from '../hooks/useAuth'
@@ -48,26 +48,28 @@ export default function Explore() {
   return (
     <ProtectedRoute>
       <Layout>
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-8">Explore Local Destinations</h1>
-          
+        {/* Search Container - compact sticky bar */}
+        <SearchContainer />
+        
+        <div className="max-w-7xl mx-auto section-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Search Area */}
+            {/* Main Content Area */}
             <div className="lg:col-span-2">
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-4">
+              <div className="mb-8">
+                <h1 className="text-3xl font-bold text-[color:var(--ink)] mb-4">
+                  Explore Local Destinations
+                </h1>
+                <h2 className="text-xl text-[color:var(--ink)] mb-2">
                   Welcome back, {profile?.full_name}!
                 </h2>
-                <p className="text-gray-600 mb-6">
-                  Search for locals in your destination city and connect with them to discover hidden gems.
+                <p className="text-[color:var(--muted-ink)]">
+                  Use the search above to find locals in your destination city and connect with them to discover hidden gems.
                 </p>
-                
-                <SearchBox onSearch={handleSearch} />
               </div>
 
               {/* Placeholder for search results */}
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-                <p className="text-blue-800 text-sm">
+              <div className="card p-6 bg-[color:var(--brand)]/5 border-[color:var(--brand)]/20">
+                <p className="text-[color:var(--brand)] text-sm">
                   🚧 Search results and local profiles will appear here after you search!
                 </p>
               </div>

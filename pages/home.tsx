@@ -4,7 +4,7 @@ import Link from 'next/link'
 import AppHeader from '../components/layout/AppHeader'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import SearchBox from '../components/search/SearchBox'
+import SearchContainer from '../components/search/SearchContainer'
 import { ROUTES } from '../utils/constants'
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[color:var(--bg-soft)]">
       <Head>
         <title>LocalGuide - Connect with Local Experts</title>
         <meta name="description" content="Connect travelers with vetted locals for personalized trip experiences" />
@@ -31,112 +31,123 @@ export default function Home() {
       </Head>
 
       <AppHeader showAuthButtons={true} />
+      
+      {/* Hero Section */}
+      <div className="relative section-spacing">
+        <div className="max-w-4xl mx-auto text-center section-gutter">
+          <h1 className="text-4xl lg:text-5xl font-bold text-[color:var(--ink)] mb-6 animate-fade-in">
+            Connect with Local Experts
+          </h1>
+          <p className="text-xl text-[color:var(--muted-ink)] mb-12 max-w-2xl mx-auto animate-slide-up">
+            Discover authentic experiences with vetted locals who know their cities inside out
+          </p>
+        </div>
+        
+        {/* Search Container - expanded by default, collapses on scroll */}
+        <SearchContainer isHomePage={true} />
+      </div>
 
-      <main className="h-screen overflow-hidden flex flex-col">
-        <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Top Section: How it Works + Search Placeholder */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Left Card: How it Works */}
-            <Card className="h-full">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">How it works</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Traveler Column */}
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-600 mb-4">Traveler</h3>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3"></span>
-                      <span>Search and connect with vetted locals in your destination</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3"></span>
-                      <span>Get personalized recommendations and insider tips</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3"></span>
-                      <span>Book unique experiences with local guides</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Local Column */}
-                <div>
-                  <h3 className="text-lg font-semibold text-green-600 mb-4">Local</h3>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-green-600 rounded-full mt-2 mr-3"></span>
-                      <span>Share your local expertise and earn income</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-green-600 rounded-full mt-2 mr-3"></span>
-                      <span>Connect with travelers seeking authentic experiences</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="flex-shrink-0 w-2 h-2 bg-green-600 rounded-full mt-2 mr-3"></span>
-                      <span>Build your reputation as a trusted guide</span>
-                    </li>
-                  </ul>
-                </div>
+      <main className="section-spacing">
+        <div className="max-w-7xl mx-auto section-gutter">
+          {/* How it Works Section */}
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-[color:var(--ink)] mb-4">How it works</h2>
+              <p className="text-lg text-[color:var(--muted-ink)]">Simple steps to authentic travel experiences</p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              {/* Traveler Column */}
+              <div className="card p-8">
+                <h3 className="text-2xl font-semibold text-[color:var(--brand)] mb-6">For Travelers</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Search and connect with vetted locals in your destination</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Get personalized recommendations and insider tips</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Book unique experiences with local guides</span>
+                  </li>
+                </ul>
               </div>
-            </Card>
 
-            {/* Right Card: Search Box */}
-            <SearchBox className="h-full" />
+              {/* Local Column */}
+              <div className="card p-8">
+                <h3 className="text-2xl font-semibold text-[color:var(--success)] mb-6">For Locals</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Share your local expertise and earn income</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Connect with travelers seeking authentic experiences</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
+                    <span className="text-[color:var(--ink)]">Build your reputation as a trusted guide</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          {/* Bottom Section: CTA Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* CTA Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Traveler CTA Card */}
-            <Card className="text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-[color:var(--brand)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-[color:var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">I'm a Traveler</h3>
-              <p className="text-gray-600 mb-4">Planning a trip and looking for local insights</p>
+              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">I'm a Traveler</h3>
+              <p className="text-[color:var(--muted-ink)] mb-6">Planning a trip and looking for local insights</p>
               <Link href={ROUTES.TRAVELER_SIGNUP}>
-                <Button variant="primary" className="w-full mb-2">
-                  How →
-                </Button>
+                <button className="btn-brand w-full">
+                  Get Started →
+                </button>
               </Link>
-            </Card>
+            </div>
 
             {/* Local CTA Card */}
-            <Card className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-[color:var(--success)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-[color:var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">I'm a Local</h3>
-              <p className="text-gray-600 mb-4">I know my city and want to help travelers</p>
+              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">I'm a Local</h3>
+              <p className="text-[color:var(--muted-ink)] mb-6">I know my city and want to help travelers</p>
               <Link href={ROUTES.LOCAL_SIGNUP}>
-                <Button variant="primary" className="w-full mb-2">
-                  How →
-                </Button>
+                <button className="btn-brand w-full">
+                  Start Earning →
+                </button>
               </Link>
-            </Card>
+            </div>
 
             {/* Spread the Word Card */}
-            <Card className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-[color:var(--warning)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-[color:var(--warning)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Spread the word</h3>
-              <p className="text-gray-600 mb-4">Help others discover authentic travel experiences</p>
-              <Button 
-                variant="outline" 
+              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">Spread the Word</h3>
+              <p className="text-[color:var(--muted-ink)] mb-6">Help others discover authentic travel experiences</p>
+              <button 
                 onClick={copyToClipboard}
-                className="w-full"
+                className="btn-secondary w-full"
               >
                 {copied ? 'Copied!' : 'Copy Link'}
-              </Button>
-            </Card>
+              </button>
+            </div>
           </div>
         </div>
       </main>
