@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Card from '../ui/Card'
 import Button from '../ui/Button'
 import { getUserActiveChats } from '../../utils/api'
-import { getUser } from '../../lib/supabase'
+import { getUser, supabase } from '../../lib/supabase'
 
 interface ActiveChat {
   id: string
@@ -128,7 +128,7 @@ export default function ActiveChats({ refreshTrigger }: ActiveChatsProps) {
                 {chat.other_participant?.avatar_url ? (
                   <img
                     className="h-10 w-10 rounded-full object-cover"
-                    src={chat.other_participant.avatar_url}
+                    src={supabase.storage.from('avatars').getPublicUrl(chat.other_participant.avatar_url).data.publicUrl}
                     alt={chat.other_participant.name}
                   />
                 ) : (

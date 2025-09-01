@@ -1,11 +1,14 @@
 import Link from 'next/link'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../hooks/useAuth'
 import { useProfile } from '../../hooks/useProfile'
-import { signOut } from '../../lib/supabase'
+import { signOut, supabase } from '../../lib/supabase'
 import { ROUTES } from '../../utils/constants'
 import Dropdown, { DropdownItem } from '../ui/Dropdown'
 import Button from '../ui/Button'
+import ProfileModal from '../profile/ProfileModal'
+import AvatarUpload from '../profile/AvatarUpload'
 
 interface HeaderProps {
   showAuthButtons?: boolean
@@ -15,6 +18,8 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
   const { user } = useAuth()
   const { profile } = useProfile()
   const router = useRouter()
+  const [profileModalOpen, setProfileModalOpen] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
   const handleLogout = async () => {
     try {
@@ -32,6 +37,18 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
   const handleMyLocalProfile = () => {
     router.push(ROUTES.REQUESTS)
   }
+
+  // Load avatar URL when profile changes
+  React.useEffect(() => {
+    if (profile?.avatar_url) {
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(profile.avatar_url)
+      setAvatarUrl(data.publicUrl)
+    } else {
+      setAvatarUrl(null)
+    }
+  }, [profile?.avatar_url])
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -80,11 +97,19 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
                 <Dropdown
                   trigger={
                     <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-blue-600">
-                          {profile.full_name?.charAt(0).toUpperCase() || 'U'}
-                        </span>
-                      </div>
+                      {avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={`${profile.full_name} avatar`}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-blue-600">
+                            {profile.full_name?.charAt(0).toUpperCase() || 'U'}
+                          </span>
+                        </div>
+                      )}
                       <span className="text-sm font-medium">{profile.full_name}</span>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -92,6 +117,9 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
                     </button>
                   }
                 >
+                  <DropdownItem onClick={() => setProfileModalOpen(true)}>
+                    Profile Settings
+                  </DropdownItem>
                   {profile.is_local && (
                     <DropdownItem onClick={handleMyLocalProfile}>
                       My Local Profile
@@ -110,6 +138,12 @@ export default function Header({ showAuthButtons = true }: HeaderProps) {
           </div>
         </div>
       </div>
+      
+      {/* Profile Modal */}
+      <ProfileModal 
+        isOpen={profileModalOpen}
+        onClose={() => setProfileModalOpen(false)}
+      />
     </header>
   )
 }

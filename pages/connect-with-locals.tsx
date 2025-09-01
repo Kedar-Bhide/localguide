@@ -6,7 +6,7 @@ import ProtectedRoute from '../components/auth/ProtectedRoute'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { searchLocalsRanked, findOrCreateChat } from '../utils/api'
-import { getUser } from '../lib/supabase'
+import { getUser, supabase } from '../lib/supabase'
 import type { LocalSearchResult } from '../types'
 
 interface SearchParams {
@@ -189,7 +189,7 @@ export default function ConnectWithLocals() {
                         {local.user.avatar_url ? (
                           <img
                             className="h-12 w-12 rounded-full object-cover"
-                            src={local.user.avatar_url}
+                            src={supabase.storage.from('avatars').getPublicUrl(local.user.avatar_url).data.publicUrl}
                             alt={local.user.full_name}
                           />
                         ) : (

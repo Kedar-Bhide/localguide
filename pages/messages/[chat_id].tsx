@@ -287,7 +287,7 @@ export default function ChatMessages() {
                   {otherParticipant.user.avatar_url ? (
                     <img
                       className="h-10 w-10 rounded-full object-cover"
-                      src={otherParticipant.user.avatar_url}
+                      src={supabase.storage.from('avatars').getPublicUrl(otherParticipant.user.avatar_url).data.publicUrl}
                       alt={otherParticipant.user.full_name}
                     />
                   ) : (
