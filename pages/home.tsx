@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useState } from 'react'
 import Link from 'next/link'
-import Header from '../components/layout/Header'
+import AppHeader from '../components/layout/AppHeader'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import SearchBox from '../components/search/SearchBox'
@@ -30,7 +30,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header showAuthButtons={true} />
+      <AppHeader showAuthButtons={true} />
 
       <main className="h-screen overflow-hidden flex flex-col">
         <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

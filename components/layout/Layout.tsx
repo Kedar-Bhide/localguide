@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import Header from './Header'
+import AppHeader from './AppHeader'
 
 interface LayoutProps {
   children: ReactNode
@@ -12,7 +12,7 @@ export default function Layout({
 }: LayoutProps) {
   return (
     <div className="min-h-screen bg-[color:var(--bg-soft)]">
-      <Header showAuthButtons={showAuthButtons} />
+      <AppHeader showAuthButtons={showAuthButtons} />
       <main className="section-spacing">
         {children}
       </main>
