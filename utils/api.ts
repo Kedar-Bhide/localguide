@@ -300,6 +300,53 @@ export const getUserActiveChats = async (userId: string) => {
   return activeChats
 }
 
+export const getUserChatsWithMessages = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('chats')
+    .select(`
+      id,
+      city,
+      created_at,
+      last_message_at,
+      last_message,
+      chat_participants!inner (
+        user_id,
+        role,
+        user:profiles!user_id (
+          full_name,
+          avatar_url
+        )
+      )
+    `)
+    .eq('chat_participants.user_id', userId)
+    .order('last_message_at', { ascending: false, nullsFirst: false })
+
+  if (error) throw error
+
+  // Transform the data to include other participant info and last message
+  const chatsWithMessages = data.map(chat => {
+    const otherParticipant = chat.chat_participants.find((p: any) => p.user_id !== userId)
+    const user = Array.isArray(otherParticipant?.user) ? otherParticipant?.user[0] : otherParticipant?.user
+    
+    return {
+      id: chat.id,
+      city: chat.city,
+      created_at: chat.created_at,
+      last_message_at: chat.last_message_at,
+      last_message: chat.last_message,
+      other_participant: otherParticipant ? {
+        name: user?.full_name || 'Unknown User',
+        avatar_url: user?.avatar_url,
+        role: otherParticipant.role
+      } : null,
+      // Generate conversation title
+      title: `${chat.city} chat with ${user?.full_name || 'Unknown User'}`
+    }
+  })
+
+  return chatsWithMessages
+}
+
 export const sendMessage = async (chatId: string, senderId: string, content: string) => {
   const { data, error } = await supabase
     .from('messages')

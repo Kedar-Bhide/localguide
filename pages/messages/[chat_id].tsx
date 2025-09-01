@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Layout from '../../components/layout/Layout'
+import ChatLayout from '../../components/chat/ChatLayout'
 import ProtectedRoute from '../../components/auth/ProtectedRoute'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
@@ -230,31 +230,47 @@ export default function ChatMessages() {
 
   if (loading) {
     return (
-      <Layout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
-      </Layout>
+      <ProtectedRoute>
+        <Head>
+          <title>Messages - LocalGuide</title>
+          <meta name="description" content="Chat with local experts" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <ChatLayout currentChatId={chat_id as string}>
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        </ChatLayout>
+      </ProtectedRoute>
     )
   }
 
   if (error || !chat || !currentUser) {
     return (
-      <Layout>
-        <div className="max-w-2xl mx-auto px-4 py-8">
-          <Card className="text-center py-12">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              {error || 'Chat Not Found'}
-            </h2>
-            <p className="text-gray-600 mb-6">
-              {error || 'This chat may not exist or you may not have access to it.'}
-            </p>
-            <Button onClick={() => router.push(getBackLink())}>
-              Go Back
-            </Button>
-          </Card>
-        </div>
-      </Layout>
+      <ProtectedRoute>
+        <Head>
+          <title>Messages - LocalGuide</title>
+          <meta name="description" content="Chat with local experts" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <ChatLayout currentChatId={chat_id as string}>
+          <div className="flex items-center justify-center h-full p-8">
+            <Card className="text-center py-12 max-w-md mx-auto">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                {error || 'Chat Not Found'}
+              </h2>
+              <p className="text-gray-600 mb-6">
+                {error || 'This chat may not exist or you may not have access to it.'}
+              </p>
+              <Button onClick={() => router.push(getBackLink())}>
+                Go Back
+              </Button>
+            </Card>
+          </div>
+        </ChatLayout>
+      </ProtectedRoute>
     )
   }
 
@@ -262,56 +278,46 @@ export default function ChatMessages() {
 
   return (
     <ProtectedRoute>
-      <Layout>
-        <Head>
-          <title>Messages - LocalGuide</title>
-          <meta name="description" content="Chat with local experts" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+      <Head>
+        <title>Messages - LocalGuide</title>
+        <meta name="description" content="Chat with local experts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <div className="max-w-4xl mx-auto px-4 h-[calc(100vh-200px)] flex flex-col">
+      <ChatLayout currentChatId={chat_id as string}>
+        <div className="h-full flex flex-col bg-white">
           {/* Chat Header */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-200 mb-4">
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={() => router.push(getBackLink())}
-                variant="outline"
-                size="sm"
-              >
-                ← Back
-              </Button>
-              
-              {otherParticipant && otherParticipant.user && (
-                <div className="flex items-center space-x-3">
-                  {otherParticipant.user.avatar_url ? (
-                    <img
-                      className="h-10 w-10 rounded-full object-cover"
-                      src={supabase.storage.from('avatars').getPublicUrl(otherParticipant.user.avatar_url).data.publicUrl}
-                      alt={otherParticipant.user.full_name}
-                    />
-                  ) : (
-                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-blue-600 font-medium">
-                        {otherParticipant.user.full_name.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                  <div>
-                    <h1 className="text-lg font-semibold">
-                      {otherParticipant.user.full_name}
-                    </h1>
-                    <p className="text-sm text-gray-500">
-                      {chat.city} • {otherParticipant.role}
-                    </p>
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+            {otherParticipant && otherParticipant.user && (
+              <div className="flex items-center space-x-3">
+                {otherParticipant.user.avatar_url ? (
+                  <img
+                    className="h-10 w-10 rounded-full object-cover"
+                    src={supabase.storage.from('avatars').getPublicUrl(otherParticipant.user.avatar_url).data.publicUrl}
+                    alt={otherParticipant.user.full_name}
+                  />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span className="text-blue-600 font-medium">
+                      {otherParticipant.user.full_name.charAt(0)}
+                    </span>
                   </div>
+                )}
+                <div>
+                  <h1 className="text-lg font-semibold">
+                    {otherParticipant.user.full_name}
+                  </h1>
+                  <p className="text-sm text-gray-500">
+                    {chat.city} • {otherParticipant.role}
+                  </p>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto mb-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
             {messages.length === 0 ? (
               <div className="text-center py-8">
                 <p className="text-gray-500">No messages yet. Start the conversation!</p>
@@ -329,7 +335,7 @@ export default function ChatMessages() {
                     <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                       isOwnMessage 
                         ? 'bg-blue-600 text-white ml-auto' 
-                        : 'bg-gray-100 text-gray-900'
+                        : 'bg-white text-gray-900 border border-gray-200'
                     }`}>
                       {!isOwnMessage && (
                         <p className="text-xs font-medium mb-1 text-gray-600">
@@ -350,28 +356,28 @@ export default function ChatMessages() {
           </div>
 
           {/* Message Input */}
-          <div className="border-t border-gray-200 pt-4">
-            <form onSubmit={handleSendMessage} className="flex space-x-4">
+          <div className="border-t border-gray-200 p-4 bg-white">
+            <form onSubmit={handleSendMessage} className="flex space-x-3">
               <input
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 disabled={sending}
               />
               <Button
                 type="submit"
                 disabled={sending || !newMessage.trim()}
                 variant="primary"
-                size="sm"
+                size="md"
               >
                 {sending ? 'Sending...' : 'Send'}
               </Button>
             </form>
           </div>
         </div>
-      </Layout>
+      </ChatLayout>
     </ProtectedRoute>
   )
 }
