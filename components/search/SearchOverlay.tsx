@@ -6,6 +6,7 @@ import { SearchFilters } from '../../types/search'
 import LocationAutocomplete from './LocationAutocomplete'
 import DateRangePicker from './DateRangePicker'
 import TagsMultiSelect from './TagsMultiSelect'
+import { useIsMobile } from '../../hooks/useMediaQuery'
 
 interface SearchOverlayProps {
   isOpen: boolean
@@ -199,6 +200,7 @@ export default function SearchOverlay({
                     startDate={localFilters.startDate}
                     endDate={localFilters.endDate}
                     onDateRangeChange={handleDateRangeChange}
+                    isOpen={true}
                   />
                 )}
 

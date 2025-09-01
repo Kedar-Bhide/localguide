@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import * as Dialog from '@radix-ui/react-dialog'
-import { Calendar, ChevronLeft, ChevronRight, X } from 'lucide-react'
-import { useIsMobile } from '../../hooks/useMediaQuery'
+import { motion } from 'framer-motion'
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface DateRangePickerProps {
   startDate?: string
   endDate?: string
   onDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void
-  isOpen?: boolean
-  onOpenChange?: (open: boolean) => void
   className?: string
 }
 
@@ -17,13 +13,10 @@ export default function DateRangePicker({
   startDate,
   endDate,
   onDateRangeChange,
-  isOpen = true,
-  onOpenChange,
   className = ''
 }: DateRangePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectingStart, setSelectingStart] = useState(true)
-  const isMobile = useIsMobile()
 
   const today = new Date()
   const startDateObj = startDate ? new Date(startDate) : undefined
@@ -133,97 +126,36 @@ export default function DateRangePicker({
   ]
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
   const days = getDaysInMonth(currentMonth)
 
-  // Desktop popover content
-  const DesktopPopover = () => (
-    <AnimatePresence>
-      {isOpen && !isMobile && (
-        <motion.div
-          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-          transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="absolute top-full mt-2 bg-white rounded-2xl shadow-soft border border-[color:var(--border)] overflow-hidden z-50 w-96"
-        >
-          <DatePickerContent />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-
-  // Mobile sheet content
-  const MobileSheet = () => (
-    <Dialog.Root open={isOpen && isMobile} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay asChild>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-          />
-        </Dialog.Overlay>
-        <Dialog.Content asChild>
-          <motion.div
-            initial={{ opacity: 0, y: '100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 max-h-[90vh] overflow-hidden"
-          >
-            {/* Sheet Header */}
-            <div className="flex items-center justify-between p-6 border-b border-[color:var(--border)]">
-              <h3 className="text-lg font-semibold text-[color:var(--ink)]">
-                Select dates
-              </h3>
-              <Dialog.Close asChild>
-                <button 
-                  className="p-2 text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
-                  aria-label="Close date picker"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </Dialog.Close>
-            </div>
-
-            <div className="overflow-y-auto max-h-[calc(90vh-80px)]">
-              <DatePickerContent />
-            </div>
-          </motion.div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
-  )
-
-  // Shared date picker content
-  const DatePickerContent = () => (
-    <>
+  return (
+    <div className={`bg-white ${className}`}>
       {/* Flexible Date Options */}
       <div className="p-6 border-b border-[color:var(--border)]">
         <h3 className="text-lg font-semibold text-[color:var(--ink)] mb-4">When are you traveling?</h3>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setFlexibleDates(3)}
-            className="btn-secondary text-sm py-2 focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+            className="btn-secondary text-sm py-2"
           >
             Weekend (3 days)
           </button>
           <button
             onClick={() => setFlexibleDates(7)}
-            className="btn-secondary text-sm py-2 focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+            className="btn-secondary text-sm py-2"
           >
             Week (7 days)
           </button>
           <button
             onClick={() => setFlexibleDates(14)}
-            className="btn-secondary text-sm py-2 focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+            className="btn-secondary text-sm py-2"
           >
             2 weeks
           </button>
           <button
             onClick={clearDates}
-            className="btn-secondary text-sm py-2 focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+            className="btn-secondary text-sm py-2"
           >
             I'm flexible
           </button>
@@ -237,7 +169,6 @@ export default function DateRangePicker({
           <button
             onClick={() => navigateMonth('prev')}
             className="p-2 hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
-            aria-label="Previous month"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -249,7 +180,6 @@ export default function DateRangePicker({
           <button
             onClick={() => navigateMonth('next')}
             className="p-2 hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
-            aria-label="Next month"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -284,16 +214,14 @@ export default function DateRangePicker({
                 disabled={isPast}
                 className={`
                   relative h-12 text-sm font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2
-                  ${!isCurrentMonth ? 'text-[color:var(--muted-ink)] opacity-30' : 'text-[color:var(--ink)]'}
-                  ${isPast ? 'text-[color:var(--muted-ink)] cursor-not-allowed opacity-30' : 'hover:bg-[color:var(--bg-soft)] cursor-pointer'}
+                  ${!isCurrentMonth ? 'text-[color:var(--muted-ink)] opacity-30' : ''}
+                  ${isPast ? 'text-[color:var(--muted-ink)] cursor-not-allowed opacity-30' : 'hover:bg-[color:var(--bg-soft)]'}
                   ${isSelected ? 'bg-[color:var(--brand)] text-white hover:bg-[color:var(--brand-600)]' : ''}
                   ${isInDateRange && !isSelected ? 'bg-[color:var(--brand)]/10 text-[color:var(--brand)]' : ''}
-                  ${isStartOfRange && isEndOfRange ? 'rounded-xl' : ''}
-                  ${isStartOfRange && !isEndOfRange ? 'rounded-l-xl rounded-r-sm' : ''}
-                  ${isEndOfRange && !isStartOfRange ? 'rounded-r-xl rounded-l-sm' : ''}
-                  ${isInDateRange && !isSelected && !isStartOfRange && !isEndOfRange ? 'rounded-sm' : ''}
+                  ${isStartOfRange ? 'rounded-r-md' : ''}
+                  ${isEndOfRange ? 'rounded-l-md' : ''}
+                  ${isInDateRange && !isSelected ? 'rounded-none' : ''}
                 `}
-                aria-label={`${day.getDate()} ${monthNames[day.getMonth()]} ${day.getFullYear()}`}
               >
                 {day.getDate()}
               </button>
@@ -302,53 +230,35 @@ export default function DateRangePicker({
         </div>
 
         {/* Selected Range Display */}
-        <AnimatePresence>
-          {startDateObj && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="mt-6 p-4 bg-[color:var(--bg-soft)] rounded-xl"
-            >
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4 text-[color:var(--brand)]" />
-                <span className="text-sm text-[color:var(--ink)]">
-                  <strong>
-                    {startDateObj.toLocaleDateString('en-US', { 
+        {startDateObj && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 p-4 bg-[color:var(--bg-soft)] rounded-xl"
+          >
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-[color:var(--brand)]" />
+              <span className="text-sm text-[color:var(--ink)]">
+                {startDateObj.toLocaleDateString('en-US', { 
+                  weekday: 'short',
+                  month: 'short', 
+                  day: 'numeric' 
+                })}
+                {endDateObj && (
+                  <>
+                    {' - '}
+                    {endDateObj.toLocaleDateString('en-US', { 
                       weekday: 'short',
                       month: 'short', 
                       day: 'numeric' 
                     })}
-                  </strong>
-                  {endDateObj && (
-                    <>
-                      {' - '}
-                      <strong>
-                        {endDateObj.toLocaleDateString('en-US', { 
-                          weekday: 'short',
-                          month: 'short', 
-                          day: 'numeric' 
-                        })}
-                      </strong>
-                    </>
-                  )}
-                  {!endDateObj && <span className="text-[color:var(--muted-ink)]"> → Select end date</span>}
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  </>
+                )}
+              </span>
+            </div>
+          </motion.div>
+        )}
       </div>
-    </>
-  )
-
-  return (
-    <div className={`relative ${className}`}>
-      {/* Desktop Popover */}
-      {!isMobile && <DesktopPopover />}
-      
-      {/* Mobile Sheet */}
-      {isMobile && <MobileSheet />}
     </div>
   )
 }
