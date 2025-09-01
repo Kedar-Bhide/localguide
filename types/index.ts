@@ -78,3 +78,17 @@ export interface SearchFilters {
 export interface LocalSearchResult extends Local {
   user: Pick<User, 'full_name' | 'avatar_url'>;
 }
+
+export interface LocalCardData {
+  id: string;
+  user_id: string;
+  city: string;
+  country: string;
+  bio: string;
+  tags: string[];
+  user: {
+    full_name: string;
+    avatar_url?: string;
+    last_active_at?: string;
+  };
+}
