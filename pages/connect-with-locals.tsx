@@ -5,9 +5,13 @@ import Layout from '../components/layout/Layout'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
+import { searchLocalsRanked } from '../utils/api'
+import type { LocalSearchResult } from '../types'
 
 interface SearchParams {
   location?: string
+  city?: string
+  country?: string
   startDate?: string
   endDate?: string
   tags?: string[]
@@ -17,21 +21,31 @@ interface SearchParams {
 export default function ConnectWithLocals() {
   const router = useRouter()
   const [searchParams, setSearchParams] = useState<SearchParams>({})
+  const [locals, setLocals] = useState<LocalSearchResult[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchLoading, setSearchLoading] = useState(false)
 
   useEffect(() => {
     if (router.isReady) {
-      const { location, startDate, endDate, tags, searchId } = router.query
+      const { location, city, country, startDate, endDate, tags, searchId } = router.query
       
-      setSearchParams({
+      const params = {
         location: location as string || '',
+        city: city as string || '',
+        country: country as string || 'USA',
         startDate: startDate as string || '',
         endDate: endDate as string || '',
         tags: tags ? (tags as string).split(',') : [],
         searchId: searchId as string || ''
-      })
+      }
       
+      setSearchParams(params)
       setLoading(false)
+      
+      // Perform search if we have city
+      if (params.city) {
+        performSearch(params.city, params.country, params.tags)
+      }
     }
   }, [router.isReady, router.query])
 
@@ -44,8 +58,25 @@ export default function ConnectWithLocals() {
     })
   }
 
+  const performSearch = async (city: string, country: string, tags: string[]) => {
+    setSearchLoading(true)
+    try {
+      const results = await searchLocalsRanked(city, country, tags)
+      setLocals(results)
+    } catch (error) {
+      console.error('Error searching locals:', error)
+    } finally {
+      setSearchLoading(false)
+    }
+  }
+
   const handleNewSearch = () => {
     router.push('/explore')
+  }
+
+  const handleConnect = (local: LocalSearchResult) => {
+    // TODO: Implement connect functionality
+    console.log('Connecting with:', local)
   }
 
   if (loading) {
@@ -116,50 +147,114 @@ export default function ConnectWithLocals() {
             </div>
           </Card>
 
-          {/* Placeholder for search results */}
-          <Card>
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+          {/* Search Results */}
+          {searchLoading ? (
+            <Card>
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
+                <span className="text-gray-600">Searching for local experts...</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Finding Local Experts</h3>
-              <p className="text-gray-600 mb-6">
-                Local profiles and search results will be displayed here in a future milestone. 
-                Your search has been saved and logged successfully!
-              </p>
-              
-              <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-green-800">
-                      Search Saved Successfully
-                    </h3>
-                    <div className="mt-2 text-sm text-green-700">
-                      <p>
-                        Your search has been logged{searchParams.searchId && ` (ID: ${searchParams.searchId.slice(0, 8)}...)`} and we'll use it to show you the most relevant local experts.
-                      </p>
+            </Card>
+          ) : locals.length > 0 ? (
+            <div>
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold">Local Experts ({locals.length})</h2>
+                <p className="text-gray-600">Ranked by relevance and activity</p>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {locals.map((local) => (
+                  <Card key={local.id} className="p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0">
+                        {local.user.avatar_url ? (
+                          <img
+                            className="h-12 w-12 rounded-full object-cover"
+                            src={local.user.avatar_url}
+                            alt={local.user.full_name}
+                          />
+                        ) : (
+                          <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <span className="text-blue-600 font-medium text-lg">
+                              {local.user.full_name.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-900 truncate">
+                            {local.user.full_name}
+                          </h3>
+                        </div>
+                        <p className="text-sm text-gray-500 mb-2">
+                          {local.city}, {local.country}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-x-4">
-                <Button onClick={handleNewSearch} variant="outline">
-                  Search Again
-                </Button>
-                <Button onClick={() => router.push('/home')} variant="primary">
-                  Back to Home
-                </Button>
+                    
+                    <div className="mt-4">
+                      <p className="text-gray-700 text-sm line-clamp-3">{local.bio}</p>
+                    </div>
+                    
+                    {local.tags && local.tags.length > 0 && (
+                      <div className="mt-4">
+                        <div className="flex flex-wrap gap-1">
+                          {local.tags.slice(0, 4).map((tag, index) => (
+                            <span
+                              key={index}
+                              className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                          {local.tags.length > 4 && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600">
+                              +{local.tags.length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="mt-6">
+                      <Button
+                        onClick={() => handleConnect(local)}
+                        variant="primary"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Connect
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
               </div>
             </div>
-          </Card>
+          ) : (
+            <Card>
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No Local Experts Found</h3>
+                <p className="text-gray-600 mb-6">
+                  We couldn't find any local experts matching your search criteria.
+                  Try expanding your search or checking a different location.
+                </p>
+                
+                <div className="space-x-4">
+                  <Button onClick={handleNewSearch} variant="outline">
+                    Try Different Search
+                  </Button>
+                  <Button onClick={() => router.push('/home')} variant="primary">
+                    Back to Home
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
       </Layout>
     </ProtectedRoute>

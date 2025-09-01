@@ -60,6 +60,34 @@ export const searchLocals = async (city: string, country: string, tags?: string[
   return data as LocalSearchResult[]
 }
 
+export const searchLocalsRanked = async (city: string, country: string, tags?: string[]): Promise<LocalSearchResult[]> => {
+  const { data, error } = await supabase.rpc('search_locals', {
+    query_city: city,
+    query_country: country,
+    selected_tags: tags || []
+  })
+
+  if (error) throw error
+  
+  // Transform the data to match LocalSearchResult interface
+  const transformedData = data.map((item: any) => ({
+    id: item.user_id, // Using user_id as the local record id
+    user_id: item.user_id,
+    location: `${item.city}, ${item.state ? item.state + ', ' : ''}${item.country}`,
+    city: item.city,
+    country: item.country,
+    bio: item.bio,
+    tags: item.tags,
+    created_at: new Date().toISOString(), // Placeholder
+    user: {
+      full_name: item.full_name,
+      avatar_url: item.avatar_url
+    }
+  }))
+
+  return transformedData as LocalSearchResult[]
+}
+
 export const createChat = async (travelerId: string, localId: string, city: string) => {
   const { data: existingChat } = await supabase
     .from('chats')
