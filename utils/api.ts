@@ -133,15 +133,25 @@ export const findOrCreateChat = async (travelerId: string, localId: string, city
 
   if (createError) throw createError
 
-  // Insert chat participants
-  const { error: participantsError } = await supabase
+  // Insert chat participants - must be done by each user separately due to RLS
+  // First insert the current user (traveler)
+  const { error: travelerParticipantError } = await supabase
     .from('chat_participants')
     .insert([
       {
         chat_id: newChat.id,
         user_id: travelerId,
         role: 'traveler'
-      },
+      }
+    ])
+
+  if (travelerParticipantError) throw travelerParticipantError
+
+  // Note: The local user will need to be added when they first access the chat
+  // or via a service role function. For now, we'll use service role behavior
+  const { error: localParticipantError } = await supabase
+    .from('chat_participants')
+    .insert([
       {
         chat_id: newChat.id,
         user_id: localId,
@@ -149,7 +159,7 @@ export const findOrCreateChat = async (travelerId: string, localId: string, city
       }
     ])
 
-  if (participantsError) throw participantsError
+  if (localParticipantError) throw localParticipantError
 
   return newChat
 }
