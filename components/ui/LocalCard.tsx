@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LocalCardData } from '../../types'
 import { supabase } from '../../lib/supabase'
+import Avatar from './Avatar'
 
 interface LocalCardProps {
   data?: LocalCardData
@@ -78,17 +79,14 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
       {/* Avatar and Name Row */}
       <div className="flex items-center space-x-3 mb-3">
         <div className="flex-shrink-0">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={`${data.user.full_name} avatar`}
-              className="h-12 w-12 rounded-full object-cover"
-            />
-          ) : (
-            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-              {data.user.full_name.charAt(0).toUpperCase()}
-            </div>
-          )}
+          <Avatar
+            src={avatarUrl}
+            alt={`${data.user.full_name} avatar`}
+            size={48}
+            fallbackText={data.user.full_name}
+            priority={false}
+            loading="lazy"
+          />
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-lg font-semibold text-gray-900 truncate">

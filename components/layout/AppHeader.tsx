@@ -16,6 +16,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useProfile } from '../../hooks/useProfile'
 import { useToast } from '../ui/UIProvider'
 import { ConfirmDialog } from '../ui/dialog'
+import Avatar from '../ui/Avatar'
 import { signOut, supabase } from '../../lib/supabase'
 import { ROUTES } from '../../utils/constants'
 import Dropdown, { DropdownItem } from '../ui/Dropdown'
@@ -203,19 +204,14 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
                         className="flex items-center space-x-2 text-[color:var(--ink)] hover:text-[color:var(--brand)] transition-colors p-2 rounded-xl hover:bg-[color:var(--bg-soft)] focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
                         aria-label={`Profile menu for ${profile.full_name}`}
                       >
-                        {avatarUrl ? (
-                          <img
-                            src={avatarUrl}
-                            alt={`${profile.full_name} avatar`}
-                            className="w-8 h-8 rounded-full object-cover ring-2 ring-[color:var(--border)]"
-                          />
-                        ) : (
-                          <div className="w-8 h-8 bg-[color:var(--brand)] text-white rounded-full flex items-center justify-center">
-                            <span className="text-sm font-medium">
-                              {profile.full_name?.charAt(0).toUpperCase() || 'U'}
-                            </span>
-                          </div>
-                        )}
+                        <Avatar
+                          src={avatarUrl}
+                          alt={`${profile.full_name} avatar`}
+                          size={32}
+                          fallbackText={profile.full_name}
+                          priority={true}
+                          className="ring-2 ring-[color:var(--border)]"
+                        />
                         <span className="text-sm font-medium hidden lg:block">{profile.full_name}</span>
                         <ChevronDown className="w-4 h-4" />
                       </button>
@@ -310,19 +306,14 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
                       <div className="border-t border-[color:var(--border)] pt-4 mt-6">
                         {/* User Info */}
                         <div className="flex items-center space-x-3 px-4 py-3 mb-4">
-                          {avatarUrl ? (
-                            <img
-                              src={avatarUrl}
-                              alt={`${profile.full_name} avatar`}
-                              className="w-10 h-10 rounded-full object-cover ring-2 ring-[color:var(--border)]"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 bg-[color:var(--brand)] text-white rounded-full flex items-center justify-center">
-                              <span className="text-sm font-medium">
-                                {profile.full_name?.charAt(0).toUpperCase() || 'U'}
-                              </span>
-                            </div>
-                          )}
+                          <Avatar
+                            src={avatarUrl}
+                            alt={`${profile.full_name} avatar`}
+                            size={40}
+                            fallbackText={profile.full_name}
+                            priority={true}
+                            className="ring-2 ring-[color:var(--border)]"
+                          />
                           <div>
                             <div className="text-sm font-medium text-[color:var(--ink)]">{profile.full_name}</div>
                             <div className="text-xs text-[color:var(--muted-ink)]">

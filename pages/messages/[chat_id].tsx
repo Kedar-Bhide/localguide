@@ -6,6 +6,7 @@ import MessageComposer from '../../components/chat/MessageComposer'
 import MessageBubble, { groupMessages } from '../../components/chat/MessageBubble'
 import TypingIndicator from '../../components/chat/TypingIndicator'
 import TimeSeparator from '../../components/chat/TimeSeparator'
+import { MessageThreadSkeleton } from '../../components/chat/MessageSkeleton'
 import ProtectedRoute from '../../components/auth/ProtectedRoute'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
@@ -279,8 +280,10 @@ export default function ChatMessages() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <ChatLayout currentChatId={chat_id as string}>
-          <div className="flex items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <MessageThreadSkeleton messageCount={8} />
+            </div>
           </div>
         </ChatLayout>
       </ProtectedRoute>

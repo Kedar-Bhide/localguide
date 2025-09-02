@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import Avatar from '../ui/Avatar'
 
 interface MessageBubbleProps {
   message: {
@@ -74,20 +75,14 @@ export default function MessageBubble({
       {/* Avatar (for other user's messages) */}
       {!isOwnMessage && showAvatar && (
         <div className={`flex-shrink-0 ${isGrouped ? 'invisible' : ''}`}>
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={senderName}
-              className="h-8 w-8 rounded-full object-cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-              <span className="text-gray-600 font-medium text-sm">
-                {senderName.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          )}
+          <Avatar
+            src={avatarUrl}
+            alt={senderName}
+            size={32}
+            fallbackText={senderName}
+            priority={false}
+            loading="lazy"
+          />
         </div>
       )}
 
