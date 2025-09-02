@@ -6,6 +6,7 @@ import { SearchFilters } from '../../types/search'
 import LocationAutocomplete from './LocationAutocomplete'
 import DateRangePicker from './DateRangePicker'
 import TagsMultiSelect from './TagsMultiSelect'
+import BottomSheet from '../ui/BottomSheet'
 import { useIsMobile } from '../../hooks/useMediaQuery'
 
 interface SearchOverlayProps {
@@ -26,6 +27,7 @@ export default function SearchOverlay({
   onTabChange
 }: SearchOverlayProps) {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [localFilters, setLocalFilters] = useState<SearchFilters>(filters)
 
   // Update local filters when props change
@@ -113,6 +115,102 @@ export default function SearchOverlay({
     }
   }, [isOpen, onClose])
 
+  const renderContent = () => (
+    <>
+      {/* Tab Navigation */}
+      <div className="flex border-b border-[color:var(--border)] mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-all focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] ${
+              activeTab === tab.id
+                ? 'border-[color:var(--brand)] text-[color:var(--brand)]'
+                : 'border-transparent text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:border-[color:var(--border)]'
+            }`}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <span>{tab.label}</span>
+              {tab.isComplete && (
+                <div className="w-2 h-2 bg-[color:var(--brand)] rounded-full" />
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto">
+        {activeTab === 'where' && (
+          <div className="mb-6">
+            <LocationAutocomplete
+              value={localFilters.location || ''}
+              onChange={handleLocationChange}
+              onLocationSelect={handleLocationSelect}
+              placeholder="Where do you want to explore?"
+            />
+          </div>
+        )}
+
+        {activeTab === 'dates' && (
+          <DateRangePicker
+            startDate={localFilters.startDate}
+            endDate={localFilters.endDate}
+            onDateRangeChange={handleDateRangeChange}
+            isOpen={true}
+          />
+        )}
+
+        {activeTab === 'interests' && (
+          <TagsMultiSelect
+            selectedTags={localFilters.tags || []}
+            onTagsChange={handleTagsChange}
+          />
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col space-y-3 mt-6">
+        {hasAnyFilters && (
+          <button
+            onClick={handleClearAll}
+            className="text-sm text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] underline focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded p-2 min-h-[44px]"
+          >
+            Clear all
+          </button>
+        )}
+        
+        <button
+          onClick={handleSearch}
+          disabled={!localFilters.location}
+          className={`flex items-center justify-center space-x-2 px-8 py-4 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] ${
+            localFilters.location
+              ? 'bg-[color:var(--brand)] text-white hover:bg-[color:var(--brand-600)] focus:ring-[color:var(--brand)] hover:scale-105 active:scale-95'
+              : 'bg-[color:var(--border)] text-[color:var(--muted-ink)] cursor-not-allowed'
+          }`}
+        >
+          <Search className="w-5 h-5" />
+          <span>Search</span>
+        </button>
+      </div>
+    </>
+  )
+
+  // Mobile bottom sheet
+  if (isMobile) {
+    return (
+      <BottomSheet
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Search LocalGuide"
+        maxHeight="85vh"
+      >
+        {renderContent()}
+      </BottomSheet>
+    )
+  }
+
+  // Desktop overlay
   return (
     <AnimatePresence>
       {isOpen && (
@@ -132,109 +230,26 @@ export default function SearchOverlay({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-50 flex flex-col"
+            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-50 flex flex-col max-h-[90vh]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-[color:var(--border)]">
-              <div className="flex items-center space-x-6">
-                <h2 className="text-2xl font-semibold text-[color:var(--ink)]">
-                  Search LocalGuide
-                </h2>
-                {hasAnyFilters && (
-                  <button
-                    onClick={handleClearAll}
-                    className="text-sm text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] underline focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded"
-                  >
-                    Clear all
-                  </button>
-                )}
-              </div>
+            <div className="flex items-center justify-between p-6 border-b border-[color:var(--border)] flex-shrink-0">
+              <h2 className="text-2xl font-semibold text-[color:var(--ink)]">
+                Search LocalGuide
+              </h2>
               
               <button
                 onClick={onClose}
-                className="p-2 text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+                className="p-2 text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Close search"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Tab Navigation */}
-            <div className="flex border-b border-[color:var(--border)]">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => onTabChange(tab.id)}
-                  className={`flex-1 px-6 py-4 text-sm font-medium border-b-2 transition-all focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 ${
-                    activeTab === tab.id
-                      ? 'border-[color:var(--brand)] text-[color:var(--brand)]'
-                      : 'border-transparent text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:border-[color:var(--border)]'
-                  }`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <span>{tab.label}</span>
-                    {tab.isComplete && (
-                      <div className="w-2 h-2 bg-[color:var(--brand)] rounded-full" />
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-
             {/* Content */}
-            <div className="flex-1 overflow-hidden">
-              <div className="h-full overflow-y-auto">
-                {activeTab === 'where' && (
-                  <div className="p-6">
-                    <LocationAutocomplete
-                      value={localFilters.location || ''}
-                      onChange={handleLocationChange}
-                      onLocationSelect={handleLocationSelect}
-                      placeholder="Where do you want to explore?"
-                    />
-                  </div>
-                )}
-
-                {activeTab === 'dates' && (
-                  <DateRangePicker
-                    startDate={localFilters.startDate}
-                    endDate={localFilters.endDate}
-                    onDateRangeChange={handleDateRangeChange}
-                    isOpen={true}
-                  />
-                )}
-
-                {activeTab === 'interests' && (
-                  <TagsMultiSelect
-                    selectedTags={localFilters.tags || []}
-                    onTagsChange={handleTagsChange}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="p-6 border-t border-[color:var(--border)]">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-[color:var(--muted-ink)]">
-                  {localFilters.location && (
-                    <span>Searching in <strong>{localFilters.location}</strong></span>
-                  )}
-                </div>
-                
-                <button
-                  onClick={handleSearch}
-                  disabled={!localFilters.location}
-                  className={`flex items-center space-x-2 px-8 py-3 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                    localFilters.location
-                      ? 'bg-[color:var(--brand)] text-white hover:bg-[color:var(--brand-600)] focus:ring-[color:var(--brand)] hover:scale-105 active:scale-95'
-                      : 'bg-[color:var(--border)] text-[color:var(--muted-ink)] cursor-not-allowed'
-                  }`}
-                >
-                  <Search className="w-5 h-5" />
-                  <span>Search</span>
-                </button>
-              </div>
+            <div className="flex-1 overflow-hidden p-6">
+              {renderContent()}
             </div>
           </motion.div>
         </>

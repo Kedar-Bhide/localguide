@@ -96,7 +96,7 @@ export default function SearchBar({
 
   return (
     <motion.div
-      className={`sticky top-20 z-30 ${className}`}
+      className={`sticky top-16 md:top-20 z-30 ${className}`}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -110,7 +110,7 @@ export default function SearchBar({
                 <React.Fragment key={segment.id}>
                   <button
                     onClick={() => handleSegmentClick(segment.id)}
-                    className="flex-1 min-w-0 p-3 text-left hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+                    className="flex-1 min-w-0 p-3 text-left hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] flex items-center"
                   >
                     <div className="flex items-start space-x-2">
                       <div className="flex-shrink-0 mt-0.5">
@@ -149,7 +149,7 @@ export default function SearchBar({
             {/* Search Button */}
             <button
               onClick={handleSearchClick}
-              className="ml-3 btn-brand p-3 aspect-square flex items-center justify-center focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+              className="ml-3 btn-brand p-3 flex items-center justify-center focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] min-w-[44px] rounded-xl"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
