@@ -84,6 +84,7 @@ export default function MessageComposer({
             placeholder={placeholder}
             disabled={disabled || sending}
             rows={1}
+            aria-label="Type your message"
             className={`
               w-full px-4 py-3 pr-12
               border border-gray-300 rounded-lg
