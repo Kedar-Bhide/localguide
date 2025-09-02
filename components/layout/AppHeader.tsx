@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { useProfile } from '../../hooks/useProfile'
+import { useToast } from '../ui/UIProvider'
+import { ConfirmDialog } from '../ui/dialog'
 import { signOut, supabase } from '../../lib/supabase'
 import { ROUTES } from '../../utils/constants'
 import Dropdown, { DropdownItem } from '../ui/Dropdown'
@@ -26,11 +28,14 @@ interface AppHeaderProps {
 export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
   const { user } = useAuth()
   const { profile } = useProfile()
+  const toast = useToast()
   const router = useRouter()
   const [profileModalOpen, setProfileModalOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
 
   // Handle scroll effects for translucent header
   useEffect(() => {
@@ -43,13 +48,29 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    setShowLogoutConfirm(true)
+  }
+
+  const confirmLogout = async () => {
+    setLoggingOut(true)
     try {
       await signOut()
       setMobileMenuOpen(false)
+      setShowLogoutConfirm(false)
+      toast.success('Signed out successfully', {
+        description: 'You have been signed out of your account.',
+        duration: 3000
+      })
       router.push(ROUTES.HOME)
     } catch (error) {
       console.error('Logout error:', error)
+      toast.error('Sign out failed', {
+        description: 'An error occurred while signing out. Please try again.',
+        duration: 5000
+      })
+    } finally {
+      setLoggingOut(false)
     }
   }
 
@@ -357,6 +378,19 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
       <ProfileModal 
         isOpen={profileModalOpen}
         onClose={() => setProfileModalOpen(false)}
+      />
+
+      {/* Logout Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={confirmLogout}
+        title="Sign Out"
+        message="Are you sure you want to sign out of your account?"
+        confirmLabel="Sign Out"
+        cancelLabel="Cancel"
+        variant="default"
+        loading={loggingOut}
       />
     </>
   )

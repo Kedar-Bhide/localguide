@@ -4,6 +4,7 @@ import Layout from '../components/layout/Layout'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { TextField } from '../components/forms'
+import { useToast } from '../components/ui/UIProvider'
 import { signInUser } from '../utils/auth'
 import { useAuth } from '../hooks/useAuth'
 import { validateEmail } from '../utils/validation'
@@ -16,6 +17,7 @@ interface FormErrors {
 
 export default function Login() {
   const router = useRouter()
+  const toast = useToast()
   const { user } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
@@ -58,6 +60,10 @@ export default function Login() {
 
     try {
       await signInUser(formData.email, formData.password)
+      toast.success('Welcome back!', {
+        description: 'You have successfully signed in.',
+        duration: 3000
+      })
       router.push('/explore')
     } catch (error: any) {
       let errorMessage = 'An error occurred during login'
@@ -68,6 +74,10 @@ export default function Login() {
         errorMessage = 'Please confirm your email address before logging in'
       }
       
+      toast.error('Sign in failed', {
+        description: errorMessage,
+        duration: 5000
+      })
       setErrors({ general: [errorMessage] })
     } finally {
       setLoading(false)
