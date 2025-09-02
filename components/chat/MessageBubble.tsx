@@ -144,7 +144,7 @@ export default function MessageBubble({
   )
 }
 
-// Group consecutive messages from the same sender
+// Group consecutive messages from the same sender and add time separators
 export const groupMessages = (messages: any[], currentUserId: string) => {
   return messages.map((message, index) => {
     const prevMessage = messages[index - 1]
@@ -158,12 +158,35 @@ export const groupMessages = (messages: any[], currentUserId: string) => {
       nextMessage.sender_id !== message.sender_id ||
       new Date(nextMessage.created_at).getTime() - new Date(message.created_at).getTime() > 5 * 60 * 1000
 
+    // Determine if we need a time separator before this message
+    let showTimeSeparator = false
+    if (index === 0) {
+      // Always show separator for first message
+      showTimeSeparator = true
+    } else if (prevMessage) {
+      const currentDate = new Date(message.created_at)
+      const prevDate = new Date(prevMessage.created_at)
+      
+      // Show separator if it's a different day
+      const currentDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+      const prevDay = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate())
+      
+      if (currentDay.getTime() !== prevDay.getTime()) {
+        showTimeSeparator = true
+      }
+      // Or if more than 60 minutes have passed
+      else if (currentDate.getTime() - prevDate.getTime() > 60 * 60 * 1000) {
+        showTimeSeparator = true
+      }
+    }
+
     return {
       ...message,
       isGrouped,
       isLast,
       showTimestamp: isLast || 
-        (nextMessage && new Date(nextMessage.created_at).getTime() - new Date(message.created_at).getTime() > 30 * 60 * 1000) // 30 minutes
+        (nextMessage && new Date(nextMessage.created_at).getTime() - new Date(message.created_at).getTime() > 30 * 60 * 1000), // 30 minutes
+      showTimeSeparator
     }
   })
 }

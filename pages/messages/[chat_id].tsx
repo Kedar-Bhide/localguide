@@ -4,6 +4,8 @@ import Head from 'next/head'
 import ChatLayout from '../../components/chat/ChatLayout'
 import MessageComposer from '../../components/chat/MessageComposer'
 import MessageBubble, { groupMessages } from '../../components/chat/MessageBubble'
+import TypingIndicator from '../../components/chat/TypingIndicator'
+import TimeSeparator from '../../components/chat/TimeSeparator'
 import ProtectedRoute from '../../components/auth/ProtectedRoute'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
@@ -47,7 +49,9 @@ export default function ChatMessages() {
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showTypingIndicator, setShowTypingIndicator] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Realtime subscription for new messages
   useEffect(() => {
@@ -84,23 +88,47 @@ export default function ChatMessages() {
             async (payload) => {
               console.log('New message received:', payload)
               
-              try {
-                // Fetch the complete message with sender info to ensure consistency
-                const messagesData = await getMessages(chat_id)
-                setMessages(messagesData as unknown as MessageData[])
-              } catch (error) {
-                console.error('Error fetching updated messages:', error)
+              // Show typing indicator for messages from other users
+              const isFromOtherUser = payload.new.sender_id !== currentUser?.id
+              if (isFromOtherUser) {
+                setShowTypingIndicator(true)
                 
-                // Fallback: add the new message with minimal info
-                const newMessage = {
-                  id: payload.new.id,
-                  content: payload.new.content,
-                  created_at: payload.new.created_at,
-                  sender_id: payload.new.sender_id,
-                  sender: null 
-                } as MessageData
+                // Clear any existing timeout
+                if (typingTimeoutRef.current) {
+                  clearTimeout(typingTimeoutRef.current)
+                }
+                
+                // Hide typing indicator after 2 seconds and show the message
+                typingTimeoutRef.current = setTimeout(async () => {
+                  setShowTypingIndicator(false)
+                  
+                  try {
+                    // Fetch the complete message with sender info to ensure consistency
+                    const messagesData = await getMessages(chat_id)
+                    setMessages(messagesData as unknown as MessageData[])
+                  } catch (error) {
+                    console.error('Error fetching updated messages:', error)
+                    
+                    // Fallback: add the new message with minimal info
+                    const newMessage = {
+                      id: payload.new.id,
+                      content: payload.new.content,
+                      created_at: payload.new.created_at,
+                      sender_id: payload.new.sender_id,
+                      sender: null 
+                    } as MessageData
 
-                setMessages(prevMessages => [...prevMessages, newMessage])
+                    setMessages(prevMessages => [...prevMessages, newMessage])
+                  }
+                }, 2000)
+              } else {
+                // For own messages, update immediately
+                try {
+                  const messagesData = await getMessages(chat_id)
+                  setMessages(messagesData as unknown as MessageData[])
+                } catch (error) {
+                  console.error('Error fetching updated messages:', error)
+                }
               }
             }
           )
@@ -143,6 +171,12 @@ export default function ChatMessages() {
       if (fallbackInterval) {
         clearInterval(fallbackInterval)
         fallbackInterval = null
+      }
+      
+      // Cleanup typing indicator timeout
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current)
+        typingTimeoutRef.current = null
       }
     }
   }, [chat_id])
@@ -338,15 +372,30 @@ export default function ChatMessages() {
             ) : (
               <div className="space-y-1">
                 {groupMessages(messages, currentUser?.id || '').map((message, index) => (
-                  <MessageBubble
-                    key={message.id}
-                    message={message}
-                    isOwnMessage={message.sender_id === currentUser?.id}
-                    isGrouped={message.isGrouped}
-                    showTimestamp={message.showTimestamp}
-                    isDelivered={true} // For now, assume all messages are delivered
-                  />
+                  <div key={message.id}>
+                    {message.showTimeSeparator && (
+                      <TimeSeparator timestamp={message.created_at} />
+                    )}
+                    <MessageBubble
+                      message={message}
+                      isOwnMessage={message.sender_id === currentUser?.id}
+                      isGrouped={message.isGrouped}
+                      showTimestamp={message.showTimestamp}
+                      isDelivered={true} // For now, assume all messages are delivered
+                    />
+                  </div>
                 ))}
+                
+                {/* Typing Indicator */}
+                {showTypingIndicator && otherParticipant?.user && (
+                  <TypingIndicator
+                    senderName={otherParticipant.user.full_name}
+                    avatar={otherParticipant.user.avatar_url ? 
+                      supabase.storage.from('avatars').getPublicUrl(otherParticipant.user.avatar_url).data.publicUrl 
+                      : undefined
+                    }
+                  />
+                )}
                 
                 {/* Scroll anchor */}
                 <div ref={messagesEndRef} />
