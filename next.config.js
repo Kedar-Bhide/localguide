@@ -1,31 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
-  // Bundle analysis
-  ...(process.env.ANALYZE === 'true' && {
-    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-      if (!dev && !isServer) {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            reportFilename: '../bundle-report.html',
-            openAnalyzer: false,
-            generateStatsFile: true,
-            statsFilename: '../bundle-stats.json'
-          })
-        )
-      }
-      return config
-    }
-  }),
-
-  // Performance optimizations
-  experimental: {
-    optimizeCss: true,
-    gzipSize: true,
-  },
 
   // Optimize images
   images: {
