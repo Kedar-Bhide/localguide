@@ -1,11 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState, useRef } from 'react'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
 import ChatLayout from '../../components/chat/ChatLayout'
-import MessageComposer from '../../components/chat/MessageComposer'
-import MessageBubble, { groupMessages } from '../../components/chat/MessageBubble'
-import TypingIndicator from '../../components/chat/TypingIndicator'
-import TimeSeparator from '../../components/chat/TimeSeparator'
 import { MessageThreadSkeleton } from '../../components/chat/MessageSkeleton'
 import ProtectedRoute from '../../components/auth/ProtectedRoute'
 import Card from '../../components/ui/Card'
@@ -13,6 +10,30 @@ import Button from '../../components/ui/Button'
 import { getChatDetails, getMessages, sendMessage } from '../../utils/api'
 import { getUser, supabase } from '../../lib/supabase'
 import type { User as AuthUser } from '@supabase/supabase-js'
+
+// Dynamic imports for heavy chat components
+const MessageComposer = dynamic(() => import('../../components/chat/MessageComposer'), {
+  loading: () => <div className="animate-pulse h-16 bg-gray-200 rounded-lg" />,
+  ssr: false
+})
+
+const MessageBubble = dynamic(() => import('../../components/chat/MessageBubble').then(mod => ({ default: mod.default })), {
+  loading: () => <div className="animate-pulse h-8 bg-gray-200 rounded-lg mb-2" />,
+  ssr: false
+})
+
+const TypingIndicator = dynamic(() => import('../../components/chat/TypingIndicator'), {
+  loading: () => null,
+  ssr: false
+})
+
+const TimeSeparator = dynamic(() => import('../../components/chat/TimeSeparator'), {
+  loading: () => null,
+  ssr: false
+})
+
+// Import groupMessages statically since it's just a utility function
+import { groupMessages } from '../../components/chat/MessageBubble'
 
 interface MessageData {
   id: number

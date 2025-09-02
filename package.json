@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "perf:check": "node scripts/perf-check.js",
+    "lighthouse": "lhci autorun",
+    "lighthouse:install": "npm install -g @lhci/cli",
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -27,6 +31,7 @@
     "eslint-config-next": "14.2.5",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

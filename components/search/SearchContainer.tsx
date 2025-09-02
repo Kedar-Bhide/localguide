@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import SearchBar from './SearchBar'
-import SearchOverlay from './SearchOverlay'
 import { useSearchParams } from '../../hooks/useSearchParams'
+
+// Dynamically import SearchOverlay only when needed
+const SearchOverlay = dynamic(() => import('./SearchOverlay'), {
+  loading: () => <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />,
+  ssr: false
+})
 
 interface SearchContainerProps {
   isHomePage?: boolean

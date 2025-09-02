@@ -2,12 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Search } from 'lucide-react'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import { SearchFilters } from '../../types/search'
-import LocationAutocomplete from './LocationAutocomplete'
-import DateRangePicker from './DateRangePicker'
-import TagsMultiSelect from './TagsMultiSelect'
 import BottomSheet from '../ui/BottomSheet'
 import { useIsMobile } from '../../hooks/useMediaQuery'
+
+// Dynamically import heavy components
+const LocationAutocomplete = dynamic(() => import('./LocationAutocomplete'), {
+  loading: () => <div className="animate-pulse h-12 bg-gray-200 rounded-lg" />,
+  ssr: false
+})
+
+const DateRangePicker = dynamic(() => import('./DateRangePicker'), {
+  loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+  ssr: false
+})
+
+const TagsMultiSelect = dynamic(() => import('./TagsMultiSelect'), {
+  loading: () => <div className="animate-pulse h-32 bg-gray-200 rounded-lg" />,
+  ssr: false
+})
 
 interface SearchOverlayProps {
   isOpen: boolean
