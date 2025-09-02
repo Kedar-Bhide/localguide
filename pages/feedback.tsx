@@ -119,7 +119,7 @@ export default function Feedback() {
           <Card>
             <div className="mb-6">
               <p className="text-gray-600 text-center">
-                We'd love to hear your thoughts, suggestions, or report any issues you've encountered.
+                We&apos;d love to hear your thoughts, suggestions, or report any issues you&apos;ve encountered.
               </p>
             </div>
 

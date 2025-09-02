@@ -174,7 +174,7 @@ export default function Requests() {
                   Welcome, {profile?.full_name}!
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Here you'll see travelers who want to connect with you for local recommendations.
+                  Here you&apos;ll see travelers who want to connect with you for local recommendations.
                 </p>
                 
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-4">

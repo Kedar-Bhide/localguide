@@ -242,7 +242,7 @@ export default function TagsMultiSelect({
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-[color:var(--muted-ink)]">No interests found matching "{searchQuery}"</p>
+                <p className="text-[color:var(--muted-ink)]">No interests found matching &quot;{searchQuery}&quot;</p>
                 <button
                   onClick={() => setSearchQuery('')}
                   className="text-sm text-[color:var(--brand)] hover:underline mt-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded"

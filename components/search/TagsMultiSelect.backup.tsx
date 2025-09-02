@@ -154,7 +154,7 @@ export default function TagsMultiSelect({
               </div>
             ) : (
               <p className="text-[color:var(--muted-ink)] text-center py-8">
-                No interests found matching "{searchQuery}"
+                No interests found matching &quot;{searchQuery}&quot;
               </p>
             )}
           </div>

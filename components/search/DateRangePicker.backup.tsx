@@ -157,7 +157,7 @@ export default function DateRangePicker({
             onClick={clearDates}
             className="btn-secondary text-sm py-2"
           >
-            I'm flexible
+            I&apos;m flexible
           </button>
         </div>
       </div>

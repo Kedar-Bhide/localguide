@@ -39,7 +39,7 @@ export default function Join() {
                   Join as Local
                 </Button>
                 <p className="text-sm text-gray-600">
-                  Help travelers discover your city's hidden gems
+                  Help travelers discover your city&apos;s hidden gems
                 </p>
               </div>
             </div>

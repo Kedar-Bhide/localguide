@@ -328,7 +328,7 @@ export default function LocationAutocomplete({
             ))
           ) : (
             <div className="px-4 py-8 text-[color:var(--muted-ink)] text-center">
-              No locations found for "{value}"
+              No locations found for &quot;{value}&quot;
             </div>
           )}
         </div>
