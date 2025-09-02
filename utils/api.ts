@@ -270,7 +270,8 @@ export const getUserActiveChats = async (userId: string) => {
         role,
         user:profiles!user_id (
           full_name,
-          avatar_url
+          avatar_url,
+          last_active_at
         )
       )
     `)
@@ -292,7 +293,8 @@ export const getUserActiveChats = async (userId: string) => {
       other_participant: otherParticipant ? {
         name: user?.full_name || 'Unknown User',
         avatar_url: user?.avatar_url,
-        role: otherParticipant.role
+        role: otherParticipant.role,
+        last_active_at: user?.last_active_at
       } : null
     }
   })

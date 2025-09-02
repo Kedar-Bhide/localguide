@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Card from '../ui/Card'
 import Button from '../ui/Button'
+import ResponseIndicator from '../ui/ResponseIndicator'
 import { getUserActiveChats } from '../../utils/api'
 import { getUser, supabase } from '../../lib/supabase'
 
@@ -14,6 +15,7 @@ interface ActiveChat {
     name: string
     avatar_url?: string
     role: 'traveler' | 'local'
+    last_active_at?: string
   } | null
 }
 
@@ -144,9 +146,18 @@ export default function ActiveChats({ refreshTrigger }: ActiveChatsProps) {
                 <p className="text-sm font-medium text-gray-900 truncate">
                   {chat.city} chat with {chat.other_participant?.name || 'Unknown User'}
                 </p>
-                <p className="text-xs text-gray-500">
-                  {chat.other_participant?.role === 'local' ? 'Local Expert' : 'Traveler'} • {formatLastActivity(chat.last_message_at)}
-                </p>
+                <div className="flex items-center space-x-2">
+                  <p className="text-xs text-gray-500">
+                    {chat.other_participant?.role === 'local' ? 'Local Expert' : 'Traveler'} • {formatLastActivity(chat.last_message_at)}
+                  </p>
+                  {chat.other_participant?.role === 'local' && (
+                    <ResponseIndicator 
+                      lastActiveAt={chat.other_participant.last_active_at}
+                      className="text-xs"
+                      showDot={false}
+                    />
+                  )}
+                </div>
               </div>
               
               <div className="flex-shrink-0">

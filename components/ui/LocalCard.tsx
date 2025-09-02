@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { LocalCardData } from '../../types'
 import { supabase } from '../../lib/supabase'
 import Avatar from './Avatar'
+import ResponseIndicator from './ResponseIndicator'
 
 interface LocalCardProps {
   data?: LocalCardData
@@ -22,20 +23,6 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
     }
   }, [data?.user.avatar_url])
 
-  // Helper function to compute response time from last_active_at
-  const getResponseTime = (lastActiveAt?: string): string => {
-    if (!lastActiveAt) return 'a few days'
-    
-    const now = new Date()
-    const lastActive = new Date(lastActiveAt)
-    const diffHours = Math.floor((now.getTime() - lastActive.getTime()) / (1000 * 60 * 60))
-    
-    if (diffHours < 1) return 'an hour'
-    if (diffHours < 24) return 'a few hours'
-    if (diffHours < 48) return 'a day'
-    if (diffHours < 168) return 'a few days' // 7 days
-    return 'a week'
-  }
 
   // Helper function to truncate bio to 2 lines (approximately 120 characters)
   const truncateBio = (bio: string): string => {
@@ -124,11 +111,8 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
         </div>
       </div>
 
-      {/* Status Line */}
-      <div className="flex items-center text-sm text-gray-500">
-        <div className="h-2 w-2 rounded-full bg-green-400 mr-2"></div>
-        <span>Usually responds within {getResponseTime(data.user.last_active_at)}</span>
-      </div>
+      {/* Response Expectation */}
+      <ResponseIndicator lastActiveAt={data.user.last_active_at} />
     </div>
   )
 }
