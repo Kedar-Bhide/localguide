@@ -3,9 +3,16 @@ import { useRouter } from 'next/router'
 import Layout from '../components/layout/Layout'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
+import { TextField } from '../components/forms'
 import { signInUser } from '../utils/auth'
 import { useAuth } from '../hooks/useAuth'
 import { validateEmail } from '../utils/validation'
+
+interface FormErrors {
+  email?: string
+  password?: string
+  general?: string[]
+}
 
 export default function Login() {
   const router = useRouter()
@@ -15,7 +22,7 @@ export default function Login() {
     password: ''
   })
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<string[]>([])
+  const [errors, setErrors] = useState<FormErrors>({})
 
   useEffect(() => {
     if (user) {
@@ -23,23 +30,28 @@ export default function Login() {
     }
   }, [user, router])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setErrors([])
-
-    const newErrors: string[] = []
+  const validateForm = (): FormErrors => {
+    const newErrors: FormErrors = {}
 
     if (!validateEmail(formData.email)) {
-      newErrors.push('Please enter a valid email address')
+      newErrors.email = 'Please enter a valid email address'
     }
 
     if (!formData.password) {
-      newErrors.push('Password is required')
+      newErrors.password = 'Password is required'
     }
 
-    if (newErrors.length > 0) {
-      setErrors(newErrors)
+    return newErrors
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setErrors({})
+
+    const validationErrors = validateForm()
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
       setLoading(false)
       return
     }
@@ -56,7 +68,7 @@ export default function Login() {
         errorMessage = 'Please confirm your email address before logging in'
       }
       
-      setErrors([errorMessage])
+      setErrors({ general: [errorMessage] })
     } finally {
       setLoading(false)
     }
@@ -64,6 +76,10 @@ export default function Login() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
+    // Clear field error when user starts typing
+    if (errors[field as keyof FormErrors]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }))
+    }
   }
 
   return (
@@ -74,44 +90,40 @@ export default function Login() {
         <Card>
           <h2 className="text-xl font-semibold mb-4 text-center">Sign in to your account</h2>
           
-          {errors.length > 0 && (
+          {errors.general && errors.general.length > 0 && (
             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
               <ul className="space-y-1">
-                {errors.map((error, index) => (
+                {errors.general.map((error, index) => (
                   <li key={index}>• {error}</li>
                 ))}
               </ul>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <TextField
+              label="Email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              placeholder="Enter your email address"
+              error={errors.email}
+              required
+              disabled={loading}
+              state={loading ? 'loading' : 'default'}
+            />
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+            <TextField
+              label="Password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              placeholder="Enter your password"
+              error={errors.password}
+              required
+              disabled={loading}
+              state={loading ? 'loading' : 'default'}
+            />
 
             <Button 
               type="submit" 

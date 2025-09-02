@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Layout from '../components/layout/Layout'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
+import { TextField, TextArea } from '../components/forms'
 import { supabase } from '../lib/supabase'
 import { validateEmail, validateName } from '../utils/validation'
 
@@ -11,6 +12,13 @@ interface FormData {
   name: string
   email: string
   comment: string
+}
+
+interface FormErrors {
+  name?: string
+  email?: string
+  comment?: string
+  general?: string[]
 }
 
 export default function Feedback() {
@@ -21,26 +29,30 @@ export default function Feedback() {
     comment: ''
   })
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<string[]>([])
+  const [errors, setErrors] = useState<FormErrors>({})
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
+    // Clear field error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }))
+    }
   }
 
-  const validateForm = (): string[] => {
-    const newErrors: string[] = []
+  const validateForm = (): FormErrors => {
+    const newErrors: FormErrors = {}
 
     if (!validateName(formData.name.trim())) {
-      newErrors.push('Name must be at least 2 characters')
+      newErrors.name = 'Name must be at least 2 characters'
     }
 
     if (!validateEmail(formData.email.trim())) {
-      newErrors.push('Please enter a valid email address')
+      newErrors.email = 'Please enter a valid email address'
     }
 
     if (formData.comment.trim().length < 10) {
-      newErrors.push('Comment must be at least 10 characters')
+      newErrors.comment = 'Comment must be at least 10 characters'
     }
 
     return newErrors
@@ -49,10 +61,10 @@ export default function Feedback() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setErrors([])
+    setErrors({})
 
     const validationErrors = validateForm()
-    if (validationErrors.length > 0) {
+    if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       setLoading(false)
       return
@@ -73,7 +85,7 @@ export default function Feedback() {
 
       setShowSuccessModal(true)
     } catch (error: any) {
-      setErrors([error.message || 'An error occurred while submitting feedback'])
+      setErrors({ general: [error.message || 'An error occurred while submitting feedback'] })
     } finally {
       setLoading(false)
     }
@@ -103,65 +115,53 @@ export default function Feedback() {
               </p>
             </div>
 
-            {errors.length > 0 && (
+            {errors.general && errors.general.length > 0 && (
               <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                 <ul className="space-y-1">
-                  {errors.map((error, index) => (
+                  {errors.general.map((error, index) => (
                     <li key={index}>• {error}</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                  disabled={loading}
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <TextField
+                label="Name"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                placeholder="Enter your full name"
+                error={errors.name}
+                required
+                disabled={loading}
+                state={loading ? 'loading' : 'default'}
+              />
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                  disabled={loading}
-                />
-              </div>
+              <TextField
+                label="Email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder="Enter your email address"
+                error={errors.email}
+                required
+                disabled={loading}
+                state={loading ? 'loading' : 'default'}
+              />
 
-              <div>
-                <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
-                  Comment *
-                </label>
-                <textarea
-                  id="comment"
-                  rows={5}
-                  value={formData.comment}
-                  onChange={(e) => handleInputChange('comment', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
-                  placeholder="Share your thoughts, suggestions, or report any issues..."
-                  required
-                  disabled={loading}
-                />
-                <p className="text-sm text-gray-500 mt-1">
-                  Minimum 10 characters ({formData.comment.length}/10)
-                </p>
-              </div>
+              <TextArea
+                label="Comment"
+                value={formData.comment}
+                onChange={(e) => handleInputChange('comment', e.target.value)}
+                placeholder="Share your thoughts, suggestions, or report any issues..."
+                description={`Minimum 10 characters (${formData.comment.length}/10)`}
+                error={errors.comment}
+                required
+                disabled={loading}
+                minRows={4}
+                maxRows={8}
+                state={loading ? 'loading' : 'default'}
+              />
 
               <Button 
                 type="submit" 
