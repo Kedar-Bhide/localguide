@@ -4,17 +4,63 @@
 
 /* LocalGuide Design System */
 :root {
-  /* Brand Colors (coral hospitality theme) */
-  --brand: #FF6B6B;
-  --brand-600: #F25454;
-  --brand-700: #E14444;
+  /* Primary Colors (Airbnb pink) */
+  --primary: #FF385C;
+  --primary-50: #FFF1F3;
+  --primary-100: #FFE1E6;
+  --primary-200: #FFC2CE;
+  --primary-300: #FF94A6;
+  --primary-400: #FF5577;
+  --primary-500: #FF385C;
+  --primary-600: #E6204A;
+  --primary-700: #CC1A3F;
+  --primary-800: #B31736;
+  --primary-900: #99132D;
   
-  /* Neutrals */
-  --ink: #111827;
-  --muted-ink: #6B7280;
-  --bg: #FFFFFF;
-  --bg-soft: #F9FAFB;
-  --border: #E5E7EB;
+  /* Secondary Colors (Teal) */
+  --secondary: #00A699;
+  --secondary-50: #F0FDFC;
+  --secondary-100: #CCFBF7;
+  --secondary-200: #99F6F0;
+  --secondary-300: #5EEEE6;
+  --secondary-400: #2DD7D3;
+  --secondary-500: #00A699;
+  --secondary-600: #00837A;
+  --secondary-700: #00685E;
+  --secondary-800: #004D45;
+  --secondary-900: #003330;
+  
+  /* Neutral Grayscale */
+  --neutral-50: #FAFAFA;
+  --neutral-100: #F5F5F5;
+  --neutral-200: #EEEEEE;
+  --neutral-300: #E0E0E0;
+  --neutral-400: #BDBDBD;
+  --neutral-500: #9E9E9E;
+  --neutral-600: #757575;
+  --neutral-700: #616161;
+  --neutral-800: #424242;
+  --neutral-900: #212121;
+  
+  /* Semantic Color Mappings */
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-500);
+  --border-light: var(--neutral-200);
+  --border-medium: var(--neutral-300);
+  --background: #FFFFFF;
+  --background-soft: var(--neutral-50);
+  --background-muted: var(--neutral-100);
+  
+  /* Legacy mappings for compatibility */
+  --brand: var(--primary);
+  --brand-600: var(--primary-600);
+  --brand-700: var(--primary-700);
+  --ink: var(--text-primary);
+  --muted-ink: var(--text-secondary);
+  --bg: var(--background);
+  --bg-soft: var(--background-soft);
+  --border: var(--border-light);
   
   /* Status Colors */
   --success: #10B981;
@@ -34,8 +80,8 @@
 /* Base Styles */
 html, body, #__next {
   height: 100%;
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--background);
+  color: var(--text-primary);
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -53,7 +99,7 @@ html, body, #__next {
 
 /* Component Base Classes */
 .card {
-  @apply rounded-2xl border border-[color:var(--border)] bg-white;
+  @apply rounded-2xl border border-[color:var(--border-light)] bg-[color:var(--background)];
   box-shadow: var(--shadow-soft);
 }
 
@@ -62,38 +108,54 @@ html, body, #__next {
   transition: all var(--duration-normal) var(--ease-spring);
 }
 
-.btn-brand {
-  @apply btn bg-[color:var(--brand)] text-white;
+.btn-brand, .btn-primary {
+  @apply btn bg-[color:var(--primary)] text-white;
 }
 
-.btn-brand:hover {
-  @apply bg-[color:var(--brand-600)] transform scale-[1.02];
+.btn-brand:hover, .btn-primary:hover {
+  @apply bg-[color:var(--primary-600)] transform scale-[1.02];
 }
 
-.btn-brand:active {
-  @apply bg-[color:var(--brand-700)] transform scale-[0.98];
+.btn-brand:active, .btn-primary:active {
+  @apply bg-[color:var(--primary-700)] transform scale-[0.98];
 }
 
 .btn-secondary {
-  @apply btn border border-[color:var(--border)] bg-white text-[color:var(--ink)];
+  @apply btn bg-[color:var(--secondary)] text-white;
 }
 
 .btn-secondary:hover {
-  @apply bg-[color:var(--bg-soft)];
+  @apply bg-[color:var(--secondary-600)] transform scale-[1.02];
+}
+
+.btn-secondary:active {
+  @apply bg-[color:var(--secondary-700)] transform scale-[0.98];
+}
+
+.btn-outline {
+  @apply btn border border-[color:var(--border-light)] bg-[color:var(--background)] text-[color:var(--text-primary)];
+}
+
+.btn-outline:hover {
+  @apply bg-[color:var(--background-soft)];
 }
 
 .input {
-  @apply w-full rounded-xl border border-[color:var(--border)] px-3 py-2 text-sm bg-white;
-  @apply focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:border-[color:var(--brand)];
+  @apply w-full rounded-xl border border-[color:var(--border-light)] px-3 py-2 text-sm bg-[color:var(--background)];
+  @apply focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)];
   transition: all var(--duration-fast) ease-out;
 }
 
 .tag {
-  @apply inline-flex items-center rounded-full border border-[color:var(--border)] px-3 py-1 text-xs text-[color:var(--muted-ink)] bg-[color:var(--bg-soft)];
+  @apply inline-flex items-center rounded-full border border-[color:var(--border-light)] px-3 py-1 text-xs text-[color:var(--text-secondary)] bg-[color:var(--background-soft)];
 }
 
 .tag.selected {
-  @apply bg-[color:var(--brand)] text-white border-[color:var(--brand)];
+  @apply bg-[color:var(--primary)] text-white border-[color:var(--primary)];
+}
+
+.tag.secondary {
+  @apply bg-[color:var(--secondary)] text-white border-[color:var(--secondary)];
 }
 
 /* Layout Utilities */
@@ -132,11 +194,49 @@ html, body, #__next {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid var(--brand);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 /* Loading spinner */
 .spinner {
-  @apply animate-spin rounded-full border-2 border-[color:var(--border)] border-t-[color:var(--brand)];
+  @apply animate-spin rounded-full border-2 border-[color:var(--border-light)] border-t-[color:var(--primary)];
+}
+
+/* Typography Utilities with Design Tokens */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-soft {
+  background-color: var(--background-soft);
+}
+
+.border-light {
+  border-color: var(--border-light);
+}
+
+/* Utility classes for consistent spacing */
+.section-padding {
+  @apply py-8 md:py-12 lg:py-16;
+}
+
+.container-padding {
+  @apply px-4 md:px-6 lg:px-8;
 }
