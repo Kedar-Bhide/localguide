@@ -141,7 +141,7 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
       >
-        <div className="max-w-7xl mx-auto section-gutter">
+        <div className="container-grid">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link 
@@ -153,29 +153,39 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
             </Link>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link 
+                href={ROUTES.EXPLORE} 
+                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
+              >
+                Explore
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
               <Link 
                 href={ROUTES.FEEDBACK} 
-                className="text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1"
+                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
               >
                 Feedback
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
               </Link>
 
               {showAuthButtons && !user && (
-                <div className="flex items-center space-x-3">
+                <>
                   <Link 
                     href={ROUTES.JOIN} 
-                    className="text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1"
+                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
                   >
                     Join
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                   <Link 
                     href={ROUTES.LOGIN} 
-                    className="btn-brand focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2"
+                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
                   >
                     Login
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
                   </Link>
-                </div>
+                </>
               )}
               
               {user && profile && (
