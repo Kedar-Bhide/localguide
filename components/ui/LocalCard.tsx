@@ -54,8 +54,8 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
   return (
     <div 
       className={`
-        bg-white rounded-lg border border-gray-200 p-6 
-        transition-all duration-200 ease-out
+        bg-white rounded-2xl border border-gray-200 p-6 shadow-md
+        transition-all duration-300 ease-out
         ${onClick ? 'cursor-pointer hover:shadow-lg hover:-translate-y-1 focus:ring-2 focus:ring-blue-500 focus:outline-none' : ''}
       `}
       onClick={handleClick}
@@ -119,7 +119,7 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
 
 function LocalCardSkeleton() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 animate-pulse">
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-md animate-pulse">
       {/* Avatar and Name Row */}
       <div className="flex items-center space-x-3 mb-3">
         <div className="h-12 w-12 rounded-full bg-gray-200"></div>

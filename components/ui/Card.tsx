@@ -8,8 +8,8 @@ interface CardProps {
 }
 
 export default function Card({ children, className = '', onClick, clickable = false }: CardProps) {
-  const baseClasses = "bg-white rounded-lg shadow-md border p-6"
-  const clickableClasses = clickable ? "cursor-pointer hover:shadow-lg transition-shadow" : ""
+  const baseClasses = "bg-white rounded-2xl shadow-md border p-6"
+  const clickableClasses = clickable ? "cursor-pointer hover:shadow-lg transition-all duration-300 ease-out" : ""
   const classes = `${baseClasses} ${clickableClasses} ${className}`
 
   if (onClick) {

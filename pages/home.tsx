@@ -123,7 +123,7 @@ export default function Home() {
           {/* CTA Cards */}
           <div className="grid-cards">
             {/* Traveler CTA Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
               <div className="w-16 h-16 bg-[color:var(--brand)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-[color:var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -140,7 +140,7 @@ export default function Home() {
             </div>
 
             {/* Local CTA Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
               <div className="w-16 h-16 bg-[color:var(--success)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-[color:var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -156,7 +156,7 @@ export default function Home() {
             </div>
 
             {/* Spread the Word Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-shadow">
+            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
               <div className="w-16 h-16 bg-[color:var(--warning)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-[color:var(--warning)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
