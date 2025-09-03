@@ -174,7 +174,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
               </Button>
               <Button 
                 type="button" 
-                variant="outline"
+                variant="secondary"
                 onClick={onClose}
                 disabled={loading}
                 size="lg"
