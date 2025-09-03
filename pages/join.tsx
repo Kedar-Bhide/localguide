@@ -47,7 +47,7 @@ export default function Join() {
             <div className="mt-6 pt-6 border-t border-gray-200">
               <Button 
                 onClick={() => router.push('/login')}
-                variant="outline"
+                variant="tertiary"
                 size="lg"
                 className="w-full"
               >

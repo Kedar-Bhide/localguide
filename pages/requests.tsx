@@ -141,7 +141,7 @@ export default function Requests() {
                   onClick={() => setShowEditModal(true)}
                   size="sm"
                   className="bg-amber-100 border-amber-300 text-amber-800 hover:bg-amber-200 focus:ring-amber-500"
-                  variant="outline"
+                  variant="secondary"
                 >
                   Complete Profile
                 </Button>
@@ -159,7 +159,7 @@ export default function Requests() {
             <h1 className="headline mb-4 sm:mb-0">Your Chat Requests</h1>
             <Button 
               onClick={() => setShowEditModal(true)}
-              variant="outline"
+              variant="secondary"
               className="bg-green-50 border-green-300 text-green-700 hover:bg-green-100"
             >
               Edit Local Profile

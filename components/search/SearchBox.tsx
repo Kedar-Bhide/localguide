@@ -335,7 +335,7 @@ export default function SearchBox({ onSearch, className = '' }: SearchBoxProps) 
                 </Button>
                 <Button 
                   onClick={() => router.push('/traveler')}
-                  variant="outline"
+                  variant="secondary"
                   size="lg"
                   className="w-full"
                 >

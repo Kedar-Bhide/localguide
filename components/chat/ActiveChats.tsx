@@ -99,7 +99,7 @@ export default function ActiveChats({ refreshTrigger }: ActiveChatsProps) {
           <p className="text-red-600 text-sm">{error}</p>
           <Button 
             onClick={fetchActiveChats} 
-            variant="outline" 
+            variant="secondary" 
             size="sm" 
             className="mt-2"
           >

@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'outline'
+  variant?: 'primary' | 'secondary' | 'tertiary'
   size?: 'sm' | 'md' | 'lg'
   loading?: boolean
 }
@@ -16,18 +16,18 @@ export default function Button({
   disabled,
   ...props 
 }: ButtonProps) {
-  const baseClasses = "font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] flex items-center justify-center"
+  const baseClasses = "font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] flex items-center justify-center"
   
   const variantClasses = {
-    primary: "bg-primary text-white hover:bg-primary-600 focus:ring-primary-500",
-    secondary: "bg-secondary text-white hover:bg-secondary-600 focus:ring-secondary-500",
-    outline: "border border-neutral-300 text-neutral-700 bg-white hover:bg-neutral-50 focus:ring-primary-500"
+    primary: "bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-600)] active:bg-[color:var(--primary-700)] focus:ring-[color:var(--primary-500)] hover:shadow-lg active:scale-[0.98]",
+    secondary: "border-2 border-[color:var(--neutral-300)] text-[color:var(--neutral-700)] bg-white hover:bg-[color:var(--neutral-50)] active:bg-[color:var(--neutral-100)] focus:ring-[color:var(--primary-500)] hover:border-[color:var(--neutral-400)]",
+    tertiary: "text-[color:var(--text-muted)] hover:text-[color:var(--text-secondary)] active:text-[color:var(--text-primary)] focus:ring-[color:var(--primary-500)] hover:bg-[color:var(--neutral-50)] active:bg-[color:var(--neutral-100)]"
   }
   
   const sizeClasses = {
-    sm: "px-3 py-2 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-6 py-3 text-lg"
+    sm: "px-4 py-2 text-sm",
+    md: "px-6 py-3 text-base",
+    lg: "px-8 py-4 text-lg"
   }
   
   const disabledClasses = (disabled || loading) ? "opacity-50 cursor-not-allowed" : ""

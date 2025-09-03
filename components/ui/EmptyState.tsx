@@ -8,12 +8,12 @@ interface EmptyStateProps {
   primaryAction?: {
     label: string
     onClick: () => void
-    variant?: 'primary' | 'secondary' | 'outline'
+    variant?: 'primary' | 'secondary' | 'tertiary'
   }
   secondaryAction?: {
     label: string
     onClick: () => void
-    variant?: 'primary' | 'secondary' | 'outline'
+    variant?: 'primary' | 'secondary' | 'tertiary'
   }
   className?: string
 }
@@ -75,7 +75,7 @@ export default function EmptyState({
             {secondaryAction && (
               <Button
                 onClick={secondaryAction.onClick}
-                variant={secondaryAction.variant || 'outline'}
+                variant={secondaryAction.variant || 'secondary'}
                 size="md"
               >
                 {secondaryAction.label}

@@ -110,9 +110,9 @@ export default function Home() {
               <h3 className="subheading">I&apos;m a Traveler</h3>
               <p className="body text-secondary-color">Planning a trip and looking for local insights</p>
               <Link href={ROUTES.TRAVELER_SIGNUP}>
-                <button className="btn-brand w-full">
+                <Button className="w-full">
                   Get Started →
-                </button>
+                </Button>
               </Link>
             </div>
 
@@ -126,9 +126,9 @@ export default function Home() {
               <h3 className="subheading">I&apos;m a Local</h3>
               <p className="body text-secondary-color">I know my city and want to help travelers</p>
               <Link href={ROUTES.LOCAL_SIGNUP}>
-                <button className="btn-brand w-full">
+                <Button className="w-full">
                   Start Earning →
-                </button>
+                </Button>
               </Link>
             </div>
 
@@ -141,12 +141,13 @@ export default function Home() {
               </div>
               <h3 className="subheading">Spread the Word</h3>
               <p className="body text-secondary-color">Help others discover authentic travel experiences</p>
-              <button 
+              <Button 
                 onClick={copyToClipboard}
-                className="btn-secondary w-full"
+                className="w-full"
+                variant="secondary"
               >
                 {copied ? 'Copied!' : 'Copy Link'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
