@@ -30,7 +30,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AppHeader showAuthButtons={true} />
+      <AppHeader showAuthButtons={false} />
       
       {/* Hero Section */}
       <div className="relative section-spacing">
@@ -41,10 +41,33 @@ export default function Home() {
           <p className="body-large text-secondary-color mb-12 max-w-2xl mx-auto animate-slide-up">
             Discover authentic experiences with vetted locals who know their cities inside out
           </p>
+
+          {/* Login/Join Button Group - Centered */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-slide-up">
+            <Link href={ROUTES.JOIN}>
+              <Button variant="secondary" size="lg" className="min-w-[140px]">
+                Join
+              </Button>
+            </Link>
+            <Link href={ROUTES.LOGIN}>
+              <Button variant="primary" size="lg" className="min-w-[140px]">
+                Login
+              </Button>
+            </Link>
+          </div>
         </div>
         
         {/* Search Container - expanded by default, collapses on scroll */}
         <SearchContainer isHomePage={true} />
+        
+        {/* Primary CTA - Explore */}
+        <div className="text-center mt-12 animate-slide-up">
+          <Link href={ROUTES.EXPLORE}>
+            <Button variant="primary" size="lg" className="px-12 py-4 text-lg font-semibold shadow-lg hover:shadow-xl">
+              Explore Destinations →
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <main className="section-spacing">
