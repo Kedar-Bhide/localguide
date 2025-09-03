@@ -35,10 +35,10 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative section-spacing">
         <div className="max-w-4xl mx-auto text-center section-gutter">
-          <h1 className="text-4xl lg:text-5xl font-bold text-[color:var(--ink)] mb-6 animate-fade-in">
+          <h1 className="headline-large animate-fade-in">
             Connect with Local Experts
           </h1>
-          <p className="text-xl text-[color:var(--muted-ink)] mb-12 max-w-2xl mx-auto animate-slide-up">
+          <p className="body-large text-secondary-color mb-12 max-w-2xl mx-auto animate-slide-up">
             Discover authentic experiences with vetted locals who know their cities inside out
           </p>
         </div>
@@ -52,45 +52,45 @@ export default function Home() {
           {/* How it Works Section */}
           <div className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-[color:var(--ink)] mb-4">How it works</h2>
-              <p className="text-lg text-[color:var(--muted-ink)]">Simple steps to authentic travel experiences</p>
+              <h2 className="headline">How it works</h2>
+              <p className="body-large text-secondary-color">Simple steps to authentic travel experiences</p>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               {/* Traveler Column */}
               <div className="card p-8">
-                <h3 className="text-2xl font-semibold text-[color:var(--brand)] mb-6">For Travelers</h3>
+                <h3 className="subheading text-brand-color">For Travelers</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Search and connect with vetted locals in your destination</span>
+                    <span className="body">Search and connect with vetted locals in your destination</span>
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Get personalized recommendations and insider tips</span>
+                    <span className="body">Get personalized recommendations and insider tips</span>
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Book unique experiences with local guides</span>
+                    <span className="body">Book unique experiences with local guides</span>
                   </li>
                 </ul>
               </div>
 
               {/* Local Column */}
               <div className="card p-8">
-                <h3 className="text-2xl font-semibold text-[color:var(--success)] mb-6">For Locals</h3>
+                <h3 className="subheading" style={{color: 'var(--success)'}}>For Locals</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Share your local expertise and earn income</span>
+                    <span className="body">Share your local expertise and earn income</span>
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Connect with travelers seeking authentic experiences</span>
+                    <span className="body">Connect with travelers seeking authentic experiences</span>
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="text-[color:var(--ink)]">Build your reputation as a trusted guide</span>
+                    <span className="body">Build your reputation as a trusted guide</span>
                   </li>
                 </ul>
               </div>
@@ -107,8 +107,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">I&apos;m a Traveler</h3>
-              <p className="text-[color:var(--muted-ink)] mb-6">Planning a trip and looking for local insights</p>
+              <h3 className="subheading">I&apos;m a Traveler</h3>
+              <p className="body text-secondary-color">Planning a trip and looking for local insights</p>
               <Link href={ROUTES.TRAVELER_SIGNUP}>
                 <button className="btn-brand w-full">
                   Get Started →
@@ -123,8 +123,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">I&apos;m a Local</h3>
-              <p className="text-[color:var(--muted-ink)] mb-6">I know my city and want to help travelers</p>
+              <h3 className="subheading">I&apos;m a Local</h3>
+              <p className="body text-secondary-color">I know my city and want to help travelers</p>
               <Link href={ROUTES.LOCAL_SIGNUP}>
                 <button className="btn-brand w-full">
                   Start Earning →
@@ -139,8 +139,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-[color:var(--ink)] mb-3">Spread the Word</h3>
-              <p className="text-[color:var(--muted-ink)] mb-6">Help others discover authentic travel experiences</p>
+              <h3 className="subheading">Spread the Word</h3>
+              <p className="body text-secondary-color">Help others discover authentic travel experiences</p>
               <button 
                 onClick={copyToClipboard}
                 className="btn-secondary w-full"

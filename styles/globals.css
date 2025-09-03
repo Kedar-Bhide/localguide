@@ -87,7 +87,7 @@ html, body, #__next {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography Scale */
+/* Typography Scale - Airbnb Inspired */
 .text-xs { font-size: 12px; line-height: 16px; }
 .text-sm { font-size: 14px; line-height: 20px; }
 .text-base { font-size: 16px; line-height: 24px; }
@@ -96,6 +96,82 @@ html, body, #__next {
 .text-2xl { font-size: 24px; line-height: 32px; }
 .text-3xl { font-size: 30px; line-height: 36px; }
 .text-4xl { font-size: 36px; line-height: 40px; }
+.text-5xl { font-size: 48px; line-height: 48px; }
+
+/* Semantic Typography Classes */
+.headline {
+  @apply text-3xl font-semibold leading-tight;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+.headline-large {
+  @apply text-4xl lg:text-5xl font-semibold leading-tight;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+.subheading {
+  @apply text-xl font-medium leading-relaxed;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.body {
+  @apply text-base leading-relaxed;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.body-large {
+  @apply text-lg leading-relaxed;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.small {
+  @apply text-sm leading-normal;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.small-caps {
+  @apply text-xs font-medium uppercase tracking-wider;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+/* Typography Modifiers */
+.text-primary-color {
+  color: var(--text-primary);
+}
+
+.text-secondary-color {
+  color: var(--text-secondary);
+}
+
+.text-muted-color {
+  color: var(--text-muted);
+}
+
+.text-brand-color {
+  color: var(--primary);
+}
+
+.text-tight {
+  line-height: 1.2;
+}
+
+.text-relaxed {
+  line-height: 1.75;
+}
+
+.text-loose {
+  line-height: 2;
+}
 
 /* Component Base Classes */
 .card {

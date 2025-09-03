@@ -156,7 +156,7 @@ export default function Requests() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-            <h1 className="text-3xl font-bold mb-4 sm:mb-0">Your Chat Requests</h1>
+            <h1 className="headline mb-4 sm:mb-0">Your Chat Requests</h1>
             <Button 
               onClick={() => setShowEditModal(true)}
               variant="outline"
@@ -170,15 +170,15 @@ export default function Requests() {
             {/* Main Content Area */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-4">
+                <h2 className="subheading">
                   Welcome, {profile?.full_name}!
                 </h2>
-                <p className="text-gray-600 mb-4">
+                <p className="body text-secondary-color">
                   Here you&apos;ll see travelers who want to connect with you for local recommendations.
                 </p>
                 
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
-                  <p className="text-gray-600 text-sm">
+                  <p className="small">
                     🚧 Additional features coming soon! For now, check your active chats in the sidebar.
                   </p>
                 </div>

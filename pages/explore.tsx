@@ -56,20 +56,20 @@ export default function Explore() {
             {/* Main Content Area */}
             <div className="lg:col-span-2">
               <div className="mb-8">
-                <h1 className="text-3xl font-bold text-[color:var(--ink)] mb-4">
+                <h1 className="headline">
                   Explore Local Destinations
                 </h1>
-                <h2 className="text-xl text-[color:var(--ink)] mb-2">
+                <h2 className="subheading">
                   Welcome back, {profile?.full_name}!
                 </h2>
-                <p className="text-[color:var(--muted-ink)]">
+                <p className="body text-secondary-color">
                   Use the search above to find locals in your destination city and connect with them to discover hidden gems.
                 </p>
               </div>
 
               {/* Placeholder for search results */}
               <div className="card p-6 bg-[color:var(--brand)]/5 border-[color:var(--brand)]/20">
-                <p className="text-[color:var(--brand)] text-sm">
+                <p className="small text-brand-color">
                   🚧 Search results and local profiles will appear here after you search!
                 </p>
               </div>
