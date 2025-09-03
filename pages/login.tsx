@@ -94,7 +94,7 @@ export default function Login() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto px-4">
+      <div className="max-w-md mx-auto px-6">
         <h1 className="text-3xl font-bold text-center mb-8">Welcome back</h1>
         
         <Card>

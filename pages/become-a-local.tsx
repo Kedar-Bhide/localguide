@@ -225,7 +225,7 @@ export default function BecomeALocal() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div className="max-w-2xl mx-auto px-4">
+        <div className="max-w-2xl mx-auto px-6">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Become a Local</h1>
             <p className="text-gray-600">
@@ -246,7 +246,7 @@ export default function BecomeALocal() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Location Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid-cards">
                 <div>
                   <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
                     City *
@@ -393,7 +393,7 @@ export default function BecomeALocal() {
                 </Button>
                 <Button 
                   type="button" 
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => router.back()}
                   disabled={loading}
                   size="lg"

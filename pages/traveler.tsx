@@ -60,10 +60,10 @@ export default function TravelerSignup() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-3xl font-bold text-center mb-8">Join as a Traveler</h1>
         
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* How it works card */}
           <Card>
             <h2 className="text-xl font-semibold mb-4">How it works (traveler)</h2>

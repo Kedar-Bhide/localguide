@@ -124,7 +124,7 @@ export default function Requests() {
   return (
     <ProtectedRoute>
       <Layout>
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="container-grid">
           {/* Profile Completeness Banner */}
           {isProfileIncomplete() && (
             <div className="mb-4 bg-amber-50 border border-amber-200 rounded-md p-4">
@@ -166,7 +166,7 @@ export default function Requests() {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content Area */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-md p-6">

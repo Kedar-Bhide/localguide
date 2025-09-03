@@ -235,12 +235,24 @@ html, body, #__next {
 }
 
 /* Layout Utilities */
+.container-grid {
+  @apply max-w-6xl mx-auto px-6;
+}
+
 .section-gutter {
   @apply px-6 md:px-12;
 }
 
 .section-spacing {
   @apply py-6 md:py-10 lg:py-16;
+}
+
+.grid-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.grid-sections {
+  @apply gap-6;
 }
 
 /* Animation utilities */

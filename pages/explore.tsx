@@ -51,8 +51,8 @@ export default function Explore() {
         {/* Search Container - compact sticky bar */}
         <SearchContainer />
         
-        <div className="max-w-7xl mx-auto section-gutter">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="container-grid">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content Area */}
             <div className="lg:col-span-2">
               <div className="mb-8">

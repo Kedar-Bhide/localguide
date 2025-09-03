@@ -34,7 +34,7 @@ export default function Home() {
       
       {/* Hero Section */}
       <div className="relative section-spacing">
-        <div className="max-w-4xl mx-auto text-center section-gutter">
+        <div className="container-grid text-center">
           <h1 className="headline-large animate-fade-in">
             Connect with Local Experts
           </h1>
@@ -71,7 +71,7 @@ export default function Home() {
       </div>
 
       <main className="section-spacing">
-        <div className="max-w-7xl mx-auto section-gutter">
+        <div className="container-grid">
           {/* How it Works Section */}
           <div className="mb-16">
             <div className="text-center mb-12">
@@ -79,7 +79,7 @@ export default function Home() {
               <p className="body-large text-secondary-color">Simple steps to authentic travel experiences</p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Traveler Column */}
               <div className="card p-8">
                 <h3 className="subheading text-brand-color">For Travelers</h3>
@@ -121,7 +121,7 @@ export default function Home() {
           </div>
 
           {/* CTA Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid-cards">
             {/* Traveler CTA Card */}
             <div className="card p-8 text-center hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-[color:var(--brand)]/10 rounded-full flex items-center justify-center mx-auto mb-6">

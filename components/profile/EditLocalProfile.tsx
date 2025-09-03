@@ -254,7 +254,7 @@ export default function EditLocalProfile({ isOpen, onClose, onSave, userId }: Ed
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Location Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid-cards">
                   <div>
                     <label htmlFor="edit-city" className="block text-sm font-medium text-gray-700 mb-1">
                       City *
@@ -397,7 +397,7 @@ export default function EditLocalProfile({ isOpen, onClose, onSave, userId }: Ed
                   </Button>
                   <Button 
                     type="button" 
-                    variant="outline"
+                    variant="secondary"
                     onClick={onClose}
                     disabled={loading}
                     size="lg"
