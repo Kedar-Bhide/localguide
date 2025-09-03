@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import AppHeader from './AppHeader'
+import Footer from './Footer'
 
 interface LayoutProps {
   children: ReactNode
@@ -11,11 +12,12 @@ export default function Layout({
   showAuthButtons = true
 }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-[color:var(--bg-soft)]">
+    <div className="min-h-screen bg-[color:var(--bg-soft)] flex flex-col">
       <AppHeader showAuthButtons={showAuthButtons} />
-      <main className="section-spacing">
+      <main className="section-spacing flex-1">
         {children}
       </main>
+      <Footer />
     </div>
   )
 }
