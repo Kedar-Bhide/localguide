@@ -1,51 +1,63 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import React from 'react'
+import { Loader2 } from 'lucide-react'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
-  variant?: 'primary' | 'secondary' | 'tertiary'
-  size?: 'sm' | 'md' | 'lg'
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   loading?: boolean
+  fullWidth?: boolean
+  children: React.ReactNode
 }
 
-export default function Button({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
+export default function Button({
+  variant = 'primary',
+  size = 'md',
   loading = false,
-  className = '',
+  fullWidth = false,
   disabled,
-  ...props 
+  className = '',
+  children,
+  ...props
 }: ButtonProps) {
-  const baseClasses = "font-medium rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[48px] flex items-center justify-center"
+  const baseClasses = 'btn focus-ring'
   
-  const variantClasses = {
-    primary: "bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-600)] active:bg-[color:var(--primary-700)] focus:ring-[color:var(--primary-500)] hover:shadow-md active:scale-[0.98]",
-    secondary: "border-2 border-neutral-300 text-neutral-700 bg-white hover:bg-neutral-50 active:bg-neutral-100 focus:ring-[color:var(--primary-500)] hover:border-neutral-400",
-    tertiary: "text-neutral-500 hover:text-neutral-700 active:text-neutral-900 focus:ring-[color:var(--primary-500)] hover:bg-neutral-50 active:bg-neutral-100"
+  const variants = {
+    primary: 'btn-primary',
+    secondary: 'btn-secondary', 
+    tertiary: 'btn-tertiary',
+    ghost: 'btn-ghost',
+    danger: 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 focus:ring-red-200'
   }
   
-  const sizeClasses = {
-    sm: "px-5 py-2.5 text-sm",
-    md: "px-6 py-3 text-base",
-    lg: "px-8 py-4 text-lg"
+  const sizes = {
+    sm: 'btn-sm',
+    md: 'btn-md', 
+    lg: 'btn-lg',
+    xl: 'btn-xl'
   }
   
-  const disabledClasses = (disabled || loading) ? "opacity-50 cursor-not-allowed" : ""
+  const widthClass = fullWidth ? 'w-full' : ''
+  const disabledClass = (disabled || loading) ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
   
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses} ${className}`
-
+  const classes = [
+    baseClasses,
+    variants[variant],
+    sizes[size],
+    widthClass,
+    disabledClass,
+    className
+  ].filter(Boolean).join(' ')
+  
   return (
     <button
       className={classes}
       disabled={disabled || loading}
       {...props}
     >
-      {loading ? (
-        <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-          Loading...
-        </div>
-      ) : children}
+      {loading && (
+        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+      )}
+      {children}
     </button>
   )
 }
