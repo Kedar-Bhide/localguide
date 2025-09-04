@@ -205,7 +205,7 @@ export default function ConnectWithLocals() {
         <div className="container-grid">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Connect with Locals</h1>
-            <p className="text-gray-600">
+            <p className="text-neutral-600">
               Find and connect with vetted local experts in your destination
             </p>
           </div>
@@ -215,7 +215,7 @@ export default function ConnectWithLocals() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div className="mb-4 sm:mb-0">
                 <h2 className="text-xl font-semibold mb-2">Your Search</h2>
-                <div className="space-y-1 text-sm text-gray-600">
+                <div className="space-y-1 text-sm text-neutral-600">
                   <div><strong>Location:</strong> {searchParams.location || 'Not specified'}</div>
                   {searchParams.startDate && (
                     <div><strong>Start Date:</strong> {formatDate(searchParams.startDate)}</div>
@@ -269,7 +269,7 @@ export default function ConnectWithLocals() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
                 <div>
                   <h2 className="text-xl font-semibold">Local Experts ({locals.length})</h2>
-                  <p className="text-gray-600">Find the perfect local guide for your trip</p>
+                  <p className="text-neutral-600">Find the perfect local guide for your trip</p>
                 </div>
                 
                 {/* Sorting Chips */}
@@ -281,7 +281,7 @@ export default function ConnectWithLocals() {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                       sortBy === 'best_match'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                     }`}
                   >
                     Best match
@@ -293,7 +293,7 @@ export default function ConnectWithLocals() {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                       sortBy === 'most_active'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                     }`}
                   >
                     Most active

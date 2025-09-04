@@ -177,7 +177,7 @@ export default function Requests() {
                   Here you&apos;ll see travelers who want to connect with you for local recommendations.
                 </p>
                 
-                <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
+                <div className="bg-neutral-50 border border-neutral-200 rounded-md p-4">
                   <p className="small">
                     🚧 Additional features coming soon! For now, check your active chats in the sidebar.
                   </p>

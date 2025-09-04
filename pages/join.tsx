@@ -24,7 +24,7 @@ export default function Join() {
                 >
                   Join as Traveler
                 </Button>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-neutral-600">
                   Connect with locals and explore destinations like a local
                 </p>
               </div>
@@ -38,13 +38,13 @@ export default function Join() {
                 >
                   Join as Local
                 </Button>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-neutral-600">
                   Help travelers discover your city&apos;s hidden gems
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-neutral-200">
               <Button 
                 onClick={() => router.push('/login')}
                 variant="tertiary"

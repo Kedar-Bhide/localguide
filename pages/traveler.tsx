@@ -67,7 +67,7 @@ export default function TravelerSignup() {
           {/* How it works card */}
           <Card>
             <h2 className="text-xl font-semibold mb-4">How it works (traveler)</h2>
-            <ul className="space-y-3 text-gray-600">
+            <ul className="space-y-3 text-neutral-600">
               <li className="flex items-start">
                 <span className="font-semibold text-blue-600 mr-2">1.</span>
                 Search for locals in your destination city
@@ -105,7 +105,7 @@ export default function TravelerSignup() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="fullName" className="block text-sm font-medium text-neutral-700 mb-1">
                   Full Name
                 </label>
                 <input
@@ -113,13 +113,13 @@ export default function TravelerSignup() {
                   id="fullName"
                   value={formData.fullName}
                   onChange={(e) => handleInputChange('fullName', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
                   Email
                 </label>
                 <input
@@ -127,13 +127,13 @@ export default function TravelerSignup() {
                   id="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-1">
                   Password
                 </label>
                 <input
@@ -141,7 +141,7 @@ export default function TravelerSignup() {
                   id="password"
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                   required
                 />
               </div>
@@ -155,7 +155,7 @@ export default function TravelerSignup() {
               </Button>
             </form>
 
-            <p className="mt-4 text-sm text-gray-600 text-center">
+            <p className="mt-4 text-sm text-neutral-600 text-center">
               Already have an account?{' '}
               <button
                 onClick={() => router.push('/login')}

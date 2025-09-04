@@ -228,7 +228,7 @@ export default function BecomeALocal() {
         <div className="max-w-2xl mx-auto px-6">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Become a Local</h1>
-            <p className="text-gray-600">
+            <p className="text-neutral-600">
               Share your local expertise and help travelers discover the authentic side of your city.
             </p>
           </div>
@@ -248,7 +248,7 @@ export default function BecomeALocal() {
               {/* Location Fields */}
               <div className="grid-cards">
                 <div>
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="city" className="block text-sm font-medium text-neutral-700 mb-1">
                     City *
                   </label>
                   <input
@@ -256,7 +256,7 @@ export default function BecomeALocal() {
                     id="city"
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="San Francisco"
                     required
                     disabled={loading}
@@ -264,7 +264,7 @@ export default function BecomeALocal() {
                 </div>
                 
                 <div>
-                  <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="state" className="block text-sm font-medium text-neutral-700 mb-1">
                     State/Province
                   </label>
                   <input
@@ -272,14 +272,14 @@ export default function BecomeALocal() {
                     id="state"
                     value={formData.state}
                     onChange={(e) => handleInputChange('state', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="CA"
                     disabled={loading}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="country" className="block text-sm font-medium text-neutral-700 mb-1">
                     Country *
                   </label>
                   <input
@@ -287,7 +287,7 @@ export default function BecomeALocal() {
                     id="country"
                     value={formData.country}
                     onChange={(e) => handleInputChange('country', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="USA"
                     required
                     disabled={loading}
@@ -297,36 +297,36 @@ export default function BecomeALocal() {
 
               {/* Bio Field */}
               <div>
-                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
-                  Bio * <span className="text-sm text-gray-500">(50-{MAX_BIO_LENGTH} characters)</span>
+                <label htmlFor="bio" className="block text-sm font-medium text-neutral-700 mb-1">
+                  Bio * <span className="text-sm text-neutral-500">(50-{MAX_BIO_LENGTH} characters)</span>
                 </label>
                 <textarea
                   id="bio"
                   rows={4}
                   value={formData.bio}
                   onChange={(e) => handleInputChange('bio', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 resize-vertical"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-vertical"
                   placeholder="Tell travelers about yourself! What makes you passionate about your city? What unique experiences can you share? What's your local expertise?"
                   required
                   disabled={loading}
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-neutral-500 mt-1">
                   {formData.bio.length}/{MAX_BIO_LENGTH} characters
                 </p>
               </div>
 
               {/* Tags Multi-select */}
               <div className="relative" ref={tagsDropdownRef}>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Your Expertise * <span className="text-sm text-gray-500">(select 1-{MAX_TAGS} tags)</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Your Expertise * <span className="text-sm text-neutral-500">(select 1-{MAX_TAGS} tags)</span>
                 </label>
                 <div
                   onClick={() => setShowTagsDropdown(!showTagsDropdown)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 bg-white min-h-[40px] flex items-center justify-between"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white min-h-[40px] flex items-center justify-between"
                 >
                   <div className="flex flex-wrap gap-1">
                     {formData.selectedTags.length === 0 ? (
-                      <span className="text-gray-500">Select your areas of expertise...</span>
+                      <span className="text-neutral-500">Select your areas of expertise...</span>
                     ) : (
                       formData.selectedTags.map(tag => (
                         <span 
@@ -349,14 +349,14 @@ export default function BecomeALocal() {
                       ))
                     )}
                   </div>
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
 
                 {/* Tags Dropdown */}
                 {showTagsDropdown && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-neutral-300 rounded-md shadow-lg max-h-60 overflow-auto">
                     <div className="p-2">
                       <div className="grid grid-cols-2 gap-1">
                         {AVAILABLE_TAGS.map(tag => (
@@ -369,8 +369,8 @@ export default function BecomeALocal() {
                               formData.selectedTags.includes(tag)
                                 ? 'bg-green-100 text-green-800'
                                 : formData.selectedTags.length >= MAX_TAGS
-                                ? 'text-gray-400 cursor-not-allowed'
-                                : 'hover:bg-gray-100'
+                                ? 'text-neutral-400 cursor-not-allowed'
+                                : 'hover:bg-neutral-100'
                             }`}
                           >
                             {tag}
