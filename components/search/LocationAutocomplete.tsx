@@ -203,7 +203,7 @@ export default function LocationAutocomplete({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.95 }}
           transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="absolute top-full mt-2 w-full bg-white rounded-2xl shadow-soft border border-[color:var(--border)] overflow-hidden z-50 max-h-80 overflow-y-auto"
+          className="absolute top-full mt-3 w-full bg-white rounded-3xl shadow-xl border border-neutral-100 overflow-hidden z-50 max-h-96 overflow-y-auto backdrop-blur-sm"
           role="listbox"
           id={listboxId}
           aria-label="Location suggestions"
@@ -257,7 +257,7 @@ export default function LocationAutocomplete({
                   value={value}
                   onChange={handleInputChange}
                   placeholder={placeholder}
-                  className="input text-lg py-4 pl-12 pr-4 w-full border-2 border-[color:var(--border)] focus:border-[color:var(--brand)] rounded-2xl"
+                  className="w-full text-lg py-5 pl-14 pr-6 border-2 border-neutral-300 focus:border-primary-500 rounded-3xl bg-white focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-primary-100 focus:outline-none placeholder-neutral-500"
                   autoFocus
                 />
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[color:var(--muted-ink)]" />
@@ -286,14 +286,16 @@ export default function LocationAutocomplete({
       <button
         id={getCurrentLocationId}
         onClick={handleCurrentLocationClick}
-        className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-[color:var(--bg-soft)] transition-colors focus:outline-none focus:bg-[color:var(--bg-soft)] ${
-          selectedIndex === -1 ? 'bg-[color:var(--bg-soft)]' : ''
+        className={`w-full flex items-center space-x-4 px-6 py-4 text-left hover:bg-primary-50 transition-all duration-200 focus:outline-none focus:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:ring-inset group ${
+          selectedIndex === -1 ? 'bg-primary-50' : ''
         }`}
         role="option"
         aria-selected={selectedIndex === -1}
       >
-        <Navigation className="w-5 h-5 text-[color:var(--brand)]" />
-        <span className="text-[color:var(--brand)] font-medium">
+        <div className="p-2 bg-primary-100 rounded-xl group-hover:bg-primary-200 transition-colors duration-200">
+          <Navigation className="w-5 h-5 text-primary-600" />
+        </div>
+        <span className="text-primary-600 font-semibold group-hover:text-primary-700">
           Use current location
         </span>
       </button>
@@ -309,26 +311,30 @@ export default function LocationAutocomplete({
                 key={suggestion.place_id}
                 id={getItemId(index)}
                 onClick={() => handleLocationClick(suggestion.description)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-[color:var(--bg-soft)] transition-colors focus:outline-none focus:bg-[color:var(--bg-soft)] ${
-                  index === selectedIndex ? 'bg-[color:var(--bg-soft)]' : ''
+                className={`w-full flex items-center space-x-4 px-6 py-4 text-left hover:bg-neutral-50 transition-all duration-200 focus:outline-none focus:bg-neutral-50 focus:ring-2 focus:ring-primary-500 focus:ring-inset group ${
+                  index === selectedIndex ? 'bg-neutral-50' : ''
                 }`}
                 role="option"
                 aria-selected={index === selectedIndex}
               >
-                <MapPin className="w-5 h-5 text-[color:var(--muted-ink)]" />
+                <div className="p-2 bg-neutral-100 rounded-xl group-hover:bg-neutral-200 transition-colors duration-200">
+                  <MapPin className="w-5 h-5 text-neutral-600" />
+                </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-[color:var(--ink)]">
+                  <div className="font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors duration-200">
                     {suggestion.main_text}
                   </div>
-                  <div className="text-sm text-[color:var(--muted-ink)] truncate">
+                  <div className="text-sm text-neutral-600 truncate">
                     {suggestion.secondary_text}
                   </div>
                 </div>
               </button>
             ))
           ) : (
-            <div className="px-4 py-8 text-[color:var(--muted-ink)] text-center">
-              No locations found for &quot;{value}&quot;
+            <div className="px-6 py-8 text-neutral-600 text-center">
+              <MapPin className="w-8 h-8 mx-auto mb-3 text-neutral-400" />
+              <p className="font-medium">No locations found for &quot;{value}&quot;</p>
+              <p className="text-sm mt-1 text-neutral-500">Try searching for a city or country</p>
             </div>
           )}
         </div>
@@ -407,7 +413,7 @@ export default function LocationAutocomplete({
           onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="input text-lg py-4 pl-12 pr-4 w-full border-2 border-[color:var(--border)] focus:border-[color:var(--brand)] rounded-2xl"
+          className="w-full text-lg py-5 pl-14 pr-6 border-2 border-neutral-300 focus:border-primary-500 rounded-3xl bg-white focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-primary-100 focus:outline-none placeholder-neutral-500"
           autoComplete="off"
           role="combobox"
           aria-expanded={isOpen}
@@ -416,7 +422,7 @@ export default function LocationAutocomplete({
           aria-describedby={`${comboboxId}-description`}
           id={comboboxId}
         />
-        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[color:var(--muted-ink)]" />
+        <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
         
         {/* Screen reader description */}
         <div id={`${comboboxId}-description`} className="sr-only">

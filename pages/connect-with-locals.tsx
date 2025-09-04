@@ -203,34 +203,56 @@ export default function ConnectWithLocals() {
         </Head>
 
         <div className="container-grid">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">Connect with Locals</h1>
-            <p className="text-neutral-600">
-              Find and connect with vetted local experts in your destination
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-neutral-900 mb-3">Connect with Local Experts</h1>
+            <p className="text-xl text-neutral-600">
+              Discover authentic experiences with vetted local guides in your destination
             </p>
           </div>
 
           {/* Search Summary */}
-          <Card className="mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <div className="mb-4 sm:mb-0">
-                <h2 className="text-xl font-semibold mb-2">Your Search</h2>
-                <div className="space-y-1 text-sm text-neutral-600">
-                  <div><strong>Location:</strong> {searchParams.location || 'Not specified'}</div>
-                  {searchParams.startDate && (
-                    <div><strong>Start Date:</strong> {formatDate(searchParams.startDate)}</div>
+          <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-3xl p-8 mb-8 border border-neutral-100">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="mb-6 lg:mb-0">
+                <h2 className="text-2xl font-bold text-neutral-900 mb-4">Your Search Criteria</h2>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-primary-100 rounded-xl">
+                      <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-lg font-semibold text-neutral-800">{searchParams.location || 'Location not specified'}</span>
+                  </div>
+                  
+                  {(searchParams.startDate || searchParams.endDate) && (
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-secondary-100 rounded-xl">
+                        <svg className="w-5 h-5 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className="text-lg font-semibold text-neutral-800">
+                        {searchParams.startDate && formatDate(searchParams.startDate)}
+                        {searchParams.startDate && searchParams.endDate && ' - '}
+                        {searchParams.endDate && formatDate(searchParams.endDate)}
+                      </span>
+                    </div>
                   )}
-                  {searchParams.endDate && (
-                    <div><strong>End Date:</strong> {formatDate(searchParams.endDate)}</div>
-                  )}
+                  
                   {searchParams.tags && searchParams.tags.length > 0 && (
-                    <div className="flex items-start gap-2">
-                      <strong>Tags:</strong>
-                      <div className="flex flex-wrap gap-1">
+                    <div className="flex items-start space-x-3">
+                      <div className="p-2 bg-warning/10 rounded-xl">
+                        <svg className="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
                         {searchParams.tags.map(tag => (
                           <span 
                             key={tag}
-                            className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+                            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-white text-neutral-700 border border-neutral-200 shadow-sm"
                           >
                             {tag}
                           </span>
@@ -243,18 +265,21 @@ export default function ConnectWithLocals() {
               <Button 
                 onClick={handleNewSearch}
                 variant="secondary"
-                size="sm"
+                className="px-6 py-3 text-lg font-semibold border-2 border-neutral-300 hover:border-primary-500 hover:text-primary-600"
               >
-                New Search
+                Refine Search
               </Button>
             </div>
-          </Card>
+          </div>
 
           {/* Search Results */}
           {searchLoading ? (
             <div>
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold">Searching for Local Experts...</h2>
+              <div className="mb-8 text-center">
+                <div className="inline-flex items-center space-x-3 bg-white rounded-3xl px-8 py-4 shadow-lg border border-neutral-100">
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-500 border-t-transparent"></div>
+                  <span className="text-lg font-semibold text-neutral-700">Finding perfect local experts for you...</span>
+                </div>
               </div>
               {/* Loading Grid */}
               <div className="grid-cards-4">
@@ -266,37 +291,39 @@ export default function ConnectWithLocals() {
           ) : locals.length > 0 ? (
             <div>
               {/* Results Header with Sorting */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
                 <div>
-                  <h2 className="text-xl font-semibold">Local Experts ({locals.length})</h2>
-                  <p className="text-neutral-600">Find the perfect local guide for your trip</p>
+                  <h2 className="text-3xl font-bold text-neutral-900 mb-2">
+                    {locals.length} Local {locals.length === 1 ? 'Expert' : 'Experts'} Found
+                  </h2>
+                  <p className="text-lg text-neutral-600">Connect with verified guides who know your destination inside out</p>
                 </div>
                 
                 {/* Sorting Chips */}
-                <div className="flex gap-2 mt-4 sm:mt-0">
+                <div className="flex gap-3 mt-6 lg:mt-0">
                   <button
                     onClick={() => handleSortChange('best_match')}
                     aria-label={`Sort by best match${sortBy === 'best_match' ? ' (currently selected)' : ''}`}
                     aria-pressed={sortBy === 'best_match'}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 border-2 ${
                       sortBy === 'best_match'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                        ? 'bg-primary-500 text-white border-primary-500 shadow-lg'
+                        : 'bg-white text-neutral-700 border-neutral-200 hover:border-primary-300 hover:text-primary-600 hover:shadow-md'
                     }`}
                   >
-                    Best match
+                    Best Match
                   </button>
                   <button
                     onClick={() => handleSortChange('most_active')}
                     aria-label={`Sort by most active${sortBy === 'most_active' ? ' (currently selected)' : ''}`}
                     aria-pressed={sortBy === 'most_active'}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 border-2 ${
                       sortBy === 'most_active'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                        ? 'bg-primary-500 text-white border-primary-500 shadow-lg'
+                        : 'bg-white text-neutral-700 border-neutral-200 hover:border-primary-300 hover:text-primary-600 hover:shadow-md'
                     }`}
                   >
-                    Most active
+                    Most Active
                   </button>
                 </div>
               </div>

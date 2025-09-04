@@ -99,10 +99,10 @@ export default function SearchBar({
       className={`sticky top-16 md:top-20 z-30 ${className}`}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      <div className="max-w-4xl mx-auto section-gutter">
-        <div className="card p-2 bg-white shadow-soft">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl border border-neutral-200 p-2 shadow-lg hover:shadow-xl transition-shadow duration-200">
           <div className="flex items-center">
             {/* Search Segments */}
             <div className="flex-1 flex">
@@ -110,28 +110,28 @@ export default function SearchBar({
                 <React.Fragment key={segment.id}>
                   <button
                     onClick={() => handleSegmentClick(segment.id)}
-                    className="flex-1 min-w-0 p-3 text-left hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] flex items-center"
+                    className="flex-1 min-w-0 p-4 text-left hover:bg-neutral-50 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[60px] flex items-center group hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    <div className="flex items-start space-x-2">
-                      <div className="flex-shrink-0 mt-0.5">
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 mt-1">
                         {segment.id === 'where' && (
-                          <MapPin className="w-4 h-4 text-[color:var(--muted-ink)]" />
+                          <MapPin className="w-5 h-5 text-neutral-500 group-hover:text-primary-500 transition-colors duration-200" />
                         )}
                         {segment.id === 'dates' && (
-                          <Calendar className="w-4 h-4 text-[color:var(--muted-ink)]" />
+                          <Calendar className="w-5 h-5 text-neutral-500 group-hover:text-primary-500 transition-colors duration-200" />
                         )}
                         {segment.id === 'interests' && (
-                          <Tag className="w-4 h-4 text-[color:var(--muted-ink)]" />
+                          <Tag className="w-5 h-5 text-neutral-500 group-hover:text-primary-500 transition-colors duration-200" />
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-xs font-medium text-[color:var(--ink)] mb-1">
+                        <div className="text-xs font-semibold text-neutral-800 mb-1 uppercase tracking-wider">
                           {segment.label}
                         </div>
-                        <div className={`text-sm truncate ${
+                        <div className={`text-sm truncate font-medium transition-colors duration-200 ${
                           segment.isEmpty
-                            ? 'text-[color:var(--muted-ink)]'
-                            : 'text-[color:var(--ink)] font-medium'
+                            ? 'text-neutral-500 group-hover:text-neutral-600'
+                            : 'text-neutral-900 group-hover:text-primary-600'
                         }`}>
                           {segment.value || segment.placeholder}
                         </div>
@@ -140,7 +140,7 @@ export default function SearchBar({
                   </button>
                   
                   {index < segments.length - 1 && (
-                    <div className="w-px bg-[color:var(--border)] mx-1" />
+                    <div className="w-px bg-neutral-200 mx-2" />
                   )}
                 </React.Fragment>
               ))}
@@ -149,7 +149,7 @@ export default function SearchBar({
             {/* Search Button */}
             <button
               onClick={handleSearchClick}
-              className="ml-3 btn-brand p-3 flex items-center justify-center focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] min-w-[44px] rounded-xl"
+              className="ml-4 bg-primary-500 hover:bg-primary-600 text-white p-4 flex items-center justify-center focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[56px] min-w-[56px] rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />

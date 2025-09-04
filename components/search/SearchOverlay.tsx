@@ -130,21 +130,21 @@ export default function SearchOverlay({
   const renderContent = () => (
     <>
       {/* Tab Navigation */}
-      <div className="flex border-b border-[color:var(--border)] mb-6">
+      <div className="flex border-b border-neutral-200 mb-8">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-all focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] ${
+            className={`flex-1 px-6 py-4 text-base font-semibold border-b-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[56px] hover:bg-neutral-50 rounded-t-2xl ${
               activeTab === tab.id
-                ? 'border-[color:var(--brand)] text-[color:var(--brand)]'
-                : 'border-transparent text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:border-[color:var(--border)]'
+                ? 'border-primary-500 text-primary-600 bg-primary-50/50'
+                : 'border-transparent text-neutral-600 hover:text-neutral-800 hover:border-neutral-300'
             }`}
           >
             <div className="flex items-center justify-center space-x-2">
               <span>{tab.label}</span>
               {tab.isComplete && (
-                <div className="w-2 h-2 bg-[color:var(--brand)] rounded-full" />
+                <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
               )}
             </div>
           </button>
@@ -182,27 +182,27 @@ export default function SearchOverlay({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col space-y-3 mt-6">
+      <div className="flex flex-col space-y-4 mt-8">
         {hasAnyFilters && (
           <button
             onClick={handleClearAll}
-            className="text-sm text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] underline focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded p-2 min-h-[44px]"
+            className="text-sm text-neutral-600 hover:text-neutral-800 font-medium underline underline-offset-4 decoration-2 hover:decoration-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-xl p-3 min-h-[48px] transition-all duration-200 hover:bg-neutral-50"
           >
-            Clear all
+            Clear all filters
           </button>
         )}
         
         <button
           onClick={handleSearch}
           disabled={!localFilters.location}
-          className={`flex items-center justify-center space-x-2 px-8 py-4 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] ${
+          className={`flex items-center justify-center space-x-3 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[56px] shadow-lg ${
             localFilters.location
-              ? 'bg-[color:var(--brand)] text-white hover:bg-[color:var(--brand-600)] focus:ring-[color:var(--brand)] hover:scale-105 active:scale-95'
-              : 'bg-[color:var(--border)] text-[color:var(--muted-ink)] cursor-not-allowed'
+              ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 focus:ring-primary-500 hover:scale-105 hover:shadow-xl active:scale-95 transform'
+              : 'bg-neutral-200 text-neutral-500 cursor-not-allowed shadow-none'
           }`}
         >
           <Search className="w-5 h-5" />
-          <span>Search</span>
+          <span>{localFilters.location ? 'Find Local Experts' : 'Enter Destination'}</span>
         </button>
       </div>
     </>
@@ -241,18 +241,18 @@ export default function SearchOverlay({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-50 flex flex-col max-h-[90vh]"
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl border border-neutral-100 z-50 flex flex-col max-h-[90vh] backdrop-blur-xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-[color:var(--border)] flex-shrink-0">
-              <h2 className="text-2xl font-semibold text-[color:var(--ink)]">
-                Search LocalGuide
+            <div className="flex items-center justify-between p-8 border-b border-neutral-200 flex-shrink-0 bg-gradient-to-r from-neutral-50 to-white rounded-t-3xl">
+              <h2 className="text-3xl font-bold text-neutral-900">
+                Find Your Perfect Local Guide
               </h2>
               
               <button
                 onClick={onClose}
-                className="p-2 text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] hover:bg-[color:var(--bg-soft)] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-3 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[48px] min-w-[48px] flex items-center justify-center hover:scale-110 active:scale-95"
                 aria-label="Close search"
               >
                 <X className="w-6 h-6" />
@@ -260,7 +260,7 @@ export default function SearchOverlay({
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-hidden p-6">
+            <div className="flex-1 overflow-hidden p-8">
               {renderContent()}
             </div>
           </motion.div>
