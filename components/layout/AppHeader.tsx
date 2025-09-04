@@ -132,7 +132,7 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
       <motion.header
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/80 backdrop-blur-md border-b border-[color:var(--border)] shadow-sm'
+            ? 'bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-md'
             : 'bg-transparent'
         }`}
         initial={false}
@@ -153,7 +153,7 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
             </Link>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <Link 
                 href={ROUTES.EXPLORE} 
                 className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"

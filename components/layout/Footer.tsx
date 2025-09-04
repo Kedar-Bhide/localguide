@@ -3,62 +3,76 @@ import { ROUTES } from '../../utils/constants'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 mt-auto">
-      <div className="container-grid py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-neutral-50 border-t border-neutral-200 mt-auto">
+      <div className="container-grid section-spacing-md">
+        <div className="grid-cards">
           {/* About LocalGuide */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">LocalGuide</h3>
-            <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            <h3 className="text-lg font-semibold text-neutral-900 mb-4">About LocalGuide</h3>
+            <p className="text-sm text-neutral-600 leading-relaxed mb-4">
               Connect travelers with vetted locals for authentic experiences and personalized recommendations.
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-neutral-500">
               © 2024 LocalGuide. All rights reserved.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold text-neutral-900 mb-4">Quick Links</h3>
             <nav className="space-y-3">
               <Link 
                 href={ROUTES.EXPLORE}
-                className="block text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
               >
-                Explore
+                Explore Destinations
               </Link>
               <Link 
                 href={ROUTES.JOIN}
-                className="block text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
               >
-                Join
+                Join LocalGuide
               </Link>
               <Link 
                 href={ROUTES.LOGIN}
-                className="block text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
               >
-                Login
+                Sign In
               </Link>
               <Link 
                 href={ROUTES.FEEDBACK}
-                className="block text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
               >
-                Feedback
+                Send Feedback
               </Link>
             </nav>
           </div>
 
-          {/* Social & Contact */}
+          {/* Contact & Support */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Connect</h3>
+            <h3 className="text-lg font-semibold text-neutral-900 mb-4">Contact</h3>
             <div className="space-y-3">
-              <p className="text-sm text-gray-600">
-                Follow us for updates and travel inspiration
+              <p className="text-sm text-neutral-600">
+                Need help or have questions?
               </p>
-              <div className="flex space-x-4">
+              <div className="space-y-2">
+                <Link 
+                  href={ROUTES.FEEDBACK}
+                  className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
+                >
+                  Support & Help
+                </Link>
+                <a 
+                  href="mailto:hello@localguide.com" 
+                  className="block text-sm text-neutral-600 hover:text-primary-500 transition-colors"
+                >
+                  hello@localguide.com
+                </a>
+              </div>
+              <div className="flex space-x-4 pt-2">
                 <a 
                   href="#" 
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-neutral-400 hover:text-primary-500 transition-colors"
                   aria-label="Twitter"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -67,7 +81,7 @@ export default function Footer() {
                 </a>
                 <a 
                   href="#" 
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-neutral-400 hover:text-primary-500 transition-colors"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -76,7 +90,7 @@ export default function Footer() {
                 </a>
                 <a 
                   href="#" 
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-neutral-400 hover:text-primary-500 transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

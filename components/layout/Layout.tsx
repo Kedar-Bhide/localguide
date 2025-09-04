@@ -12,7 +12,7 @@ export default function Layout({
   showAuthButtons = true
 }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-[color:var(--bg-soft)] flex flex-col">
+    <div className="min-h-screen bg-neutral-50 flex flex-col">
       <AppHeader showAuthButtons={showAuthButtons} />
       <main className="section-spacing flex-1">
         {children}
