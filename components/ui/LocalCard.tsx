@@ -55,8 +55,8 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
     <div 
       className={`
         bg-white rounded-2xl border border-neutral-200 p-6 shadow-soft
-        transition-all duration-200 ease-out
-        ${onClick ? 'cursor-pointer hover:shadow-lg hover:-translate-y-0.5 focus:ring-2 focus:ring-primary-500 focus:outline-none' : ''}
+        animate-fade-slide animate-card-hover
+        ${onClick ? 'cursor-pointer focus:ring-2 focus:ring-primary-500 focus:outline-none' : ''}
       `}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -119,35 +119,35 @@ export default function LocalCard({ data, loading = false, onClick }: LocalCardP
 
 function LocalCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-soft animate-pulse">
+    <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-soft animate-fade-slide animate-pulse">
       {/* Avatar and Name Row */}
       <div className="flex items-center space-x-3 mb-3">
-        <div className="h-12 w-12 rounded-full bg-gray-200"></div>
+        <div className="h-12 w-12 rounded-full bg-neutral-200"></div>
         <div className="flex-1 min-w-0">
-          <div className="h-5 bg-gray-200 rounded w-32 mb-1"></div>
-          <div className="h-4 bg-gray-200 rounded w-24"></div>
+          <div className="h-5 bg-neutral-200 rounded w-32 mb-1"></div>
+          <div className="h-4 bg-neutral-200 rounded w-24"></div>
         </div>
       </div>
 
       {/* Bio Lines */}
       <div className="mb-4 space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-full"></div>
-        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div className="h-4 bg-neutral-200 rounded w-full"></div>
+        <div className="h-4 bg-neutral-200 rounded w-3/4"></div>
       </div>
 
       {/* Tags */}
       <div className="mb-4">
         <div className="flex space-x-2">
-          <div className="h-6 bg-gray-200 rounded-full w-16"></div>
-          <div className="h-6 bg-gray-200 rounded-full w-20"></div>
-          <div className="h-6 bg-gray-200 rounded-full w-14"></div>
+          <div className="h-6 bg-neutral-200 rounded-full w-16"></div>
+          <div className="h-6 bg-neutral-200 rounded-full w-20"></div>
+          <div className="h-6 bg-neutral-200 rounded-full w-14"></div>
         </div>
       </div>
 
       {/* Status Line */}
       <div className="flex items-center">
-        <div className="h-2 w-2 rounded-full bg-gray-200 mr-2"></div>
-        <div className="h-4 bg-gray-200 rounded w-40"></div>
+        <div className="h-2 w-2 rounded-full bg-neutral-200 mr-2"></div>
+        <div className="h-4 bg-neutral-200 rounded w-40"></div>
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ interface MessageSkeletonProps {
 export default function MessageSkeleton({ isCurrentUser = false }: MessageSkeletonProps) {
   return (
     <div 
-      className={`flex space-x-3 ${isCurrentUser ? 'flex-row-reverse space-x-reverse' : ''}`}
+      className={`flex space-x-3 animate-fade-slide ${isCurrentUser ? 'flex-row-reverse space-x-reverse' : ''}`}
       aria-hidden="true"
     >
       {!isCurrentUser && <AvatarSkeleton size={32} />}
@@ -16,10 +16,10 @@ export default function MessageSkeleton({ isCurrentUser = false }: MessageSkelet
       <div className={`flex-1 max-w-xs ${isCurrentUser ? 'flex justify-end' : ''}`}>
         <div 
           className={`
-            p-3 rounded-2xl space-y-2
+            p-3 rounded-2xl space-y-2 animate-pulse
             ${isCurrentUser 
-              ? 'bg-blue-50 rounded-br-md' 
-              : 'bg-gray-100 rounded-bl-md'
+              ? 'bg-primary-50 rounded-br-md' 
+              : 'bg-neutral-100 rounded-bl-md'
             }
           `}
         >
@@ -47,14 +47,14 @@ export function ChatSidebarSkeleton() {
   return (
     <div className="space-y-2 p-4" aria-hidden="true">
       {Array.from({ length: 6 }).map((_, index) => (
-        <div key={index} className="flex items-center space-x-3 p-3 rounded-lg">
+        <div key={index} className="flex items-center space-x-3 p-3 rounded-lg animate-fade-slide">
           <AvatarSkeleton size={40} />
           <div className="flex-1 space-y-2">
             <div className="flex justify-between items-start">
-              <div className="h-4 bg-gray-200 rounded animate-pulse w-3/5" />
-              <div className="h-4 bg-gray-200 rounded animate-pulse w-10" />
+              <div className="h-4 bg-neutral-200 rounded animate-pulse w-3/5" />
+              <div className="h-4 bg-neutral-200 rounded animate-pulse w-10" />
             </div>
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-4/5" />
+            <div className="h-4 bg-neutral-200 rounded animate-pulse w-4/5" />
           </div>
         </div>
       ))}

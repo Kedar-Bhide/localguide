@@ -156,14 +156,14 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
             <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <Link 
                 href={ROUTES.EXPLORE} 
-                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
+                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group hover:bg-neutral-50"
               >
                 Explore
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href={ROUTES.FEEDBACK} 
-                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
+                className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group hover:bg-neutral-50"
               >
                 Feedback
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
@@ -173,14 +173,14 @@ export default function AppHeader({ showAuthButtons = true }: AppHeaderProps) {
                 <>
                   <Link 
                     href={ROUTES.JOIN} 
-                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
+                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group hover:bg-neutral-50"
                   >
                     Join
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                   <Link 
                     href={ROUTES.LOGIN} 
-                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group"
+                    className="relative text-[color:var(--muted-ink)] hover:text-[color:var(--ink)] transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[color:var(--brand)] focus:ring-offset-2 rounded-lg px-2 py-1 group hover:bg-neutral-50"
                   >
                     Login
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[color:var(--brand)] transition-all duration-300 group-hover:w-full"></span>
