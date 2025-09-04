@@ -22,7 +22,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[color:var(--bg-soft)]">
+    <div className="min-h-screen bg-white">
       <Head>
         <title>LocalGuide - Connect with Local Experts</title>
         <meta name="description" content="Connect travelers with vetted locals for personalized trip experiences" />
@@ -32,149 +32,252 @@ export default function Home() {
 
       <AppHeader showAuthButtons={false} />
       
-      {/* Hero Section */}
-      <div className="relative section-spacing">
-        <div className="container-grid text-center">
-          <h1 className="headline-large animate-fade-in">
-            Connect with Local Experts
-          </h1>
-          <p className="body-large text-secondary-color mb-12 max-w-2xl mx-auto animate-slide-up">
-            Discover authentic experiences with vetted locals who know their cities inside out
-          </p>
-
-          {/* Login/Join Button Group - Centered */}
-          <div className="flex items-center justify-center gap-3 mb-8 animate-slide-up">
-            <Link href={ROUTES.LOGIN}>
-              <Button variant="secondary" size="md" className="min-w-[120px]">
-                Login
-              </Button>
-            </Link>
-            <Link href={ROUTES.JOIN}>
-              <Button variant="secondary" size="md" className="min-w-[120px]">
-                Join
-              </Button>
-            </Link>
-          </div>
+      {/* Hero Section with Background */}
+      <div className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-primary-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-32 right-32 w-96 h-96 bg-secondary-500 rounded-full blur-3xl"></div>
         </div>
         
-        {/* Search Container - expanded by default, collapses on scroll */}
-        <SearchContainer isHomePage={true} />
-        
-        {/* Primary CTA - Explore */}
-        <div className="text-center mt-16 animate-slide-up">
+        <div className="relative z-10 container-grid text-center">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-5xl lg:text-7xl font-bold text-neutral-900 mb-8 leading-tight animate-fade-in">
+              Discover
+              <span className="block text-primary-500">
+                Authentic Travel
+              </span>
+              <span className="text-4xl lg:text-6xl text-neutral-700">
+                with Local Experts
+              </span>
+            </h1>
+            
+            <p className="text-xl lg:text-2xl text-neutral-600 mb-12 max-w-3xl mx-auto leading-relaxed animate-slide-up">
+              Connect with vetted locals who know their cities inside out and discover experiences you won't find in guidebooks
+            </p>
+
+            {/* Auth Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up">
+              <Link href={ROUTES.LOGIN}>
+                <Button variant="secondary" size="lg" className="min-w-[140px] text-lg">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href={ROUTES.JOIN}>
+                <Button variant="primary" size="lg" className="min-w-[140px] text-lg shadow-lg">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Search Section */}
+      <div className="relative -mt-20 z-20">
+        <div className="container-grid">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-5xl mx-auto border">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold text-neutral-900 mb-2">Where are you going?</h2>
+              <p className="text-neutral-600">Find your perfect local guide</p>
+            </div>
+            <SearchContainer isHomePage={true} />
+          </div>
+        </div>
+      </div>
+
+      {/* Primary CTA Section */}
+      <div className="section-spacing-lg bg-gradient-to-r from-primary-500 to-primary-600 text-white">
+        <div className="container-grid text-center">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+            Ready for your next adventure?
+          </h2>
+          <p className="text-xl lg:text-2xl opacity-90 mb-8 max-w-3xl mx-auto">
+            Browse destinations and connect with local experts who will show you their city like never before
+          </p>
           <Link href={ROUTES.EXPLORE}>
-            <Button variant="primary" size="lg" className="px-12 py-5 text-xl font-semibold shadow-lg hover:shadow-xl">
+            <Button variant="secondary" size="lg" className="px-12 py-4 text-xl font-semibold bg-white text-primary-600 hover:bg-neutral-50 border-0 shadow-lg">
               Explore Destinations →
             </Button>
           </Link>
         </div>
       </div>
 
-      <main className="section-spacing">
+      {/* How It Works - Visual Cards */}
+      <div className="section-spacing-lg">
         <div className="container-grid">
-          {/* How it Works Section */}
-          <div className="section-spacing-md">
-            <div className="text-center mb-12">
-              <h2 className="headline">How it works</h2>
-              <p className="body-large text-secondary-color">Simple steps to authentic travel experiences</p>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              {/* Traveler Column */}
-              <div className="card p-8">
-                <h3 className="subheading text-brand-color">For Travelers</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Search and connect with vetted locals in your destination</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Get personalized recommendations and insider tips</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--brand)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Book unique experiences with local guides</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Local Column */}
-              <div className="card p-8">
-                <h3 className="subheading" style={{color: 'var(--success)'}}>For Locals</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Share your local expertise and earn income</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Connect with travelers seeking authentic experiences</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-3 h-3 bg-[color:var(--success)] rounded-full mt-2 mr-4"></span>
-                    <span className="body">Build your reputation as a trusted guide</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">How LocalGuide works</h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Simple steps to authentic travel experiences with local experts
+            </p>
           </div>
 
-          {/* CTA Cards */}
-          <div className="grid-cards">
-            {/* Traveler CTA Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
-              <div className="w-16 h-16 bg-[color:var(--brand)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-[color:var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            {/* Travelers Section */}
+            <div className="space-y-8">
+              <div className="text-center md:text-left">
+                <h3 className="text-3xl font-bold text-neutral-900 mb-4">For Travelers</h3>
+                <p className="text-lg text-neutral-600 mb-8">
+                  Connect with vetted locals and discover authentic experiences
+                </p>
               </div>
-              <h3 className="subheading">I&apos;m a Traveler</h3>
-              <p className="body text-secondary-color">Planning a trip and looking for local insights</p>
+
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-primary-600 font-bold text-lg">1</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Search destinations</h4>
+                    <p className="text-neutral-600">Find and browse local experts in your destination city</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-primary-600 font-bold text-lg">2</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Connect with locals</h4>
+                    <p className="text-neutral-600">Message locals who match your interests and travel style</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-primary-600 font-bold text-lg">3</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Experience like a local</h4>
+                    <p className="text-neutral-600">Get personalized recommendations and unique insider experiences</p>
+                  </div>
+                </div>
+              </div>
+
               <Link href={ROUTES.TRAVELER_SIGNUP}>
-                <Button variant="primary" className="w-full">
-                  Get Started →
+                <Button variant="primary" className="w-full md:w-auto px-8 py-3 text-lg">
+                  Start as Traveler →
                 </Button>
               </Link>
             </div>
 
-            {/* Local CTA Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
-              <div className="w-16 h-16 bg-[color:var(--success)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-[color:var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+            {/* Locals Section */}
+            <div className="space-y-8">
+              <div className="text-center md:text-left">
+                <h3 className="text-3xl font-bold text-neutral-900 mb-4">For Locals</h3>
+                <p className="text-lg text-neutral-600 mb-8">
+                  Share your expertise and earn income helping travelers
+                </p>
               </div>
-              <h3 className="subheading">I&apos;m a Local</h3>
-              <p className="body text-secondary-color">I know my city and want to help travelers</p>
+
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-secondary-600 font-bold text-lg">1</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Create your profile</h4>
+                    <p className="text-neutral-600">Showcase your local expertise and unique knowledge</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-secondary-600 font-bold text-lg">2</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Connect with travelers</h4>
+                    <p className="text-neutral-600">Help visitors discover the authentic side of your city</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary-100 rounded-2xl flex items-center justify-center">
+                    <span className="text-secondary-600 font-bold text-lg">3</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-neutral-900 mb-2">Earn and build reputation</h4>
+                    <p className="text-neutral-600">Generate income while building your reputation as a trusted guide</p>
+                  </div>
+                </div>
+              </div>
+
               <Link href={ROUTES.LOCAL_SIGNUP}>
-                <Button variant="primary" className="w-full">
-                  Start Earning →
+                <Button variant="secondary" className="w-full md:w-auto px-8 py-3 text-lg border-2 border-secondary-500 text-secondary-600 hover:bg-secondary-50">
+                  Become a Local →
                 </Button>
               </Link>
-            </div>
-
-            {/* Spread the Word Card */}
-            <div className="card p-8 text-center hover:shadow-lg transition-all duration-300 ease-out">
-              <div className="w-16 h-16 bg-[color:var(--warning)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-[color:var(--warning)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                </svg>
-              </div>
-              <h3 className="subheading">Spread the Word</h3>
-              <p className="body text-secondary-color">Help others discover authentic travel experiences</p>
-              <Button 
-                onClick={copyToClipboard}
-                className="w-full"
-                variant="secondary"
-              >
-                {copied ? 'Copied!' : 'Copy Link'}
-              </Button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* Trust & Safety Section */}
+      <div className="section-spacing-lg bg-neutral-50">
+        <div className="container-grid">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">Why travelers trust LocalGuide</h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Safety, authenticity, and quality experiences are our top priorities
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center p-8 hover:shadow-lg transition-all">
+              <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-900 mb-4">Vetted Locals</h3>
+              <p className="text-neutral-600 leading-relaxed">
+                All our local guides are carefully verified and reviewed to ensure quality experiences
+              </p>
+            </Card>
+
+            <Card className="text-center p-8 hover:shadow-lg transition-all">
+              <div className="w-16 h-16 bg-secondary-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-900 mb-4">Authentic Experiences</h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Discover hidden gems and local favorites that you won't find in traditional guidebooks
+              </p>
+            </Card>
+
+            <Card className="text-center p-8 hover:shadow-lg transition-all">
+              <div className="w-16 h-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-900 mb-4">Community Driven</h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Join a community of travelers and locals creating meaningful connections worldwide
+              </p>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Share Section */}
+      <div className="section-spacing bg-white border-t">
+        <div className="container-grid text-center">
+          <h2 className="text-2xl font-semibold text-neutral-900 mb-4">Love LocalGuide?</h2>
+          <p className="text-neutral-600 mb-8">Help others discover authentic travel experiences</p>
+          <Button 
+            onClick={copyToClipboard}
+            variant="secondary"
+            className="px-8 py-3"
+            disabled={copied}
+          >
+            {copied ? '✓ Link Copied!' : 'Share LocalGuide'}
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
