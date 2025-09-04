@@ -169,7 +169,7 @@ export default function Requests() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content Area */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl shadow-md p-6">
+              <Card>
                 <h2 className="subheading">
                   Welcome, {profile?.full_name}!
                 </h2>
@@ -182,7 +182,7 @@ export default function Requests() {
                     🚧 Additional features coming soon! For now, check your active chats in the sidebar.
                   </p>
                 </div>
-              </div>
+              </Card>
             </div>
 
             {/* Sidebar */}

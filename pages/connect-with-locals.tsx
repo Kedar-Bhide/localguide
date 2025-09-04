@@ -257,7 +257,7 @@ export default function ConnectWithLocals() {
                 <h2 className="text-xl font-semibold">Searching for Local Experts...</h2>
               </div>
               {/* Loading Grid */}
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid-cards-4">
                 {Array.from({ length: 8 }, (_, i) => (
                   <LocalCard key={`skeleton-${i}`} loading={true} />
                 ))}
@@ -302,7 +302,7 @@ export default function ConnectWithLocals() {
               </div>
               
               {/* Responsive Grid */}
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid-cards-4">
                 {locals.map((local) => (
                   <LocalCard 
                     key={local.id} 

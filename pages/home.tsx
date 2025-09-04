@@ -73,7 +73,7 @@ export default function Home() {
       <main className="section-spacing">
         <div className="container-grid">
           {/* How it Works Section */}
-          <div className="mb-16">
+          <div className="section-spacing-md">
             <div className="text-center mb-12">
               <h2 className="headline">How it works</h2>
               <p className="body-large text-secondary-color">Simple steps to authentic travel experiences</p>

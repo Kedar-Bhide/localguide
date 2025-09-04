@@ -225,7 +225,7 @@ export default function BecomeALocal() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="container-narrow section-spacing-md">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Become a Local</h1>
             <p className="text-neutral-600">
