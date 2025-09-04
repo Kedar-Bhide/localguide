@@ -43,15 +43,15 @@ export default function Home() {
           </p>
 
           {/* Login/Join Button Group - Centered */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-slide-up">
-            <Link href={ROUTES.JOIN}>
-              <Button variant="secondary" size="lg" className="min-w-[140px]">
-                Join
+          <div className="flex items-center justify-center gap-3 mb-8 animate-slide-up">
+            <Link href={ROUTES.LOGIN}>
+              <Button variant="secondary" size="md" className="min-w-[120px]">
+                Login
               </Button>
             </Link>
-            <Link href={ROUTES.LOGIN}>
-              <Button variant="primary" size="lg" className="min-w-[140px]">
-                Login
+            <Link href={ROUTES.JOIN}>
+              <Button variant="secondary" size="md" className="min-w-[120px]">
+                Join
               </Button>
             </Link>
           </div>
@@ -61,9 +61,9 @@ export default function Home() {
         <SearchContainer isHomePage={true} />
         
         {/* Primary CTA - Explore */}
-        <div className="text-center mt-12 animate-slide-up">
+        <div className="text-center mt-16 animate-slide-up">
           <Link href={ROUTES.EXPLORE}>
-            <Button variant="primary" size="lg" className="px-12 py-4 text-lg font-semibold shadow-lg hover:shadow-xl">
+            <Button variant="primary" size="lg" className="px-12 py-5 text-xl font-semibold shadow-lg hover:shadow-xl">
               Explore Destinations →
             </Button>
           </Link>
@@ -133,7 +133,7 @@ export default function Home() {
               <h3 className="subheading">I&apos;m a Traveler</h3>
               <p className="body text-secondary-color">Planning a trip and looking for local insights</p>
               <Link href={ROUTES.TRAVELER_SIGNUP}>
-                <Button className="w-full">
+                <Button variant="primary" className="w-full">
                   Get Started →
                 </Button>
               </Link>
@@ -149,7 +149,7 @@ export default function Home() {
               <h3 className="subheading">I&apos;m a Local</h3>
               <p className="body text-secondary-color">I know my city and want to help travelers</p>
               <Link href={ROUTES.LOCAL_SIGNUP}>
-                <Button className="w-full">
+                <Button variant="primary" className="w-full">
                   Start Earning →
                 </Button>
               </Link>

@@ -386,7 +386,8 @@ export default function BecomeALocal() {
                 <Button 
                   type="submit" 
                   loading={loading}
-                  className="flex-1 bg-green-600 hover:bg-green-700 focus:ring-green-500"
+                  variant="primary"
+                  className="flex-1"
                   size="lg"
                 >
                   Become a Local

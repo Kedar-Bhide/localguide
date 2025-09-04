@@ -16,16 +16,16 @@ export default function Button({
   disabled,
   ...props 
 }: ButtonProps) {
-  const baseClasses = "font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] flex items-center justify-center"
+  const baseClasses = "font-medium rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[48px] flex items-center justify-center"
   
   const variantClasses = {
-    primary: "bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-600)] active:bg-[color:var(--primary-700)] focus:ring-[color:var(--primary-500)] hover:shadow-lg active:scale-[0.98]",
-    secondary: "border-2 border-[color:var(--neutral-300)] text-[color:var(--neutral-700)] bg-white hover:bg-[color:var(--neutral-50)] active:bg-[color:var(--neutral-100)] focus:ring-[color:var(--primary-500)] hover:border-[color:var(--neutral-400)]",
-    tertiary: "text-[color:var(--text-muted)] hover:text-[color:var(--text-secondary)] active:text-[color:var(--text-primary)] focus:ring-[color:var(--primary-500)] hover:bg-[color:var(--neutral-50)] active:bg-[color:var(--neutral-100)]"
+    primary: "bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-600)] active:bg-[color:var(--primary-700)] focus:ring-[color:var(--primary-500)] hover:shadow-md active:scale-[0.98]",
+    secondary: "border-2 border-neutral-300 text-neutral-700 bg-white hover:bg-neutral-50 active:bg-neutral-100 focus:ring-[color:var(--primary-500)] hover:border-neutral-400",
+    tertiary: "text-neutral-500 hover:text-neutral-700 active:text-neutral-900 focus:ring-[color:var(--primary-500)] hover:bg-neutral-50 active:bg-neutral-100"
   }
   
   const sizeClasses = {
-    sm: "px-4 py-2 text-sm",
+    sm: "px-5 py-2.5 text-sm",
     md: "px-6 py-3 text-base",
     lg: "px-8 py-4 text-lg"
   }
