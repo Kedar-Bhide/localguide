@@ -53,7 +53,7 @@ const stats = [
 ]
 
 export default function HomePage() {
-  const { user, initialize, initialized } = useAuthStore()
+  const { user, profile, initialize, initialized } = useAuthStore()
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export default function HomePage() {
             className="text-center"
           >
             <h1 className="text-4xl font-bold text-gradient mb-4">
-              Welcome back, {user.full_name}!
+              Welcome back, {profile?.full_name || user.email}!
             </h1>
             <p className="text-xl text-neutral-600 mb-8">
               Ready to discover new places or help fellow travelers?

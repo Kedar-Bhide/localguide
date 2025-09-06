@@ -30,7 +30,7 @@ interface ChatPageProps {
 
 export default function ChatPage({ params }: ChatPageProps) {
   const router = useRouter()
-  const { user, initialize, initialized } = useAuthStore()
+  const { user, profile, initialize, initialized } = useAuthStore()
   const {
     chats,
     currentMessages,
@@ -107,7 +107,7 @@ export default function ChatPage({ params }: ChatPageProps) {
     // Stop typing indicator
     if (isTyping) {
       setIsTyping(false)
-      updateTypingStatus(chatId, false, user.full_name)
+      updateTypingStatus(chatId, false, profile?.full_name)
     }
 
     try {
@@ -127,10 +127,10 @@ export default function ChatPage({ params }: ChatPageProps) {
     // Handle typing indicator
     if (value.trim() && !isTyping) {
       setIsTyping(true)
-      updateTypingStatus(chatId, true, user.full_name)
+      updateTypingStatus(chatId, true, profile?.full_name)
     } else if (!value.trim() && isTyping) {
       setIsTyping(false)
-      updateTypingStatus(chatId, false, user.full_name)
+      updateTypingStatus(chatId, false, profile?.full_name)
     }
 
     // Clear existing timeout
@@ -142,7 +142,7 @@ export default function ChatPage({ params }: ChatPageProps) {
     if (value.trim()) {
       typingTimeoutRef.current = setTimeout(() => {
         setIsTyping(false)
-        updateTypingStatus(chatId, false, user.full_name)
+        updateTypingStatus(chatId, false, profile?.full_name)
       }, 1000)
     }
   }
