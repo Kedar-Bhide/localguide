@@ -89,6 +89,7 @@ export const useAuthStore = create<AuthState>()(
             options: {
               data: {
                 full_name: data.full_name,
+                user_type: data.user_type
               }
             }
           })
@@ -97,19 +98,58 @@ export const useAuthStore = create<AuthState>()(
           
           if (authData.user) {
             // Create user profile
+            const profileData: any = {
+              id: authData.user.id,
+              email: data.email,
+              full_name: data.full_name,
+              is_local: data.user_type === 'local'
+            }
+
+            // Add local-specific data if user is signing up as a local expert
+            if (data.user_type === 'local') {
+              profileData.city = data.city
+              profileData.bio = data.bio
+              profileData.tags = data.tags || []
+              
+              // Extract country from city if it contains a comma
+              if (data.city?.includes(',')) {
+                const [city, country] = data.city.split(',').map(s => s.trim())
+                profileData.city = city
+                profileData.country = country
+              }
+            }
+
             const { data: profile, error: profileError } = await supabase
               .from('profiles')
-              .insert({
-                id: authData.user.id,
-                email: data.email,
-                full_name: data.full_name,
-                is_local: false
-              })
+              .insert(profileData)
               .select()
               .single()
               
             if (profileError) {
               console.error('Profile creation error:', profileError)
+              throw profileError
+            }
+
+            // If user is a local expert, also create a local_profiles entry
+            if (data.user_type === 'local' && profile) {
+              const { error: localProfileError } = await supabase
+                .from('local_profiles')
+                .insert({
+                  id: authData.user.id,
+                  user_id: authData.user.id,
+                  city: profileData.city,
+                  country: profileData.country || '',
+                  bio: data.bio || '',
+                  tags: data.tags || [],
+                  is_verified: false,
+                  rating: 0,
+                  total_connections: 0
+                })
+
+              if (localProfileError) {
+                console.error('Local profile creation error:', localProfileError)
+                // Don't throw here - main profile was created successfully
+              }
             }
             
             set({
@@ -118,7 +158,11 @@ export const useAuthStore = create<AuthState>()(
               loading: false
             })
             
-            toast.success(`Welcome to LocalGuide, ${data.full_name}!`)
+            const welcomeMessage = data.user_type === 'local' 
+              ? `Welcome to LocalGuide, ${data.full_name}! Ready to share ${profileData.city} with travelers?`
+              : `Welcome to LocalGuide, ${data.full_name}! Ready to explore the world?`
+            
+            toast.success(welcomeMessage)
           }
         } catch (error: any) {
           set({ loading: false })

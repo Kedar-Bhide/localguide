@@ -121,6 +121,12 @@ export interface SignupData {
   email: string
   password: string
   full_name: string
+  user_type: 'traveler' | 'local'
+  // Local-specific fields (only required if user_type === 'local')
+  city?: string
+  country?: string
+  bio?: string
+  tags?: string[]
 }
 
 export interface LoginData {
