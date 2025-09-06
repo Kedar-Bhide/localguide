@@ -4,14 +4,10 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { 
-  MapPin, 
-  Users, 
-  MessageCircle, 
-  Star, 
-  Globe, 
-  Heart,
+  MapPin,
+  Users,
+  MessageCircle,
   ArrowRight,
-  Play,
   Shield,
   Clock
 } from 'lucide-react'
@@ -45,12 +41,6 @@ const features = [
   }
 ]
 
-const stats = [
-  { label: 'Local Experts', value: '10K+', icon: Users },
-  { label: 'Cities Covered', value: '500+', icon: Globe },
-  { label: 'Happy Travelers', value: '50K+', icon: Heart },
-  { label: 'Connections Made', value: '100K+', icon: MessageCircle }
-]
 
 export default function HomePage() {
   const { user, profile, initialize, initialized } = useAuthStore()
@@ -164,43 +154,8 @@ export default function HomePage() {
                 </Button>
               </Link>
               
-              <Button variant="outline" size="xl" className="group">
-                <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Watch Demo
-              </Button>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.8 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="relative"
-            >
-              <div className="relative mx-auto max-w-4xl">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-3xl blur-xl"></div>
-                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl border border-white/50 shadow-2xl p-8">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {stats.map((stat, index) => (
-                      <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-                        transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                        className="text-center"
-                      >
-                        <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary-600" />
-                        <div className="text-2xl font-bold text-neutral-900 mb-1">
-                          {stat.value}
-                        </div>
-                        <div className="text-sm text-neutral-600">
-                          {stat.label}
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -293,38 +248,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 bg-neutral-900 text-neutral-300">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <Link href="/" className="inline-flex items-center space-x-2 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-display font-semibold text-white">
-                LocalGuide
-              </span>
-            </Link>
-            <p className="text-neutral-400 max-w-md mx-auto mb-6">
-              Connecting travelers with local experts for authentic experiences worldwide.
-            </p>
-            <div className="flex justify-center space-x-6 text-sm">
-              <Link href="/privacy" className="hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/contact" className="hover:text-white transition-colors">
-                Contact
-              </Link>
-            </div>
-            <div className="mt-8 pt-8 border-t border-neutral-800 text-sm text-neutral-500">
-              © 2024 LocalGuide. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

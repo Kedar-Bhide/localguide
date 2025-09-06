@@ -73,238 +73,123 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel - Hero Image */}
-      <div className="hidden lg:block relative flex-1">
-        <motion.div
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0 bg-gradient-to-br from-secondary-600 to-accent-600"
-        >
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-20" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-primary-50 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-soft p-8"
+      >
+        {/* Logo */}
+        <div className="text-center">
+          <Link href="/" className="inline-flex items-center space-x-2 mb-8">
+            <div className="w-10 h-10 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl flex items-center justify-center">
+              <MapPin className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-display font-semibold text-gradient">
+              LocalGuide
+            </span>
+          </Link>
           
-          <div className="relative h-full flex items-center justify-center p-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-center text-white"
-            >
-              <h3 className="text-4xl font-display font-bold mb-6">
-                Join Our Global Community
-              </h3>
-              <p className="text-xl opacity-90 max-w-lg mx-auto leading-relaxed mb-12">
-                Whether you're a traveler seeking authentic experiences or a local ready 
-                to share your city's secrets, LocalGuide is your gateway to meaningful connections.
-              </p>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="space-y-4 max-w-sm mx-auto"
-              >
-                <div className="flex items-center space-x-3 text-left">
-                  <CheckCircle className="h-5 w-5 text-success-400 flex-shrink-0" />
-                  <span>Connect with verified local experts</span>
-                </div>
-                <div className="flex items-center space-x-3 text-left">
-                  <CheckCircle className="h-5 w-5 text-success-400 flex-shrink-0" />
-                  <span>Discover hidden gems and authentic experiences</span>
-                </div>
-                <div className="flex items-center space-x-3 text-left">
-                  <CheckCircle className="h-5 w-5 text-success-400 flex-shrink-0" />
-                  <span>Build meaningful connections worldwide</span>
-                </div>
-                <div className="flex items-center space-x-3 text-left">
-                  <CheckCircle className="h-5 w-5 text-success-400 flex-shrink-0" />
-                  <span>Share your city and culture with travelers</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
+          <h2 className="text-3xl font-bold text-neutral-900">
+            Create your account
+          </h2>
+          <p className="mt-2 text-neutral-600">
+            Join LocalGuide today
+          </p>
+        </div>
 
-      {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-md w-full space-y-8"
-        >
-          {/* Logo */}
-          <div className="text-center">
-            <Link href="/" className="inline-flex items-center space-x-2 mb-8">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-display font-semibold text-gradient">
-                LocalGuide
-              </span>
-            </Link>
-            
-            <h2 className="text-3xl font-bold text-neutral-900">
-              Create your account
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Start your journey with authentic local experiences
-            </p>
-          </div>
-
-          {/* Form */}
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <Input
-                type="text"
-                label="Full name"
-                placeholder="Enter your full name"
-                leftIcon={<User className="h-5 w-5" />}
-                error={errors.full_name?.message}
-                {...register('full_name', {
-                  required: 'Full name is required',
-                  minLength: {
-                    value: 2,
-                    message: 'Name must be at least 2 characters'
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: 'Name cannot exceed 50 characters'
-                  }
-                })}
-              />
-            </div>
-
-            <div>
-              <Input
-                type="email"
-                label="Email address"
-                placeholder="Enter your email"
-                leftIcon={<Mail className="h-5 w-5" />}
-                error={errors.email?.message}
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Please enter a valid email address'
-                  }
-                })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Input
-                type={showPassword ? 'text' : 'password'}
-                label="Password"
-                placeholder="Create a secure password"
-                error={errors.password?.message}
-                rightIcon={
-                  <button
-                    type="button"
-                    className="text-neutral-400 hover:text-neutral-600 transition-colors"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
+        {/* Form */}
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Input
+              type="text"
+              label="Full name"
+              placeholder="Enter your full name"
+              leftIcon={<User className="h-5 w-5" />}
+              error={errors.full_name?.message}
+              {...register('full_name', {
+                required: 'Full name is required',
+                minLength: {
+                  value: 2,
+                  message: 'Name must be at least 2 characters'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Name cannot exceed 50 characters'
                 }
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters'
-                  },
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                    message: 'Password must contain uppercase, lowercase, and number'
-                  }
-                })}
-              />
-              
-              {/* Password Strength Indicator */}
-              {watchedPassword.length > 0 && (
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${
-                          passwordStrength.strength === 1 ? 'bg-red-500 w-1/4' :
-                          passwordStrength.strength === 2 ? 'bg-yellow-500 w-2/4' :
-                          passwordStrength.strength === 3 ? 'bg-blue-500 w-3/4' :
-                          passwordStrength.strength === 4 ? 'bg-success-500 w-full' :
-                          'w-0'
-                        }`}
-                      />
-                    </div>
-                    <span className={`text-xs font-medium ${
-                      passwordStrength.strength === 1 ? 'text-red-500' :
-                      passwordStrength.strength === 2 ? 'text-yellow-500' :
-                      passwordStrength.strength === 3 ? 'text-blue-500' :
-                      passwordStrength.strength === 4 ? 'text-success-500' :
-                      'text-neutral-400'
-                    }`}>
-                      {passwordStrength.label}
-                    </span>
-                  </div>
-                  <p className="text-xs text-neutral-500">
-                    Use 8+ characters with uppercase, lowercase, and numbers
-                  </p>
-                </div>
-              )}
-            </div>
+              })}
+            />
+          </div>
 
-            {/* Terms and Privacy */}
-            <div className="flex items-start space-x-3">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
-              />
-              <label htmlFor="terms" className="text-sm text-neutral-700 leading-relaxed">
-                I agree to the{' '}
-                <Link href="/terms" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
-                  Terms of Service
-                </Link>
-                {' '}and{' '}
-                <Link href="/privacy" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
+          <div>
+            <Input
+              type="email"
+              label="Email address"
+              placeholder="Enter your email"
+              leftIcon={<Mail className="h-5 w-5" />}
+              error={errors.email?.message}
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Please enter a valid email address'
+                }
+              })}
+            />
+          </div>
 
-            <Button
-              type="submit"
-              className="w-full group"
-              size="lg"
-              loading={isSubmitting || loading}
-              disabled={isSubmitting || loading || !agreedToTerms}
+          <div>
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              placeholder="Create a secure password"
+              error={errors.password?.message}
+              rightIcon={
+                <button
+                  type="button"
+                  className="text-neutral-400 hover:text-neutral-600 transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              }
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters'
+                }
+              })}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full group"
+            size="lg"
+            loading={isSubmitting || loading}
+            disabled={isSubmitting || loading}
+          >
+            {isSubmitting || loading ? 'Creating account...' : 'Create account'}
+            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+
+          <div className="text-center">
+            <span className="text-neutral-600">Already have an account? </span>
+            <Link 
+              href="/auth/login" 
+              className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
             >
-              {isSubmitting || loading ? 'Creating account...' : 'Create account'}
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-
-            <div className="text-center">
-              <span className="text-neutral-600">Already have an account? </span>
-              <Link 
-                href="/auth/login" 
-                className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
-              >
-                Sign in
-              </Link>
-            </div>
-          </form>
-
-        </motion.div>
-      </div>
+              Sign in
+            </Link>
+          </div>
+        </form>
+      </motion.div>
     </div>
   )
 }
