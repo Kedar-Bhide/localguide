@@ -118,6 +118,11 @@ export interface SignupRequest {
   email: string;
   password: string;
   full_name: string;
+  user_type: 'traveler' | 'local';
+  city?: string;
+  country?: string;
+  bio?: string;
+  tags?: string[];
 }
 
 export interface AuthResponse {

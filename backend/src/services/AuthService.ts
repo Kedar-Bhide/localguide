@@ -73,13 +73,12 @@ export class AuthService {
         };
       }
 
-      // Create user profile
+      // Create user profile (matching actual schema)
       const profileData = {
         id: authUser.user.id,
-        email: data.email,
         full_name: ValidationUtils.sanitizeString(data.full_name),
-        is_local: false,
-        last_active_at: new Date().toISOString()
+        is_traveler: true, // Everyone can be a traveler
+        is_local: data.user_type === 'local'
       };
 
       const { data: profile, error: profileError } = await supabase
@@ -96,6 +95,41 @@ export class AuthService {
           success: false,
           error: 'Failed to create user profile'
         };
+      }
+
+      // If user is a local expert, also create a locals entry
+      if (data.user_type === 'local' && profile) {
+        let city = data.city || '';
+        let country = '';
+        let state = '';
+        
+        // Extract country from city if it contains a comma
+        if (data.city?.includes(',')) {
+          const parts = data.city.split(',').map(s => s.trim());
+          city = parts[0] || '';
+          if (parts.length === 2) {
+            country = parts[1] || '';
+          } else if (parts.length === 3) {
+            state = parts[1] || '';
+            country = parts[2] || '';
+          }
+        }
+
+        const { error: localError } = await supabase
+          .from('locals')
+          .insert([{
+            user_id: authUser.user.id,
+            city: ValidationUtils.sanitizeString(city),
+            state: state ? ValidationUtils.sanitizeString(state) : null,
+            country: ValidationUtils.sanitizeString(country),
+            bio: ValidationUtils.sanitizeString(data.bio || ''),
+            tags: data.tags || []
+          }]);
+
+        if (localError) {
+          logger.error('Locals entry creation error:', localError);
+          // Don't fail the entire signup - main profile was created successfully
+        }
       }
 
       // Generate JWT token
