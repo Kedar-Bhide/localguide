@@ -5,10 +5,19 @@ class APIClient {
   async searchLocalExperts(query: SearchQuery) {
     try {
       let supabaseQuery = supabase
-        .from('local_profiles')
+        .from('locals')
         .select(`
-          *,
-          user:profiles(*)
+          user_id,
+          city,
+          country,
+          bio,
+          tags,
+          created_at,
+          user:profiles(
+            full_name,
+            avatar_url,
+            last_active_at
+          )
         `)
 
       // Apply filters
@@ -30,8 +39,25 @@ class APIClient {
 
       if (error) throw error
 
+      // Transform data to match SearchResult interface
+      const transformedData = data?.map(item => ({
+        id: item.user_id, // Use user_id as the id for the local expert
+        user_id: item.user_id,
+        city: item.city,
+        country: item.country,
+        bio: item.bio,
+        tags: item.tags || [],
+        rating: 4.5, // Default rating - will need to implement rating system later
+        total_connections: 0, // Default connections - will need to implement later
+        user: (Array.isArray(item.user) ? item.user[0] : item.user) || {
+          full_name: 'Unknown User',
+          avatar_url: undefined,
+          last_active_at: new Date().toISOString()
+        }
+      })).filter(item => item.user) || []
+
       return {
-        data: data || [],
+        data: transformedData,
         pagination: {
           page: query.page || 1,
           limit: query.limit || 12,
@@ -56,7 +82,7 @@ class APIClient {
   async getCities() {
     try {
       const { data, error } = await supabase
-        .from('local_profiles')
+        .from('locals')
         .select('city, country')
         .order('city')
 
