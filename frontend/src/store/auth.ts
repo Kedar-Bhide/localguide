@@ -7,13 +7,11 @@ import type { LoginData, SignupData } from '@/types'
 
 interface UserProfile {
   id: string
-  email: string
   full_name: string
-  avatar_url?: string
-  bio?: string
-  city?: string
-  country?: string
+  is_traveler: boolean
   is_local: boolean
+  avatar_url?: string
+  last_active_at?: string
   created_at: string
   updated_at: string
 }
@@ -97,26 +95,12 @@ export const useAuthStore = create<AuthState>()(
           if (error) throw error
           
           if (authData.user) {
-            // Create user profile
-            const profileData: any = {
+            // Create user profile (matching the actual schema)
+            const profileData = {
               id: authData.user.id,
-              email: data.email,
               full_name: data.full_name,
+              is_traveler: true, // Everyone can be a traveler
               is_local: data.user_type === 'local'
-            }
-
-            // Add local-specific data if user is signing up as a local expert
-            if (data.user_type === 'local') {
-              profileData.city = data.city
-              profileData.bio = data.bio
-              profileData.tags = data.tags || []
-              
-              // Extract country from city if it contains a comma
-              if (data.city?.includes(',')) {
-                const [city, country] = data.city.split(',').map(s => s.trim())
-                profileData.city = city
-                profileData.country = country
-              }
             }
 
             const { data: profile, error: profileError } = await supabase
@@ -130,24 +114,37 @@ export const useAuthStore = create<AuthState>()(
               throw profileError
             }
 
-            // If user is a local expert, also create a local_profiles entry
+            // If user is a local expert, also create a locals entry
             if (data.user_type === 'local' && profile) {
-              const { error: localProfileError } = await supabase
-                .from('local_profiles')
+              let city = data.city || ''
+              let country = ''
+              let state = ''
+              
+              // Extract country from city if it contains a comma
+              if (data.city?.includes(',')) {
+                const parts = data.city.split(',').map(s => s.trim())
+                city = parts[0] || ''
+                if (parts.length === 2) {
+                  country = parts[1] || ''
+                } else if (parts.length === 3) {
+                  state = parts[1] || ''
+                  country = parts[2] || ''
+                }
+              }
+
+              const { error: localError } = await supabase
+                .from('locals')
                 .insert({
-                  id: authData.user.id,
                   user_id: authData.user.id,
-                  city: profileData.city,
-                  country: profileData.country || '',
+                  city: city,
+                  state: state,
+                  country: country,
                   bio: data.bio || '',
-                  tags: data.tags || [],
-                  is_verified: false,
-                  rating: 0,
-                  total_connections: 0
+                  tags: data.tags || []
                 })
 
-              if (localProfileError) {
-                console.error('Local profile creation error:', localProfileError)
+              if (localError) {
+                console.error('Locals entry creation error:', localError)
                 // Don't throw here - main profile was created successfully
               }
             }
@@ -159,7 +156,7 @@ export const useAuthStore = create<AuthState>()(
             })
             
             const welcomeMessage = data.user_type === 'local' 
-              ? `Welcome to LocalGuide, ${data.full_name}! Ready to share ${profileData.city} with travelers?`
+              ? `Welcome to LocalGuide, ${data.full_name}! Ready to share ${data.city?.split(',')[0]} with travelers?`
               : `Welcome to LocalGuide, ${data.full_name}! Ready to explore the world?`
             
             toast.success(welcomeMessage)
