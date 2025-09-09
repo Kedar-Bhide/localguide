@@ -72,8 +72,8 @@ export interface Message {
   chat_id: string
   sender_id: string
   content: string
-  message_type: 'text' | 'image' | 'location'
-  is_read: boolean
+  message_type?: 'text' | 'image' | 'location'
+  is_read?: boolean
   created_at: string
   sender?: {
     full_name: string
@@ -91,7 +91,7 @@ export interface ChatWithDetails {
     id: string
     full_name: string
     avatar_url?: string
-  }
+  } | null
   user_role: 'traveler' | 'local'
   last_message?: {
     id: string
@@ -99,7 +99,7 @@ export interface ChatWithDetails {
     sender_id: string
     created_at: string
     is_from_user: boolean
-  }
+  } | null
   unread_count: number
 }
 

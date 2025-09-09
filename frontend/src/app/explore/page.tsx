@@ -67,7 +67,7 @@ export default function ExplorePage() {
 
   // Debounced search
   const debouncedSearch = debounce((query: string) => {
-    loadLocals({ city: query })
+    loadLocals({ location: query })
   }, 500)
 
   useEffect(() => {
@@ -84,18 +84,29 @@ export default function ExplorePage() {
     try {
       setSearchLoading(true)
       const query: SearchQuery = {
-        city: params?.city || selectedCity,
-        tags: selectedTags.length > 0 ? selectedTags : undefined,
+        location: params?.location,
+        city: params?.city || (selectedCity && !params?.location ? selectedCity : undefined),
+        tags: params?.tags !== undefined ? params?.tags : (selectedTags.length > 0 ? selectedTags : undefined),
         page: params?.page || 1,
-        limit: pagination.limit,
+        limit: params?.limit || pagination.limit,
         ...params
       }
 
+      // Remove empty values to avoid unnecessary filters
+      Object.keys(query).forEach(key => {
+        if (query[key as keyof SearchQuery] === '' || query[key as keyof SearchQuery] === undefined) {
+          delete query[key as keyof SearchQuery]
+        }
+      })
+
+      console.log('Searching with query:', query)
       const response = await api.searchLocalExperts(query)
+      console.log('Search response:', response)
       setLocals(response.data)
       setPagination(response.pagination)
     } catch (error) {
       console.error('Failed to load locals:', error)
+      setLocals([])
     } finally {
       setLoading(false)
       setSearchLoading(false)
@@ -112,11 +123,18 @@ export default function ExplorePage() {
   }
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    )
+    const newTags = selectedTags.includes(tag) 
+      ? selectedTags.filter(t => t !== tag)
+      : [...selectedTags, tag]
+    
+    setSelectedTags(newTags)
+    
+    // Immediately search with the new tags
+    loadLocals({ 
+      tags: newTags,
+      location: searchQuery.trim() || undefined,
+      city: selectedCity || undefined
+    })
   }
 
   const startChat = async (local: SearchResult) => {
@@ -132,7 +150,7 @@ export default function ExplorePage() {
     setSelectedCity('')
     setSelectedTags([])
     setSearchQuery('')
-    loadLocals({ city: '', tags: [] })
+    loadLocals({ location: undefined, city: undefined, tags: [] })
   }
 
   if (!initialized) {
@@ -242,7 +260,11 @@ export default function ExplorePage() {
                     <button
                       onClick={() => {
                         setSelectedCity('')
-                        loadLocals({ city: '' })
+                        loadLocals({ 
+                          city: undefined,
+                          location: searchQuery.trim() || undefined,
+                          tags: selectedTags.length > 0 ? selectedTags : undefined
+                        })
                       }}
                       className="ml-1 hover:bg-primary-200 rounded-full p-0.5"
                     >
@@ -459,14 +481,20 @@ export default function ExplorePage() {
               >
                 <Globe className="h-16 w-16 text-neutral-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-neutral-700 mb-2">
-                  No local experts found
+                  {searchQuery || selectedCity || selectedTags.length > 0 
+                    ? 'No local experts found for your search'
+                    : 'No local experts available yet'}
                 </h3>
                 <p className="text-neutral-500 mb-6">
-                  Try adjusting your search criteria or explore different cities
+                  {searchQuery || selectedCity || selectedTags.length > 0 
+                    ? 'Try adjusting your search criteria or explore different cities'
+                    : 'Local experts are still setting up their profiles. Check back soon!'}
                 </p>
-                <Button onClick={clearFilters} variant="outline">
-                  Clear Filters
-                </Button>
+                {(searchQuery || selectedCity || selectedTags.length > 0) && (
+                  <Button onClick={clearFilters} variant="outline">
+                    Clear Filters
+                  </Button>
+                )}
               </motion.div>
             )}
           </>
@@ -490,9 +518,11 @@ export default function ExplorePage() {
               value={selectedCity}
               onChange={(e) => {
                 setSelectedCity(e.target.value)
-                if (e.target.value) {
-                  loadLocals({ city: e.target.value })
-                }
+                loadLocals({ 
+                  city: e.target.value || undefined,
+                  location: searchQuery.trim() || undefined,
+                  tags: selectedTags.length > 0 ? selectedTags : undefined
+                })
               }}
               className="w-full p-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >

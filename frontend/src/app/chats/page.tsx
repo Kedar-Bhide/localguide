@@ -56,7 +56,7 @@ export default function ChatsPage() {
 
   // Filter chats based on search
   const filteredChats = chats.filter(chat => 
-    chat.other_user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    chat.other_user?.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     chat.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
     chat.last_message?.content.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -170,8 +170,8 @@ export default function ChatsPage() {
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <Avatar
-                          src={chat.other_user.avatar_url}
-                          name={chat.other_user.full_name}
+                          src={chat.other_user?.avatar_url}
+                          name={chat.other_user?.full_name || 'Unknown User'}
                           size="lg"
                           showOnlineStatus
                           isOnline={Math.random() > 0.5} // Random for demo
@@ -186,7 +186,7 @@ export default function ChatsPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
                           <h3 className="text-lg font-semibold text-neutral-900 truncate group-hover:text-primary-700 transition-colors">
-                            {chat.other_user.full_name}
+                            {chat.other_user?.full_name || 'Unknown User'}
                           </h3>
                           <div className="flex items-center space-x-2 text-xs text-neutral-500">
                             <span>{formatTime(chat.last_message_at)}</span>

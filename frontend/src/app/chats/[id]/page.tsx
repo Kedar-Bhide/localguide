@@ -85,7 +85,7 @@ export default function ChatPage({ params }: ChatPageProps) {
   useEffect(() => {
     if (currentMessages.length > 0 && currentChat) {
       const unreadMessages = currentMessages
-        .filter(msg => !msg.is_read && msg.sender_id !== user?.id)
+        .filter(msg => (msg.is_read === false || msg.is_read === undefined) && msg.sender_id !== user?.id)
         .map(msg => msg.id)
 
       if (unreadMessages.length > 0) {
@@ -314,7 +314,7 @@ export default function ChatPage({ params }: ChatPageProps) {
                           <div className="flex">
                             <div className={cn(
                               'w-3 h-3 rounded-full',
-                              message.is_read ? 'bg-white/70' : 'bg-white/40'
+                              message.is_read === true ? 'bg-white/70' : 'bg-white/40'
                             )} />
                           </div>
                         )}

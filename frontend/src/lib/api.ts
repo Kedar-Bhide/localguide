@@ -20,13 +20,28 @@ class APIClient {
           )
         `)
 
-      // Apply filters
-      if (query.city) {
+      // Apply general location search (searches city, country, and bio)
+      if (query.location && query.location.trim()) {
+        const searchTerm = query.location.trim()
+        supabaseQuery = supabaseQuery.or(
+          `city.ilike.%${searchTerm}%,country.ilike.%${searchTerm}%,bio.ilike.%${searchTerm}%`
+        )
+      }
+
+      // Apply specific city filter
+      if (query.city && query.city.trim()) {
         supabaseQuery = supabaseQuery.ilike('city', `%${query.city}%`)
       }
 
+      // Apply specific country filter
+      if (query.country && query.country.trim()) {
+        supabaseQuery = supabaseQuery.ilike('country', `%${query.country}%`)
+      }
+
+      // Apply tags filter
       if (query.tags && query.tags.length > 0) {
-        supabaseQuery = supabaseQuery.contains('tags', query.tags)
+        // Use overlaps operator to find locals with any of the selected tags
+        supabaseQuery = supabaseQuery.overlaps('tags', query.tags)
       }
 
       // Apply pagination
@@ -67,6 +82,7 @@ class APIClient {
       }
     } catch (error) {
       console.error('API Error - searchLocalExperts:', error)
+      console.error('Query was:', query)
       return {
         data: [],
         pagination: {
@@ -108,20 +124,68 @@ class APIClient {
       const { data: user } = await supabase.auth.getUser()
       if (!user.user) throw new Error('Not authenticated')
 
-      const { data, error } = await supabase
+      // Check if chat already exists between these users - simplified approach
+      const { data: existingChats } = await supabase
+        .from('chat_participants')
+        .select(`
+          chat_id,
+          chats(*)
+        `)
+        .eq('user_id', user.user.id)
+        
+      let existingChat = null
+      if (existingChats) {
+        for (const chatParticipant of existingChats) {
+          // Check if the other user is also in this chat
+          const { data: otherUserInChat } = await supabase
+            .from('chat_participants')
+            .select('chat_id')
+            .eq('chat_id', chatParticipant.chat_id)
+            .eq('user_id', localUserId)
+            .single()
+            
+          if (otherUserInChat) {
+            existingChat = chatParticipant
+            break
+          }
+        }
+      }
+
+      if (existingChat?.chats) {
+        return existingChat.chats
+      }
+
+      // Create new chat
+      const { data: chat, error: chatError } = await supabase
         .from('chats')
         .insert({
-          user1_id: user.user.id,
-          user2_id: localUserId,
           city,
           created_at: new Date().toISOString()
         })
         .select()
         .single()
 
-      if (error) throw error
+      if (chatError) throw chatError
 
-      return data
+      // Add both participants
+      const { error: participantError } = await supabase
+        .from('chat_participants')
+        .insert([
+          {
+            chat_id: chat.id,
+            user_id: user.user.id,
+            role: 'traveler'
+          },
+          {
+            chat_id: chat.id,
+            user_id: localUserId,
+            role: 'local'
+          }
+        ])
+
+      if (participantError) throw participantError
+
+      return chat
     } catch (error) {
       console.error('API Error - createChat:', error)
       throw error
